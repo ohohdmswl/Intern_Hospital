@@ -8,7 +8,7 @@ import egovframework.example.sample.service.BoardVO;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 
 
-@Repository("BoardDAO")
+@Repository("boardDAO")
 public class BoardDAO extends EgovAbstractMapper{
 
 	public List<BoardVO> SelectBoardList(BoardVO vo) {

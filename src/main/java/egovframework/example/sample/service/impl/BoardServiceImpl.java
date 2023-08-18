@@ -13,7 +13,7 @@ import egovframework.example.sample.service.BoardVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 
-@Service("BoardService")
+@Service("boardService")
 public class BoardServiceImpl extends EgovAbstractServiceImpl implements BoardService{
 
 	
@@ -23,7 +23,7 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements BoardSe
    // Get class name for logger
    private final String className = this.getClass().toString();
    
-	@Resource(name="BoardDAO")
+	@Resource(name="boardDAO")
 	private BoardDAO boardDAO;
 	
 	@Override

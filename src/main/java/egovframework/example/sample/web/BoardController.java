@@ -28,7 +28,7 @@ public class BoardController {
 	
 	
 	
-	@Resource(name="BoardService")
+	@Resource(name="boardService")
 	private BoardService boardService;
 	
 	

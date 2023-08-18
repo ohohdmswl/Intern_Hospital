@@ -7,10 +7,52 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+}
+.nav{
+	display: flex;
+	flex-direction: column;
+}
+
+.title, .menu {
+	height: 10rem;
+	width: 100vw;
+}
+
+.title{
+	background: gray;
+}
+
+.menu{
+	background: blue;
+}
+
+
+.container{
+	display: grid;
+}
+</style>
+
+
+
 </head>
 <body>
+	<div class="nav"><!-- nav -->
+		<div class="title"><!-- title -->
+		
+		</div >
+		<div class="menu"><!-- menu -->
+		
+		</div>
+	</div><!-- nav -->
+	
+	<div class="container"><!-- container -->
 	<h3>test_board Page</h3>
-		<div>
+		<div id="table">
 			<table class="custom-table">
 				<thead>
 					<tr>
@@ -34,5 +76,6 @@
 				</tbody>
 			</table>
 		</div>
+	</div><!-- container -->
 </body>
 </html>

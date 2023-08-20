@@ -12,8 +12,7 @@ import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 public class BoardDAO extends EgovAbstractMapper{
 
 	public List<BoardVO> SelectBoardList(BoardVO vo) {
-//		return (List<BoardVO>) list("SelectBoardList", vo);
-//		return selectList("BoardDAO.SelectBoardList", vo);
+
 		return selectList("SelectBoardList", vo);
 	}
 	

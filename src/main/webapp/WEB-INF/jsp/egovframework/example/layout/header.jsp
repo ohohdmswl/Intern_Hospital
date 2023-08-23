@@ -20,6 +20,11 @@ body, ui, li {
     margin: 0;
     padding: 0;
 }
+
+.contain{
+	 
+	
+}
 .nav{
 	display: flex;
 	flex-direction: column;
@@ -106,6 +111,8 @@ ul, li {
   	margin-right: 0;
 }
 
+
+
 </style>
 
 
@@ -124,7 +131,7 @@ ul, li {
 		<div class="menu"><!-- menu -->
 			<ul class="menuList">
 				<li class="menuItem">
-					<a class="menuA">대시보드1</a>
+					<a class="menuA" href="../dashboardList.do">대시보드1</a>
 				</li>
 				<li class="menuItem">
 					<a class="menuA">대시보드2</a>	

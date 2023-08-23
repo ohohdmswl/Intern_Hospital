@@ -12,21 +12,20 @@
 <!-- header -->
 <jsp:include page="/WEB-INF/jsp/egovframework/example/layout/header.jsp"></jsp:include>
   
-<!-- Bootstrap -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-  
-  
 <title>자유게시판</title>
 
 <style>
 
 .contain{ 
   	display: flex;
-	margin-left: 12.5%;
-	margin-right: 12.5%;
+	margin-left: 12%;
+	margin-right: 12%;
 	font-family: 'Orbit', sans-serif;z;
  	flex-direction: column;
     align-items: center;
+    height: auto;
+  	min-height: 100%;
+ 	padding-bottom: 10rem;
 }
 
 .boardTitle {
@@ -80,7 +79,7 @@
 }
 
 .table {
-	width: 50rem;
+	width: 63rem;
 	
 
 }
@@ -93,7 +92,7 @@
 
 </head>
 <body>
-	<div class="contain"><!-- container -->
+	<div class="contain d-flex flex-column min-vh-100"><!-- container -->
 	<h1 class="boardTitle">자유게시판</h1>
 		<div class="search">
 			<select id="selectSearch">
@@ -109,26 +108,33 @@
 			<table class="table table-hover">
 				<thead>
 					<tr>
-						<th>순번</th>
-						<th>이름</th>
-						<th>나이</th>
-						<th>내용</th>
-						<th>작성일</th>
+						<th class="col-1">번호</th>
+						<th class="col-6">제목</th>
+						<th class="col-2">작성자</th>
+						<th class="col-2">작성일</th>
+						<th class="col-1">조회수</th>
 					</tr>
 				</thead>
 				<tbody>
 					<c:forEach items="${list }" var="list">
 						<tr>
-							<td><c:out value="${list.bno }" /></td>
-							<td><c:out value="${list.name }" /></td>
-							<td><c:out value="${list.age }" /></td>
-							<td><c:out value="${list.content }" /></td>
-							<td><c:out value="${list.regdate }" /></td>
+							<td><c:out value="${list.board_no}" /></td>
+							<td><c:out value="${list.board_title }" /></td>
+							<td><c:out value="${list.board_writer }" /></td>
+							<td><c:out value="${list.board_date }" /></td>
+							<td><c:out value="${list.board_hit }" /></td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 		</div>
 	</div><!-- container -->
+	
+	
 </body>
+
+<!-- footer -->
+<jsp:include page="/WEB-INF/jsp/egovframework/example/layout/footer.jsp"></jsp:include>
+
+
 </html>

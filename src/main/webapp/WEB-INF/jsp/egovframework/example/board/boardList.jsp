@@ -7,6 +7,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+
+
 <meta charset="UTF-8">
 
 <!-- header -->
@@ -89,6 +92,18 @@
 }
 
 </style>
+
+
+<script type="text/javascript">
+
+	// 제이쿼리 cdn 적용 확인
+	$(function() {
+		alert('hello');
+	});
+
+</script>
+
+
 
 </head>
 <body>

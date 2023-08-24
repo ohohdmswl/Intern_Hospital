@@ -15,7 +15,7 @@
 .contain{ 
   	display: flex;
 	margin: 3rem 12% 3rem 12%;
-	font-family: 'Orbit', sans-serif;z;
+	font-family: 'Orbit', sans-serif;
  	flex-direction: row;
     align-items: center;
     height: auto;
@@ -44,20 +44,20 @@
 </head>
 <body>
 <div class="contain">
-	<div class="box1">
-		<h3>이곳엔 한반도 차트를 넣을거야</h3>
+	<div class="box1" style="border: 1px solid black">
+		<h3>한반도 차트</h3>
 			<div>
 			<p> 
-				<span>하하하하하핳하</span>
-			hello world</p>
+				<span>test</span>
+			</p>
 			</div>
 	</div><!-- box1 -->
-	<div class="box2">
-		<div class="box2-1">
-			<p>여기엔 병원종류 차트를 넣을거야</p>
+	<div class="box2" style="border: 1px solid black">
+		<div class="box2-1" style="border: 1px solid black">
+			<p>병원종류 차트</p>
 		</div> <!-- box2-1 -->	
-		<div class="box2-2">
-			<p>여기엔 의사종류 차트를 넣을거야</p>
+		<div class="box2-2" style="border: 1px solid black">
+			<p>의사종류 차트</p>
 		</div> <!-- box2-2 -->	
 	</div><!-- box2 -->
 	

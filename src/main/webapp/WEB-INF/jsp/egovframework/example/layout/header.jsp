@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>   
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -132,7 +137,7 @@ ul, li {
 	<div class="nav"><!-- nav -->
 		<div class="title"><!-- title -->
 			<div class="hospitalImg">
-				<img src="images\egovframework\layout\hospitalIcon.png" style="width: 3rem; height: 3rem;">
+				<img src="${pageContext.request.contextPath}/images/egovframework/layout/hospitalIcon.png" style="width: 3rem; height: 3rem;">
 			</div>
 			<div><p>병원찾GO</p></div>
 		</div >
@@ -145,7 +150,7 @@ ul, li {
 					<a class="menuA">대시보드2</a>	
 				</li>
 				<li class="menuItem">
-					<a class="menuA" href="../boardView.do">자유게시판</a>
+					<a class="menuA" href="/board/boardView.do">자유게시판</a>
 				</li>
 			</ul>
 		

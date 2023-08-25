@@ -50,7 +50,7 @@
 <body>
 	<footer class="footer mt-auto">
 		<div class="hospitalImg">
-			<img src="images\egovframework\layout\hospitalIcon.png" style="width: 7.5rem; height: 7.5rem;">
+			<img src="${pageContext.request.contextPath}/images/egovframework/layout/hospitalIcon.png" style="width: 7.5rem; height: 7.5rem;">
 		</div>
 		<div class="footerContain">
 			<p id="titleNM">병원찾GO</p>

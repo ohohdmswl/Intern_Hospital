@@ -21,6 +21,7 @@ import egovframework.example.sample.service.BoardVO;
 
 
 @Controller
+@RequestMapping(value ="/board")
 public class BoardController {
 //	private static Logger Logger = LoggerFactory.getLogger(BoardController.class);
 	
@@ -47,12 +48,13 @@ public class BoardController {
 	}
 	
 	
-	/*
-	@RequestMapping(value="/boardList2.do")
-	public String boardList2(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+	@RequestMapping(value="boardList.do")
+	public String boardList(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 			   HttpServletResponse response) throws Exception {
 		
-		logger.info("보드컨트롤러 " + className + "boardList");
+		logger.info("보드컨트롤러222 " + className + "boardList");
+		
+		
 		
 		int pagenum = Integer.parseInt((String) paramMap.get("pagenum"));
 		int pageSize = Integer.parseInt((String) paramMap.get("pageSize"));
@@ -77,5 +79,4 @@ public class BoardController {
 		model.addAttribute("list",list);
 		return "board/boardListGrd";
 	}
-	*/
 }

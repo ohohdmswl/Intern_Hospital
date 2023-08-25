@@ -105,7 +105,58 @@
 		alert('hello');
 	});
 
+	
+    /** OnLoad event */
+    $(function() {
 
+    	fn_boardlist();
+      
+
+
+    });
+	
+	
+	function fn_boardlist(pagenum) {
+		
+		alert("ajax");
+		console.log("ajax");
+		
+		pagenum = pagenum || 1;
+		
+		var param = {
+// 		  , clicombo : $("#clicombo").val()
+// 		  ,	acccombo : $("#acccombo").val()
+// 		  , accdcombo : $("#accdcombo").val()
+		   pageSize : pageSize
+		  , pageBlockSize : pageBlockSize
+		  , pagenum : pagenum
+		}
+		
+		var listcollabck = function(returnvalue) {
+			alert("ajax2");
+			console.log("ajax2");
+			
+			console.log(returnvalue);
+			
+			$("#boardListTbody").empty().append(returnvalue);
+			
+			var  totalcnt = $("#totalcnt").val();
+			
+			console.log("totalcnt : " + totalcnt);
+			
+			var paginationHtml = getPaginationHtml(pagenum, totalcnt, pageSize, pageBlockSize, 'fn_boardlist');
+			console.log("paginationHtml : " + paginationHtml);
+			 
+			$("#boardPagination").empty().append( paginationHtml );
+			
+			$("#pageno").val(pagenum);
+		}
+		
+		callAjax("/board/boardList.do", "post", "text", false, param, listcollabck) ;
+			
+	};
+	
+	
 	
 	
 	

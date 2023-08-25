@@ -63,4 +63,8 @@
 	<!-- /For Pagination Tag -->
 
     <mvc:view-controller path="/cmmn/validator.do" view-name="cmmn/validator"/>
+    
+    <!-- resources 매핑 -->
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
+    
 </beans>

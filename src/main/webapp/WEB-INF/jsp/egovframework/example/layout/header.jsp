@@ -19,9 +19,8 @@
 
 <!--common.js  -->
 <script type="text/javascript" charset="utf-8" src="../js/common.js"></script>
-<!-- /intern_hospital_servletTest/src/main/webapp/js/common.js -->
-<!-- commonAjax -->
-<%-- <script type="text/javascript" charset="utf-8" src="${CTX_PATH}/js/commonAjax.js"></script> --%>
+<!-- commonAjax.js -->
+<script type="text/javascript" charset="utf-8" src="../js/commonAjax.js"></script>
 
 
 <style>
@@ -146,7 +145,7 @@ ul, li {
 					<a class="menuA">대시보드2</a>	
 				</li>
 				<li class="menuItem">
-					<a class="menuA" href="../boardList.do">자유게시판</a>
+					<a class="menuA" href="../boardView.do">자유게시판</a>
 				</li>
 			</ul>
 		

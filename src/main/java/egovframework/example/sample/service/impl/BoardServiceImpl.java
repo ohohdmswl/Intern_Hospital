@@ -1,6 +1,7 @@
 package egovframework.example.sample.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -29,6 +30,11 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements BoardSe
 	@Override
 	public List<BoardVO> SelectBoardList(BoardVO vo) throws Exception {
 		return boardDAO.SelectBoardList(vo);
+	}
+	
+	@Override
+	public int countactlist(Map<String, Object> paramMap) {
+		return boardDAO.countactlist(paramMap);
 	}
 
 }

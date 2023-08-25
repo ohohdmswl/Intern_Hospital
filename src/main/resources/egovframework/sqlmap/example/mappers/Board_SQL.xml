@@ -14,6 +14,12 @@
 			   ,board_writer
 			   ,board_hit
 			   ,board_date
-		  FROM  tb_board tb; 
+		  FROM  tb_board tb
+	</select>
+	
+	<select id="countactlist" parameterType="boardVO" resultType="int">
+		SELECT
+				count(*)
+		  FROM  tb_board tb
 	</select>
 </mapper>

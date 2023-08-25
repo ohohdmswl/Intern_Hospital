@@ -1,8 +1,11 @@
 package egovframework.example.sample.web;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -11,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.example.sample.service.BoardService;
 import egovframework.example.sample.service.BoardVO;
@@ -32,18 +36,46 @@ public class BoardController {
 	private BoardService boardService;
 	
 	
-	@RequestMapping(value="/boardList.do")
-	public String selectDeptList(BoardVO vo, Model model) throws Exception {
+	@RequestMapping(value="/boardView.do")
+	public String boardView(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		
-		logger.info("보드컨트롤러 " + className + "selectDeptList");
+		logger.info("보드컨트롤러 " + className + "boardView");
 		
-//		List<BoardVO> list = boardService.SelectBoardList(vo);
+		return "board/boardList";
+		
+	}
+	
+	
+	/*
+	@RequestMapping(value="/boardList2.do")
+	public String boardList2(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+			   HttpServletResponse response) throws Exception {
+		
+		logger.info("보드컨트롤러 " + className + "boardList");
+		
+		int pagenum = Integer.parseInt((String) paramMap.get("pagenum"));
+		int pageSize = Integer.parseInt((String) paramMap.get("pageSize"));
+		int pageindex = (pagenum - 1) * pageSize;
+		
+		System.out.println("1차 체크");
+       
+		paramMap.put("pageSize", pageSize);
+		paramMap.put("pageindex", pageindex);
+		
 		List<BoardVO> list = boardService.SelectBoardList(vo);
+		logger.info("보드컨트롤러 " + className + "SelectBoardList");
+		
+		int totalcnt = boardService.countactlist(paramMap);
+		logger.info("보드컨트롤러 " + className + "countactlist");
+		logger.info("countactlist" + totalcnt);
+		
+		
 		
 		System.out.println(list);
 
 		model.addAttribute("list",list);
-		return "board/boardList";
+		return "board/boardListGrd";
 	}
-	
+	*/
 }

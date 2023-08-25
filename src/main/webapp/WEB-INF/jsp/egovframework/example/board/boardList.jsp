@@ -96,11 +96,19 @@
 
 <script type="text/javascript">
 
+	//페이지네이션 설정
+	var pageSize = 10;     
+	var pageBlockSize = 5;    
+	
 	// 제이쿼리 cdn 적용 확인
 	$(function() {
 		alert('hello');
 	});
 
+
+	
+	
+	
 </script>
 
 
@@ -130,18 +138,11 @@
 						<th class="col-1">조회수</th>
 					</tr>
 				</thead>
-				<tbody>
-					<c:forEach items="${list }" var="list">
-						<tr>
-							<td><c:out value="${list.board_no}" /></td>
-							<td><c:out value="${list.board_title }" /></td>
-							<td><c:out value="${list.board_writer }" /></td>
-							<td><c:out value="${list.board_date }" /></td>
-							<td><c:out value="${list.board_hit }" /></td>
-						</tr>
-					</c:forEach>
+				<tbody id="boardListTbody">
+
 				</tbody>
 			</table>
+			<div class="paging_area"  id="boardPagination"> </div>
 		</div>
 	</div><!-- container -->
 	

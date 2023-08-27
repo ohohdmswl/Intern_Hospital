@@ -11,7 +11,30 @@
 			   ,board_writer
 			   ,board_hit
 			   ,board_date
+			   ,board_cont
 		  FROM  tb_board 
+		  <where>
+ 			<if test="(searchText != null) and (!searchText.equals(''))">
+				<choose>
+                    <when test="selectSearch eq 'title'.toString()">
+                        and board_title Like CONCAT('%', #{searchText}, '%')
+                    </when>
+                    <when test="selectSearch eq 'content'.toString()">
+                        and board_cont Like CONCAT('%', #{searchText}, '%')
+                    </when>
+                    <when test="selectSearch eq 'writer'.toString()">
+                        and board_writer Like CONCAT('%', #{searchText}, '%')
+                    </when>
+                    <otherwise>
+                    	and (    board_title Like CONCAT('%', #{searchText}, '%')
+						      or board_cont LIKE CONCAT('%', #{searchText}, '%')
+						      or board_writer LIKE CONCAT('%', #{searchText}, '%')
+						       )
+                    </otherwise>
+		        </choose>
+	         </if>
+           </where>	
+		  
 	  ORDER BY  board_no desc
 		 LIMIT  #{pageSize}
 		OFFSET  #{pageindex} 
@@ -21,5 +44,26 @@
 	<select id="countList" resultType="int">
 		SELECT  count(*)
 		  FROM  tb_board
+		  <where>
+ 			<if test="(searchText != null) and (!searchText.equals(''))">
+				<choose>
+                    <when test="selectSearch eq 'title'.toString()">
+                        and board_title Like CONCAT('%', #{searchText}, '%')
+                    </when>
+                    <when test="selectSearch eq 'content'.toString()">
+                        and board_cont Like CONCAT('%', #{searchText}, '%')
+                    </when>
+                    <when test="selectSearch eq 'writer'.toString()">
+                        and board_writer Like CONCAT('%', #{searchText}, '%')
+                    </when>
+                    <otherwise>
+                    	and (    board_title Like CONCAT('%', #{searchText}, '%')
+						      or board_cont LIKE CONCAT('%', #{searchText}, '%')
+						      or board_writer LIKE CONCAT('%', #{searchText}, '%')
+						       )
+                    </otherwise>
+		        </choose>
+	         </if>
+           </where>	
 	</select>
 </mapper>

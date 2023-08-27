@@ -31,8 +31,6 @@ public class BoardController {
    // Get class name for logger
    private final String className = this.getClass().toString();
 	
-	
-	
 	@Resource(name="boardService")
 	private BoardService boardService;
 	
@@ -49,34 +47,28 @@ public class BoardController {
 	@RequestMapping(value="boardList.do")
 	public String boardList(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 			   HttpServletResponse response) throws Exception {
-		
-		logger.info("보드컨트롤러222 " + className + paramMap);
+
+		logger.info("보드컨트롤러  파람맵" + "boardList" + paramMap);
 		
 		int pagenum = Integer.parseInt((String) paramMap.get("pagenum"));
 		int pageSize = Integer.parseInt((String) paramMap.get("pageSize"));
 		int pageindex = (pagenum - 1) * pageSize;
 		
-		logger.info("보드컨트롤러2233 " + className + "여긴타냐");
-		
 		paramMap.put("pageSize", pageSize);
 		paramMap.put("pageindex", pageindex);
-		logger.info("보드컨트롤러 파람맵 확인 " + className + paramMap);
 		
 		List<BoardVO> list = boardService.SelectBoardList(paramMap);
-		logger.info("보드컨트롤러 " + className + "SelectBoardList");
 		
 		int totalcnt = boardService.countList(paramMap);
-		logger.info("countList -totalcnt 값 " + totalcnt);
 		
 		model.addAttribute("list",list);
 		model.addAttribute("totalcnt", totalcnt);
-		
-		logger.info("list값 " + list);
-		logger.info("totalcnt 값 " + totalcnt);
-		
 		
 		return "board/boardListGrd";
 		
 	}
 
+	
+	
+	
 }

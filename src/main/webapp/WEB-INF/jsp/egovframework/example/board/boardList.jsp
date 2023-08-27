@@ -102,18 +102,36 @@
 	
     /** OnLoad event */
     $(function() {
-
+    	fn_btn()
     	fn_boardlist();
 
     });
 	
 	
+    function fn_btn(){
+    	
+		$('a[name=btn]').click(function(e) {
+			e.preventDefault();
+			
+			var btnId = $(this).attr('id');
+
+			switch (btnId) {
+				case 'btnSearch' :
+					fn_boardlist();
+				break;
+    	
+			}
+		})
+	};
+    
 	function fn_boardlist(pagenum) {
 		
 		pagenum = pagenum || 1;
 		
 		var param = {
-		   pageSize : pageSize
+			selectSearch : $("#selectSearch").val()
+		  , searchText : $("#searchText").val()
+		  , pageSize : pageSize
 		  , pageBlockSize : pageBlockSize
 		  , pagenum : pagenum
 		}
@@ -160,7 +178,9 @@
 				<option value="writer">작성자</option>
 			</select>
 			<input type="text" id="searchText"/>
-			<div class="Sclick">검 색</div>
+			<a href="" id="btnSearch" name="btn">
+			<div class="Sclick" >검 색</div>
+			</a>
 		</div>
 		<div id="table">
 			<table class="table table-hover">

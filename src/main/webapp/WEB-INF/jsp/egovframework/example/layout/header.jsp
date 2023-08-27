@@ -124,8 +124,14 @@ ul, li {
   	margin-right: 0;
 }
 
+a {
+	text-decoration: none;
+	color: black;
+}
 
-
+a:hover {
+  color: black;
+}
 </style>
 
 

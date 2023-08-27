@@ -91,6 +91,12 @@
 	text-align: center;
 }
 
+.paging_area {
+
+	text-align: center;
+	margin-bottom: 2rem;
+}
+
 </style>
 
 
@@ -160,14 +166,12 @@
 	
 	
 	function fn_boardSelectOne(no) {
-		alert("hello");
 		
 		var param = {
 				board_no : no
 		}
 		
 		var selectoncallback = function(returndata) {			
-			alert("hello2");
 			console.log( JSON.stringify(returndata) );
 			
 			var cont = returndata

@@ -15,8 +15,8 @@
 					<c:forEach items="${list }" var="list">
 						<tr>
 							<td>${list.board_no}</td>
-<%-- 							<td><a href="javascript:fn_selectone('${list.budget_no}')">${list.board_title }</a></td> --%>
-							<td><a href="#">${list.board_title }</a></td>
+							<td><a href="javascript:fn_boardSelectOne('${list.board_no}')">${list.board_title }</a></td>
+<%-- 							<td><a href="/board/boardSelectOne?board_no=${list.board_no }">${list.board_title }</a></td> --%>
 							<td>${list.board_writer }</td>
 							<td>${list.board_date }</td>
 							<td>${list.board_hit }</td>

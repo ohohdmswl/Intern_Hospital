@@ -159,6 +159,29 @@
 	};
 	
 	
+	function fn_boardSelectOne(no) {
+		alert("hello");
+		
+		var param = {
+				board_no : no
+		}
+		
+		var selectoncallback = function(returndata) {			
+			alert("hello2");
+			console.log( JSON.stringify(returndata) );
+			
+			var cont = returndata
+			
+			$("#boardSelectOne").empty().append( cont );
+			$("#table").hide();
+			$("#search").hide();
+			$("#search").hide();
+			
+		}
+		
+		callAjax("/board/boardSelectOne.do", "post", "text", false, param, selectoncallback) ;
+		
+	}
 	
 	
 	
@@ -170,7 +193,8 @@
 <body>
 	<div class="contain d-flex flex-column min-vh-100"><!-- container -->
 	<h1 class="boardTitle">자유게시판</h1>
-		<div class="search">
+	<div id="boardSelectOne"></div>
+		<div class="search" id="search">
 			<select id="selectSearch">
 				<option value="" >전체</option>
 				<option value="title">제목</option>
@@ -193,9 +217,7 @@
 						<th class="col-1">조회수</th>
 					</tr>
 				</thead>
-				<tbody id="boardListTbody">
-
-				</tbody>
+				<tbody id="boardListTbody"></tbody>
 			</table>
 			<div class="paging_area"  id="boardPagination"> </div>
 		</div>

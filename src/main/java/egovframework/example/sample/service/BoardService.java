@@ -9,5 +9,8 @@ public interface BoardService {
 	
 	//총 게시글 수 조회
 	public int countList(Map<String, Object> paramMap);
+
+	//선택한 게시글 조회
+	public BoardVO boardSelectOne(Map<String, Object> paramMap);
 	
 }

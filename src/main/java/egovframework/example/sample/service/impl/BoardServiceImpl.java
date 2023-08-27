@@ -26,14 +26,22 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements BoardSe
 	@Resource(name="boardDAO")
 	private BoardDAO boardDAO;
 	
+	//게시글 리스트 조회
 	@Override
 	public List<BoardVO> SelectBoardList(Map<String, Object> paramMap) throws Exception {
 		return boardDAO.SelectBoardList(paramMap);
 	}
 	
+	//총 게시글 수 조회
 	@Override
 	public int countList(Map<String, Object> paramMap) {
 		return boardDAO.countList(paramMap);
 	}
 
+	//선택한 게시글 조회
+	@Override
+	public BoardVO boardSelectOne(Map<String, Object> paramMap) {
+		return boardDAO.boardSelectOne(paramMap);
+	}
+	
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.example.sample.service.BoardService;
 import egovframework.example.sample.service.BoardVO;
@@ -65,6 +66,24 @@ public class BoardController {
 		model.addAttribute("totalcnt", totalcnt);
 		
 		return "board/boardListGrd";
+		
+	}
+	
+	
+	@RequestMapping(value="boardSelectOne.do")
+	public String boardSelectOne(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		logger.info("보드컨트롤러 셀렉트원  파람맵" + "boardSelectOne" + paramMap);
+		
+		int board_no = Integer.parseInt((String) paramMap.get("board_no"));
+		paramMap.put("board_no", board_no);
+
+		BoardVO boardSelectOne = boardService.boardSelectOne(paramMap);
+		
+		model.addAttribute("boardSelectOne", boardSelectOne);
+		
+		return "board/boardSelectOne";
 		
 	}
 

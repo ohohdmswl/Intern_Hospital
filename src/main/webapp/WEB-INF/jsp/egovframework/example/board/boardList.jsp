@@ -100,41 +100,25 @@
 	var pageSize = 10;     
 	var pageBlockSize = 5;    
 	
-	// 제이쿼리 cdn 적용 확인
-	$(function() {
-		alert('hello');
-	});
-
-	
     /** OnLoad event */
     $(function() {
 
     	fn_boardlist();
-      
-
 
     });
 	
 	
 	function fn_boardlist(pagenum) {
 		
-		alert("ajax");
-		console.log("ajax");
-		
 		pagenum = pagenum || 1;
 		
 		var param = {
-// 		  , clicombo : $("#clicombo").val()
-// 		  ,	acccombo : $("#acccombo").val()
-// 		  , accdcombo : $("#accdcombo").val()
 		   pageSize : pageSize
 		  , pageBlockSize : pageBlockSize
 		  , pagenum : pagenum
 		}
 		
 		var listcollabck = function(returnvalue) {
-			alert("ajax2");
-			console.log("ajax2");
 			
 			console.log(returnvalue);
 			

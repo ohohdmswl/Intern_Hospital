@@ -4,22 +4,22 @@
 
 <mapper namespace="egovframework.example.sample.service.impl.BoardMapper">
 
-<!-- 	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/> -->
-<!-- 	<typeAlias  alias="BoardVO" type="egovframework.example.sample.service.BoardVO"/> -->
-
-	<select id="SelectBoardList" parameterType="boardVO" resultType="boardVO">
+	<select id="SelectBoardList" resultType="boardVO">
 		SELECT
 		 	    board_no
 			   ,board_title
 			   ,board_writer
 			   ,board_hit
 			   ,board_date
-		  FROM  tb_board tb
-	</select>
+		  FROM  tb_board 
+	  ORDER BY  board_no desc
+		 LIMIT  #{pageSize}
+		OFFSET  #{pageindex} 
+		
+ 	</select>
 	
-	<select id="countactlist" parameterType="boardVO" resultType="int">
-		SELECT
-				count(*)
-		  FROM  tb_board tb
+	<select id="countList" resultType="int">
+		SELECT  count(*)
+		  FROM  tb_board
 	</select>
 </mapper>

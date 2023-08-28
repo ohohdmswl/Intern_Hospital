@@ -44,4 +44,10 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements BoardSe
 		return boardDAO.boardSelectOne(paramMap);
 	}
 	
+	//선택한 게시글 조회수 증가
+	@Override
+	public int boardHitUp(Map<String, Object> paramMap) {
+		return boardDAO.boardHitUp(paramMap);
+	}
+	
 }

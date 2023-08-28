@@ -12,5 +12,8 @@ public interface BoardService {
 
 	//선택한 게시글 조회
 	public BoardVO boardSelectOne(Map<String, Object> paramMap);
+
+	//선택한 게시글 조회수 증가
+	public int boardHitUp(Map<String, Object> paramMap);
 	
 }

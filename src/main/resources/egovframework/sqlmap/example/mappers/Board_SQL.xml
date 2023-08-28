@@ -79,4 +79,11 @@
 		  FROM  tb_board 
 		 WHERE  board_no = #{board_no}
 	</select>
+	
+	<update id="boardHitUp" >
+		UPDATE  tb_board
+		   SET  board_hit = board_hit +1
+		 WHERE  board_no = #{board_no}
+	
+	</update>
 </mapper>

@@ -80,6 +80,9 @@ public class BoardController {
 		int board_no = Integer.parseInt((String) paramMap.get("board_no"));
 		paramMap.put("board_no", board_no);
 
+		//조회수 증가
+		int returnHit = boardService.boardHitUp(paramMap);
+		
 		BoardVO boardSelectOne = boardService.boardSelectOne(paramMap);
 		
 		model.addAttribute("boardSelectOne", boardSelectOne);
@@ -97,6 +100,7 @@ public class BoardController {
 		int board_no = Integer.parseInt((String) paramMap.get("board_no"));
 		paramMap.put("board_no", board_no);
 		
+		int returnHit = boardService.boardHitUp(paramMap);
 		BoardVO boardSelectOnePage = boardService.boardSelectOne(paramMap);
 		
 		model.addAttribute("boardSelectOne", boardSelectOnePage);

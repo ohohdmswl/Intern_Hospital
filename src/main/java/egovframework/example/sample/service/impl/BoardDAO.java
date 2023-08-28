@@ -27,6 +27,12 @@ public class BoardDAO extends EgovAbstractMapper{
 	public BoardVO boardSelectOne(Map<String, Object> paramMap) {
 		return selectOne("boardSelectOne", paramMap);
 	}
+
+	//게시글 조회수 증가
+	public int boardHitUp(Map<String, Object> paramMap) {
+		return update("boardHitUp", paramMap);
+	}
+	
 	
 	
 }

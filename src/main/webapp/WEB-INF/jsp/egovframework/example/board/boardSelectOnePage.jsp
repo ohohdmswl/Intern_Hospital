@@ -4,7 +4,34 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<!-- header -->
+<jsp:include page="/WEB-INF/jsp/egovframework/example/layout/header.jsp"></jsp:include>
+
+<title>자유게시판</title>
+
 <style>
+
+.boardTitle {
+	display: flex;
+	text-align: center;
+	margin-top: 2rem;
+ 	margin-bottom: 2rem;
+ 	font-weight: bolder;
+	font-family: 'Orbit', sans-serif;z;
+	justify-content: center
+	}
+
+.contain{  
+  	display: flex;
+	margin-left: 12%;
+	margin-right: 12%;
+	font-family: 'Orbit', sans-serif;z;
+ 	flex-direction: column;
+    align-items: center;
+    height: auto;
+  	min-height: 100%;
+ 	padding-bottom: 10rem;
+}
 
 .selectCont {
 	display: flex;
@@ -12,8 +39,10 @@
     align-items: center;
     margin-top: 2rem;
     margin-bottom: 2rem;
+    
 	border: 0.3rem solid #becef1; 
 	border-radius: 0.8rem;
+	
 }
 
 .contTitle {
@@ -65,6 +94,32 @@
 }
 </style>
 
+<script type="text/javascript">
+
+	/** OnLoad event */
+	$(function() {
+		//fn_contList();
+
+		
+		
+		
+	});
+	
+	function fn_contList() {
+		$("#contList").click(function (e) {
+			 alert("Button clicked!");
+			 $("#contList").attr("href", "/board/boardList.do");
+
+		})
+	};
+
+
+</script>
+
+
+<body>
+	<h1 class="boardTitle">자유게시판</h1>
+	<div class="contain d-flex flex-column min-vh-100"><!-- container -->
 			<div class="selectCont" style=" height: auto; width: auto; ">
 				<div class="contTitle" style="height: 9rem; width: 800px;">
 					<P style="font-size: 2rem; font-weight: bold; padding:1rem 1rem; ">${boardSelectOne.board_title}</P>
@@ -87,6 +142,9 @@
 					<div class="contBTN contDel">삭제</div>
 					<div class="contBTN contup">수정</div>
 				</div>
-			
+	</div><!-- container -->
+</body>			
 					
+<!-- footer -->
+<jsp:include page="/WEB-INF/jsp/egovframework/example/layout/footer.jsp"></jsp:include>
 	

@@ -15,8 +15,11 @@
 					<c:forEach items="${list }" var="list">
 						<tr>
 							<td>${list.board_no}</td>
-							<td style="font-weight: bold;"><a href="javascript:fn_boardSelectOne('${list.board_no}')">${list.board_title }</a></td>
-<%-- 							<td><a href="/board/boardSelectOne?board_no=${list.board_no }">${list.board_title }</a></td> --%>
+
+							<!-- Ajax 사용 -->
+<%-- 							<td style="font-weight: bold;"><a href="javascript:fn_boardSelectOne('${list.board_no}')">${list.board_title }</a></td> --%>
+							<!-- 쿼리스트링 사용 -->
+							<td><a href="/board/boardSelectOnePage.do?board_no=${list.board_no }">${list.board_title }</a></td>
 							<td>${list.board_writer }</td>
 							<td>${list.board_date }</td>
 							<td>${list.board_hit }</td>

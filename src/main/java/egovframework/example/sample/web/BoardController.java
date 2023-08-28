@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -84,6 +85,23 @@ public class BoardController {
 		model.addAttribute("boardSelectOne", boardSelectOne);
 		
 		return "board/boardSelectOne";
+		
+	}
+	
+	@RequestMapping(value="/boardSelectOnePage.do")
+	public String boardSelectOnePage(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		logger.info("보드컨트롤러 셀렉트원페이지  파람맵" + "boardSelectOnePage" + paramMap);
+		
+		int board_no = Integer.parseInt((String) paramMap.get("board_no"));
+		paramMap.put("board_no", board_no);
+		
+		BoardVO boardSelectOnePage = boardService.boardSelectOne(paramMap);
+		
+		model.addAttribute("boardSelectOne", boardSelectOnePage);
+		
+		return "board/boardSelectOnePage" ;
 		
 	}
 

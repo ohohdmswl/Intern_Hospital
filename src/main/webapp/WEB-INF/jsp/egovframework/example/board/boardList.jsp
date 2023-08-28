@@ -19,7 +19,7 @@
 
 <style>
 
-.contain{ 
+.contain{  
   	display: flex;
 	margin-left: 12%;
 	margin-right: 12%;
@@ -149,7 +149,7 @@
 		  , pageBlockSize : pageBlockSize
 		  , pagenum : pagenum
 		}
-		
+		 
 		var listcollabck = function(returnvalue) {
 			
 			console.log(returnvalue);
@@ -191,7 +191,7 @@
 			
 		}
 		
-		callAjax("/board/boardSelectOne.do", "post", "text", false, param, selectoncallback) ;
+		callAjax("/board/boardSelectOne.do", "get", "text", false, param, selectoncallback) ;
 		
 	}
 	

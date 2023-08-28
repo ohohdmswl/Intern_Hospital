@@ -20,10 +20,10 @@ function callAjax(url, method, dataType, async, param, callback) {
 		dataType : dataType,
 		async : async,
 		data : param,
-		beforeSend: function(xhr) {
-			xhr.setRequestHeader("AJAX", "true");
+//		beforeSend: function(xhr) {
+//			xhr.setRequestHeader("AJAX", "true");
 //			$.blockUI({ message: '<h1><img src="/images/admin/comm/busy.gif" /> Just a moment...</h1>', T:99999 });
-		},
+//		},
 		success : function(data) {
 			callback(data);
 		},
@@ -39,9 +39,9 @@ function callAjax(url, method, dataType, async, param, callback) {
 //				alert('A system error has occurred.' + err);
 //			}
 		},
-		complete: function(data) {
+//		complete: function(data) {
 //			$.unblockUI();
-		}
+//		}
 	});
 }
 /*

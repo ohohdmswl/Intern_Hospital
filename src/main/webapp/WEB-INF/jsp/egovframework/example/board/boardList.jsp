@@ -129,6 +129,19 @@
 		})
 	};
 	
+	//안먹힘 ^^
+	function fn_paginationBTN(){
+	    	
+			$('.Pnum').click(function(e) {
+		        $(this).css({
+		            "border": "0.3rem solid rgb(163, 151, 198)",
+		            "border-radius": "50%",
+		            "background" : "black"
+		            
+		        });
+		    });
+		}
+	
 	function fn_searchText(){
 		$('#searchText').keypress(function(event){
 		     if ( event.which == 13 ) {

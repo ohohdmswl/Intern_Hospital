@@ -45,8 +45,8 @@ function getPaginationHtml(currentPage, totalCount, pageRow, blockPage, pageFunc
 	var sExParam = exParams==undefined ? "" : ",\"" + exParams.join("\",\"") + "\"";
 	
 	var pagingHtml = "<div class='paging'>";
-	pagingHtml += "<a class='first' href='javascript:"+pageFunc+"(1"+sExParam+")'><span class='hidden'>맨앞</span></a>";
-	pagingHtml += "<a class='pre' href='javascript:"+pageFunc+"(" + (startPage - 1 == 0 ? 1 : (startPage -1)) +sExParam+")'><span class='hidden'>이전</span></a>";
+	pagingHtml += "<a class='first' href='javascript:"+pageFunc+"(1"+sExParam+")'><span class='hidden'>&lt;&lt; </span></a>";
+	pagingHtml += "<a class='pre' href='javascript:"+pageFunc+"(" + (startPage - 1 == 0 ? 1 : (startPage -1)) +sExParam+")'><span class='hidden'>&lt; </span></a>";
 
 	for (var i = startPage; i <= endPage; i++) {
 		if (i > totalPage) {
@@ -57,15 +57,15 @@ function getPaginationHtml(currentPage, totalCount, pageRow, blockPage, pageFunc
 			firstPage = "";
 		}
 		
-		if (i == currentPage) {
-			pagingHtml += "<strong>" + i + "</strong>";
+		if (i == currentPage) { 
+			pagingHtml += "<strong class='Pnum' style='width: 1rem; height: 1rem;'>&nbsp" +  i  + "&nbsp</strong>";
 		} else {
-			pagingHtml += " <a href=javascript:"+pageFunc+"(" + i + sExParam +")>" + i + "</a>";
+			pagingHtml += " <a href=javascript:"+pageFunc+"(" + i + sExParam +") class='Pnum'>&nbsp" +  i  + "&nbsp</a>";
 		}
 	}
 
-	pagingHtml += "<a class='next' href='javascript:"+pageFunc+"(" + (endPage + 1 > totalPage ? totalPage : (endPage + 1))+ sExParam + ")'><span class='hidden'>다음</span></a>";
-	pagingHtml += "<a class='last' href='javascript:"+pageFunc+"(" + totalPage + sExParam + ")'><span class='hidden'>맨뒤</span></a>";
+	pagingHtml += "<a class='next' href='javascript:"+pageFunc+"(" + (endPage + 1 > totalPage ? totalPage : (endPage + 1))+ sExParam + ")'><span class='hidden'> &gt;</span></a>";
+	pagingHtml += "<a class='last' href='javascript:"+pageFunc+"(" + totalPage + sExParam + ")'><span class='hidden'> &gt;&gt;</span></a>";
 	pagingHtml += "</div>";
 
 	return pagingHtml;

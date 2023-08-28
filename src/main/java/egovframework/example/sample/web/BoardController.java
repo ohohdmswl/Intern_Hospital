@@ -1,5 +1,6 @@
 package egovframework.example.sample.web;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -106,6 +107,30 @@ public class BoardController {
 		model.addAttribute("boardSelectOne", boardSelectOnePage);
 		
 		return "board/boardSelectOnePage" ;
+		
+	}
+	@RequestMapping(value="/boardDel.do")
+	@ResponseBody
+	public Map<String, Object> boardDel(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		logger.info("보드컨트롤러 delete  파람맵" + "boardDel" + paramMap);
+		
+		int board_no = Integer.parseInt((String) paramMap.get("board_no"));
+		paramMap.put("board_no", board_no);
+		
+		int returnDel = 0;
+		
+		returnDel = boardService.boardDel(paramMap);
+		logger.info("보드컨트롤러 delete 결과확인" + "returnDel" + returnDel);
+		
+		
+	    Map<String, Object> returnmap = new HashMap<String, Object>();
+	      
+	    returnmap.put("returnDel", returnDel);
+	    logger.info("보드컨트롤러 delete 결과확인" + "returnmap" + returnmap);
+		
+		return returnmap;
 		
 	}
 

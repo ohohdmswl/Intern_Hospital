@@ -15,5 +15,8 @@ public interface BoardService {
 
 	//선택한 게시글 조회수 증가
 	public int boardHitUp(Map<String, Object> paramMap);
+
+	//게시글 삭제
+	public int boardDel(Map<String, Object> paramMap);
 	
 }

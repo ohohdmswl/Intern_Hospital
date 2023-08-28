@@ -107,17 +107,49 @@
 	
 	function fn_contList() {
 		$("#contList").click(function (e) {
-			 alert("Button clicked!");
 			 $("#contList").attr("href", "/board/boardList.do");
 
 		})
 	};
+	
+	
+	function fn_boardDel(no) {
+		alert(typeof board_no);
+		
+		var param = {
+				board_no : no
+		}
+		
+		
+		var boardDelcallback = function(returndata) {			
+
+		alert(typeof returndata);
+			
+// 			if(returndata.returnDel>0){
+				
+// 				alert("정상적으로 삭제되었습니다.");
+// 			} else {
+// 				alert ("삭제되지 않았습니다.");
+// 			};
+// // 				location.href = "/board/boardView.do";
+			
+		}
+		callAjax("/board/boardDel.do", "post", "json", false, param, boardDelcallback) ;
+		
+	}
+	
+	
+	
 
 
 </script>
 
 
 <body>
+	<input type="hidden" id="board_no" value="${boardSelectOne.board_no}"/>
+	
+
+
 	<h1 class="boardTitle">자유게시판</h1>
 	<div class="contain d-flex flex-column min-vh-100"><!-- container -->
 			<div class="selectCont" style=" height: auto; width: auto; ">
@@ -139,7 +171,7 @@
 			</div>
 				<div class="contB">
 					<a href="/board/boardView.do"><div class="contBTN contList" id="contList">목록</div></a>
-					<div class="contBTN contDel">삭제</div>
+					<a href="javascript:fn_boardDel('${boardSelectOne.board_no}')"><div class="contBTN contDel">삭제</div></a>
 					<div class="contBTN contup">수정</div>
 				</div>
 	</div><!-- container -->

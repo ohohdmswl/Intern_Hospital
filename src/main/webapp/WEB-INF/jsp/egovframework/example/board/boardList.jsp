@@ -110,9 +110,8 @@
     $(function() {
     	fn_btn()
     	fn_boardlist();
-
+    	fn_searchText();
     });
-	
 	
     function fn_btn(){
     	
@@ -127,6 +126,15 @@
 				break;
     	
 			}
+		})
+	};
+	
+	function fn_searchText(){
+		$('#searchText').keypress(function(event){
+		     if ( event.which == 13 ) {
+		         $('#btnSearch').click();
+		         return false;
+		     }
 		})
 	};
     
@@ -188,6 +196,7 @@
 	}
 	
 	
+
 	
 </script>
 

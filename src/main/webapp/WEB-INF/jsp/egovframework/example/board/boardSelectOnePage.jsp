@@ -114,30 +114,30 @@
 	
 	
 	function fn_boardDel(no) {
-		alert(typeof board_no);
 		
-		var param = {
-				board_no : no
-		}
-		
-		
-		var boardDelcallback = function(returndata) {			
-
-		alert(typeof returndata);
-			
-// 			if(returndata.returnDel>0){
-				
-// 				alert("정상적으로 삭제되었습니다.");
-// 			} else {
-// 				alert ("삭제되지 않았습니다.");
-// 			};
-// // 				location.href = "/board/boardView.do";
-			
-		}
-		callAjax("/board/boardDel.do", "post", "json", false, param, boardDelcallback) ;
-		
+		$.ajax({
+		    url: '/board/boardDel.do',
+		    type: 'get',
+		    data: 'board_no=' + no,
+		    dataType: 'json',
+		    success: function(data){ 
+		        console.log("data 응답 데이터 확인" +  JSON.stringify(data));
+		        console.log("data.returnDel 확인" +  JSON.stringify(data.returnDel));
+		        console.log("data.board_no 확인" +  JSON.stringify(data.board_no));
+		        
+				if(returnDel > 0){
+					alert("정상적으로 삭제되었습니다.");
+					location.href = "/board/boardView.do";
+				} else {
+					alert ("삭제되지 않았습니다.");
+					location.href = "/board/boardSelectOnePage.do?board_no=" + JSON.stringify(data.board_no);
+				};
+		    },
+		    error: function(){
+		        alert("실패실패");
+		    }
+		});
 	}
-	
 	
 	
 

@@ -124,12 +124,13 @@ public class BoardController {
 		returnDel = boardService.boardDel(paramMap);
 		logger.info("보드컨트롤러 delete 결과확인" + "returnDel" + returnDel);
 		
+		Map<String, Object> returnmap = new HashMap<String, Object>();
 		
-	    Map<String, Object> returnmap = new HashMap<String, Object>();
-	      
 	    returnmap.put("returnDel", returnDel);
+	    returnmap.put("board_no", board_no);
+	    
 	    logger.info("보드컨트롤러 delete 결과확인" + "returnmap" + returnmap);
-		
+	    
 		return returnmap;
 		
 	}

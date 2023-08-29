@@ -112,6 +112,48 @@
 		})
 	};
 	
+	function fn_boardDelPw(no) {
+		
+		var boardPW = prompt('삭제를 위한 게시글 비밀번호를 입력해주세요', '비밀번호를 입력해주세요');
+		var pw = Number(boardPW);
+		
+		alert("pw 확인" + pw);
+		
+		var dataPw = { "board_no": no, "board_pw": pw };
+		
+		alert("확인2" + dataPw);
+		
+		$.ajax({
+		    url: '/board/boardDelPwChk.do',
+		    type: 'post',
+		    data: dataPw,
+		    dataType: 'json',
+		    success: function(data){ 
+		        console.log("data 응답 데이터 확인" +  JSON.stringify(data));
+		        console.log("data.returnPw 확인" +  JSON.stringify(data.returnPw));
+		        console.log("data.board_no 확인" +  JSON.stringify(data.board_no));
+		        
+				if(data.returnPw > 0){
+					alert("게시글 비밀번호가 맞았다!");
+					fn_boardDel(data.board_no);
+				} else {
+					alert("게시글 비밀번호가 틀렸습니다");
+					location.href = "/board/boardSelectOnePage.do?board_no=" + JSON.stringify(data.board_no);
+						
+				};
+		    },
+		    error: function(){
+		        alert("실패실패");
+		    }
+		});
+		
+		
+		
+		
+	}
+	
+	
+	
 	
 	function fn_boardDel(no) {
 		
@@ -125,7 +167,7 @@
 		        console.log("data.returnDel 확인" +  JSON.stringify(data.returnDel));
 		        console.log("data.board_no 확인" +  JSON.stringify(data.board_no));
 		        
-				if(returnDel > 0){
+				if(data.returnDel > 0){
 					alert("정상적으로 삭제되었습니다.");
 					location.href = "/board/boardView.do";
 				} else {
@@ -171,7 +213,7 @@
 			</div>
 				<div class="contB">
 					<a href="/board/boardView.do"><div class="contBTN contList" id="contList">목록</div></a>
-					<a href="javascript:fn_boardDel('${boardSelectOne.board_no}')"><div class="contBTN contDel">삭제</div></a>
+					<a href="javascript:fn_boardDelPw('${boardSelectOne.board_no}')"><div class="contBTN contDel">삭제</div></a>
 					<div class="contBTN contup">수정</div>
 				</div>
 	</div><!-- container -->

@@ -79,6 +79,7 @@ public class BoardController {
 		logger.info("보드컨트롤러 셀렉트원  파람맵" + "boardSelectOne" + paramMap);
 		
 		int board_no = Integer.parseInt((String) paramMap.get("board_no"));
+		
 		paramMap.put("board_no", board_no);
 
 		//조회수 증가
@@ -109,6 +110,39 @@ public class BoardController {
 		return "board/boardSelectOnePage" ;
 		
 	}
+	
+	
+	
+	@RequestMapping(value="/boardDelPwChk.do")
+	@ResponseBody
+	public Map<String, Object> boardDelPwChk(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		logger.info("보드컨트롤러 deletePw  파람맵" + "boardDelPw" + paramMap);
+		
+		int board_no = Integer.parseInt((String) paramMap.get("board_no"));
+		paramMap.put("board_no", board_no);
+		
+		int board_pw = Integer.parseInt((String) paramMap.get("board_pw"));
+		paramMap.put("board_pw", board_pw);
+		
+		
+		int returnPw = 0;
+		
+		returnPw = boardService.boardDelPwChk(paramMap);
+		logger.info("보드컨트롤러 returnPw 결과확인" + "returnPw 값은?" + returnPw);
+		
+		Map<String, Object> returnmap = new HashMap<String, Object>();
+		
+		returnmap.put("returnPw", returnPw);
+		returnmap.put("board_no", board_no);
+		
+		logger.info("보드컨트롤러 delete 결과확인" + "returnmap" + returnmap);
+		
+		return returnmap;
+		
+	}
+	
 	@RequestMapping(value="/boardDel.do")
 	@ResponseBody
 	public Map<String, Object> boardDel(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,

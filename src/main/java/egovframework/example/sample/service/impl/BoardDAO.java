@@ -33,6 +33,11 @@ public class BoardDAO extends EgovAbstractMapper{
 		return update("boardHitUp", paramMap);
 	}
 
+	//게시글 비밀번호 확인
+	public int boardDelPwChk(Map<String, Object> paramMap) {
+		return selectOne("boardDelPwChk", paramMap);
+	}
+
 	//게시글 삭제
 	public int boardDel(Map<String, Object> paramMap) {
 		return delete("boardDel", paramMap);

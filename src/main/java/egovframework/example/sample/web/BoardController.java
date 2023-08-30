@@ -169,6 +169,45 @@ public class BoardController {
 		
 	}
 
+	@RequestMapping(value="/boardWrite.do")
+	public String boardWrite(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		int board_no = 0;
+		model.addAttribute("board_no",board_no);
+		
+		return "board/boardWriteUpdate";
+		
+	}
+	
+	@RequestMapping(value="/boardInsert.do")
+	@ResponseBody
+	public Map<String, Object> boardInsert(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		logger.info("보드컨트롤러 write  파람맵" + "boardWrite" + paramMap);
+		
+		int board_pw = Integer.parseInt((String) paramMap.get("board_pw"));
+		paramMap.put("board_pw", board_pw);
+
+		
+		int returnInsert = 0;
+		returnInsert = boardService.boardInsert(paramMap);
+		logger.info("보드컨트롤러 delete 결과확인" + "returnDel" + returnInsert);
+		
+		Map<String, Object> returnmap = new HashMap<String, Object>();
+		logger.info("보드컨트롤러 Insert 결과확인" + "returnmap" + returnmap);
+		
+		returnmap.put("returnInsert", returnInsert);
+		
+		return returnmap;
+		
+	}
+
+	
+	
+	
+	
 	
 	
 	

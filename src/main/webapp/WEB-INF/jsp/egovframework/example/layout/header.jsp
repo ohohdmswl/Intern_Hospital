@@ -178,5 +178,5 @@ body {
 		</div>
 	</div><!-- nav -->
 
-</body>
-</html>
+<!-- </body> -->
+<!-- </html> -->

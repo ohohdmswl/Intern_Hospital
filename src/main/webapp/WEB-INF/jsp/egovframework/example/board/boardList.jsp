@@ -97,6 +97,22 @@
 	margin-bottom: 2rem;
 }
 
+.contWrite{
+	display:flex;
+	background: #e2e2e2;
+	border-radius: 0.3rem;
+	padding: 0.3rem 0.7rem; 
+	font-weight: bold;
+	text-align: center;
+	height: 2.5rem; 
+	width: 6.5rem;
+	margin-right: 1rem;
+	margin-bottom: 2rem;
+	align-items: center;
+    justify-content: center;
+    margin-left:auto;
+}
+
 </style>
 
 
@@ -111,6 +127,7 @@
     	fn_btn()
     	fn_boardlist();
     	fn_searchText();
+    	
     });
 	
     function fn_btn(){
@@ -209,8 +226,6 @@
 	}
 	
 	
-
-	
 </script>
 
 
@@ -246,6 +261,7 @@
 				<tbody id="boardListTbody"></tbody>
 			</table>
 			<div class="paging_area"  id="boardPagination"> </div>
+			<a href="/board/boardWrite.do"><div class="contWrite">작 성</div></a>
 		</div>
 	</div><!-- container -->
 	

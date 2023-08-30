@@ -61,4 +61,10 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements BoardSe
 	public int boardDel(Map<String, Object> paramMap) {
 		return boardDAO.boardDel(paramMap);
 	}
+	
+	//게시글 작성
+	@Override
+	public int boardInsert(Map<String, Object> paramMap) {
+		return boardDAO.boardInsert(paramMap);
+	}
 }

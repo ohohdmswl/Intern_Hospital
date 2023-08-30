@@ -82,7 +82,6 @@
 	width: 6.5rem;
 	margin-right: 1rem;
 	
-	
 }
 
 .contB{
@@ -114,14 +113,14 @@
 	
 	function fn_boardDelPw(no) {
 		
-		var boardPW = prompt('삭제를 위한 게시글 비밀번호를 입력해주세요', '비밀번호를 입력해주세요');
+		var boardPW = prompt('삭제를 위한 게시글 비밀번호 숫자 4자리를 입력해주세요', '4자리 숫자 비밀번호를 입력해주세요');
 		var pw = Number(boardPW);
 		
-		alert("pw 확인" + pw);
+// 		alert("pw 확인" + pw);
 		
 		var dataPw = { "board_no": no, "board_pw": pw };
 		
-		alert("확인2" + dataPw);
+// 		alert("확인2" + dataPw);
 		
 		$.ajax({
 		    url: '/board/boardDelPwChk.do',
@@ -134,7 +133,7 @@
 		        console.log("data.board_no 확인" +  JSON.stringify(data.board_no));
 		        
 				if(data.returnPw > 0){
-					alert("게시글 비밀번호가 맞았다!");
+// 					alert("게시글 비밀번호가 맞았다!");
 					fn_boardDel(data.board_no);
 				} else {
 					alert("게시글 비밀번호가 틀렸습니다");
@@ -146,9 +145,6 @@
 		        alert("실패실패");
 		    }
 		});
-		
-		
-		
 		
 	}
 	
@@ -214,6 +210,7 @@
 				<div class="contB">
 					<a href="/board/boardView.do"><div class="contBTN contList" id="contList">목록</div></a>
 					<a href="javascript:fn_boardDelPw('${boardSelectOne.board_no}')"><div class="contBTN contDel">삭제</div></a>
+					<a href="javascript:fn_boardDelPw('${boardSelectOne.board_no}')"><div class="contBTN contup">수정</div></a>
 					<div class="contBTN contup">수정</div>
 				</div>
 	</div><!-- container -->

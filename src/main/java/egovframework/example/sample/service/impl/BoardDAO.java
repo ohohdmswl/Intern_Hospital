@@ -42,6 +42,11 @@ public class BoardDAO extends EgovAbstractMapper{
 	public int boardDel(Map<String, Object> paramMap) {
 		return delete("boardDel", paramMap);
 	}
+
+	//게시글 작성
+	public int boardInsert(Map<String, Object> paramMap) {
+		return insert("boardInsert", paramMap);
+	}
 	
 	
 	

@@ -99,5 +99,25 @@
 		 WHERE  board_no = #{board_no}
 	</delete>
 	
+	<insert id="boardInsert">
+		INSERT  
+		  INTO 
+				 tb_board
+						(  board_no
+						 , board_title
+						 , board_cont
+						 , board_writer
+						 , board_date
+						 , board_pw)
+			   VALUES
+						( (SELECT COALESCE(MAX(board_no), 0) + 1 FROM tb_board)
+						 , #{board_title}
+						 , #{board_cont}
+						 , #{board_writer}
+						 , CURRENT_DATE
+						 , #{board_pw}
+						);
+	
+	</insert>
 	
 </mapper>

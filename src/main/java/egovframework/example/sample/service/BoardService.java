@@ -22,5 +22,8 @@ public interface BoardService {
 	//게시글 삭제
 	public int boardDel(Map<String, Object> paramMap);
 
+	//게시글 작성
+	public int boardInsert(Map<String, Object> paramMap);
+
 	
 }

@@ -46,8 +46,8 @@
 
 </style>
 
-</head>
-<body>
+<!-- </head> -->
+<!-- <body> -->
 	<footer class="footer mt-auto">
 		<div class="hospitalImg">
 			<img src="${pageContext.request.contextPath}/images/egovframework/layout/hospitalIcon.png" style="width: 7.5rem; height: 7.5rem;">

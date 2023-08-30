@@ -52,8 +52,8 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements BoardSe
 	
 	//게시글 비밀번호 확인
 	@Override
-	public int boardDelPwChk(Map<String, Object> paramMap) {
-		return boardDAO.boardDelPwChk(paramMap);
+	public int boardPwChk(Map<String, Object> paramMap) {
+		return boardDAO.boardPwChk(paramMap);
 	}
 	
 	//게시글 삭제
@@ -66,5 +66,11 @@ public class BoardServiceImpl extends EgovAbstractServiceImpl implements BoardSe
 	@Override
 	public int boardInsert(Map<String, Object> paramMap) {
 		return boardDAO.boardInsert(paramMap);
+	}
+	
+	//게시글 수정
+	@Override
+	public int returnUpdate(Map<String, Object> paramMap) {
+		return boardDAO.returnUpdate(paramMap);
 	}
 }

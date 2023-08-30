@@ -86,7 +86,7 @@
 		 WHERE  board_no = #{board_no}
 	</update>
 	
-	<select id="boardDelPwChk" resultType="int">
+	<select id="boardPwChk" resultType="int">
 		SELECT  count(*)
 		  FROM  tb_board 
 		 WHERE  board_no = #{board_no}
@@ -119,5 +119,21 @@
 						);
 	
 	</insert>
+	
+	<update id="returnUpdate">
+		UPDATE
+				 tb_board
+		   SET
+				 board_title = #{board_title}
+				,board_cont = #{board_cont}
+				,board_writer = #{board_writer}
+				,board_date = CURRENT_DATE
+				,board_pw = #{board_pw}
+		 WHERE
+				 board_no = #{board_no}
+				
+	
+	
+	</update>
 	
 </mapper>

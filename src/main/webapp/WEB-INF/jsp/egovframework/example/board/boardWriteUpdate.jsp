@@ -140,53 +140,65 @@ tr {
 	/** OnLoad event */
 	$(function() {
 
+		fn_writeUpdateBtn();
+		fn_writeOrUp();
 	});
-/*	
-	function fn_contList() {
-		$("#contList").click(function (e) {
-			 $("#contList").attr("href", "/board/boardList.do");
-
-		})
+	
+	//새 글 작성, 수정시 보이는 버튼 다르게 작성
+	function fn_writeUpdateBtn() {
+		
+		//input hidden에 있는 board_no 확인해 insert or update 구분
+		var boardNO = ${board_no};
+		
+		if(boardNO == 0){ //새 글 작성
+			//수정용 저장 버튼 숨김
+			$('.contUpB').hide();
+			$('.contUpCancel').hide();
+		
+		} else{ //글 수정
+			//새글 작성 버튼 숨김
+			$('.contInsertB').hide();	
+			$('.contList').hide();	
+		}
 	};
 	
-	function fn_boardDelPw(no) {
+	
+	
+	function fn_writeOrUp() {
 		
-		var boardPW = prompt('삭제를 위한 게시글 비밀번호 숫자 4자리를 입력해주세요', '4자리 숫자 비밀번호를 입력해주세요');
-		var pw = Number(boardPW);
+		var boardNO = ${board_no};
 		
-// 		alert("pw 확인" + pw);
+		fn_boardSelectOne(boardNO)
+	}
+	
+	
+	
+	
+	function fn_boardSelectOne() {
 		
-		var dataPw = { "board_no": no, "board_pw": pw };
+		var boardNO = ${board_no};
 		
-// 		alert("확인2" + dataPw);
+		var param = {
+				board_no : boardNO
+		}
 		
-		$.ajax({
-		    url: '/board/boardDelPwChk.do',
-		    type: 'post',
-		    data: dataPw,
-		    dataType: 'json',
-		    success: function(data){ 
-		        console.log("data 응답 데이터 확인" +  JSON.stringify(data));
-		        console.log("data.returnPw 확인" +  JSON.stringify(data.returnPw));
-		        console.log("data.board_no 확인" +  JSON.stringify(data.board_no));
-		        
-				if(data.returnPw > 0){
-// 					alert("게시글 비밀번호가 맞았다!");
-					fn_boardDel(data.board_no);
-				} else {
-					alert("게시글 비밀번호가 틀렸습니다");
-					location.href = "/board/boardSelectOnePage.do?board_no=" + JSON.stringify(data.board_no);
-						
-				};
-		    },
-		    error: function(){
-		        alert("실패실패");
-		    }
-		});
+		var selectoncallback = function(data) {			
+			console.log( JSON.stringify(data) );
+			
+			$("#conTitle").val(data.boardSelectOne.board_title);
+			$("#conWriter").val(data.boardSelectOne.board_writer);
+			$("#conCont").val(data.boardSelectOne.board_cont);
+			$("#conCont").val(data.boardSelectOne.board_cont);
+			$("#board_no").val(data.boardSelectOne.board_no);
+			
+			
+		}
+		
+		callAjax("/board/boardSelectOne.do", "post", "json", false, param, selectoncallback) ;
 		
 	}
 	
-	*/
+
 	
 	
 	
@@ -224,28 +236,32 @@ tr {
 		});
 	}
 	
-	/*
-	function fn_boardInsert(no) {
+	
+	function fn_boardUpdate() {
 		
-		var no = no
-		
-		if(no == "" || no == null || no == undefined){
-			board_no = 0;
-		}
-		
-		var Pdata = { "board_no": no, "board_title": conTitle, "board_writer": conWriter, "board_pw": conPw, "board_cont": conCont };
-		
+		var pdata = {
+					   "board_no" : $("#board_no").val()
+					  ,"board_title": $("#conTitle").val()
+			     	  ,"board_writer":  $("#conWriter").val()
+			     	  ,"board_pw":  $("#conPw").val()
+			     	  ,"board_cont":  $("#conCont").val()
+		     		};
 		
 		$.ajax({
-		    url: '/board/boardWriteUpdate.do',
+		    url: '/board/boardUpdate.do',
 		    type: 'post',
-		    data: Pdata,
+		    data: pdata,
 		    dataType: 'json',
 		    success: function(data){ 
 		        
-		    	console.log("data 응답 데이터 확인" +  JSON.stringify(data));
-		        console.log("data.returnDel 확인" +  JSON.stringify(data.returnDel));
-		        console.log("data.board_no 확인" +  JSON.stringify(data.board_no));
+		        
+				if(data.returnUpdate > 0){
+					alert("정상적으로 수정되었습니다.");
+				} else {
+					alert ("정상적으로 수정되지 않았습니다.");
+				};
+					location.href = "/board/boardSelectOnePage.do?board_no=" + JSON.stringify(data.board_no);
+		        
 		        
 		    },
 		    error: function(){
@@ -253,7 +269,7 @@ tr {
 		    }
 		});
 	}
-	*/
+	
 
 </script>
 
@@ -261,8 +277,7 @@ tr {
 <!-- <body> -->
 
 <form action="" id="boardWU">
-	<input type="hidden" id="state" value=""/>
-<%-- 	<input type="hidden" id="board_no" value="${board_no}"/> --%>
+	<input type="hidden" id="board_no" value=""/>
 	
 
 
@@ -273,7 +288,7 @@ tr {
 					<table class="board1">
 						<tr>
 							<td class="contTh"><span class="contD">제 목</span></td>
-							<td><input class="InText" id="conTitle" type="text" value="${boardSelectOne.board_title}" placeholder="제목을 입력해주세요."/></td>
+							<td><input class="InText" id="conTitle" type="text" value="" placeholder="제목을 입력해주세요."/></td>
 						</tr>
 						<tr>
 							<td class="contTh"><span class="contD">작성자</span></td>
@@ -305,9 +320,10 @@ tr {
 				</div>
 		 -->	
 				<div class="contB">
-					<a href="/board/boardView.do"><div class="contBTN contList" id="contList">취소</div></a>
-					<a href="javascript:fn_boardInsert('${boardSelectOne.board_no}')" class="contInsertB"><div class="contBTN contInsertB">저장</div></a>
-<%-- 					<a href="javascript:fn_boardUpdate('${boardSelectOne.board_no}')" class="contUpB"><div class="contBTN contUpB">저장</div></a> --%>
+					<a href="/board/boardView.do" class="contList"><div class="contBTN contList" id="contList">취소</div></a>
+					<a href="javascript:history.back(-1)" class="contUpCancel"><div class="contBTN  contUpCancel" >취소</div></a>
+					<a href="javascript:fn_boardInsert()" class="contInsertB"><div class="contBTN contInsertB">저장</div></a>
+					<a href="javascript:fn_boardUpdate()" class="contUpB"><div class="contBTN contUpB">저장</div></a>
 				</div>
 	</div><!-- container -->
 </form>

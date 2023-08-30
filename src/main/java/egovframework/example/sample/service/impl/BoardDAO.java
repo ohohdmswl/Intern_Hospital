@@ -34,8 +34,8 @@ public class BoardDAO extends EgovAbstractMapper{
 	}
 
 	//게시글 비밀번호 확인
-	public int boardDelPwChk(Map<String, Object> paramMap) {
-		return selectOne("boardDelPwChk", paramMap);
+	public int boardPwChk(Map<String, Object> paramMap) {
+		return selectOne("boardPwChk", paramMap);
 	}
 
 	//게시글 삭제
@@ -46,6 +46,11 @@ public class BoardDAO extends EgovAbstractMapper{
 	//게시글 작성
 	public int boardInsert(Map<String, Object> paramMap) {
 		return insert("boardInsert", paramMap);
+	}
+
+	//게시글 수정
+	public int returnUpdate(Map<String, Object> paramMap) {
+		return update("returnUpdate", paramMap);
 	}
 	
 	

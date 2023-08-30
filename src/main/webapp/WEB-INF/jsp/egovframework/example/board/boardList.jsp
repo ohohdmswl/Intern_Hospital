@@ -127,7 +127,6 @@
     	fn_btn()
     	fn_boardlist();
     	fn_searchText();
-    	
     });
 	
     function fn_btn(){
@@ -224,6 +223,8 @@
 		callAjax("/board/boardSelectOne.do", "get", "text", false, param, selectoncallback) ;
 		
 	}
+	
+	
 	
 	
 </script>

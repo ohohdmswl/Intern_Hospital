@@ -73,7 +73,8 @@ public class BoardController {
 	
 	
 	@RequestMapping(value="boardSelectOne.do")
-	public String boardSelectOne(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+	@ResponseBody
+	public Map<String, Object> boardSelectOne(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		
 		logger.info("보드컨트롤러 셀렉트원  파람맵" + "boardSelectOne" + paramMap);
@@ -82,14 +83,20 @@ public class BoardController {
 		
 		paramMap.put("board_no", board_no);
 
-		//조회수 증가
-		int returnHit = boardService.boardHitUp(paramMap);
 		
 		BoardVO boardSelectOne = boardService.boardSelectOne(paramMap);
 		
 		model.addAttribute("boardSelectOne", boardSelectOne);
 		
-		return "board/boardSelectOne";
+		
+		Map<String, Object> returnmap = new HashMap<String, Object>();
+		
+		returnmap.put("boardSelectOne", boardSelectOne);
+		
+		logger.info("보드컨트롤러 delete 결과확인" + "returnmap" + returnmap);
+		
+		return returnmap;
+		
 		
 	}
 	
@@ -113,9 +120,9 @@ public class BoardController {
 	
 	
 	
-	@RequestMapping(value="/boardDelPwChk.do")
+	@RequestMapping(value="/boardPwChk.do")
 	@ResponseBody
-	public Map<String, Object> boardDelPwChk(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+	public Map<String, Object> boardPwChk(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		
 		logger.info("보드컨트롤러 deletePw  파람맵" + "boardDelPw" + paramMap);
@@ -129,7 +136,7 @@ public class BoardController {
 		
 		int returnPw = 0;
 		
-		returnPw = boardService.boardDelPwChk(paramMap);
+		returnPw = boardService.boardPwChk(paramMap);
 		logger.info("보드컨트롤러 returnPw 결과확인" + "returnPw 값은?" + returnPw);
 		
 		Map<String, Object> returnmap = new HashMap<String, Object>();
@@ -173,9 +180,20 @@ public class BoardController {
 	public String boardWrite(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		
-		int board_no = 0;
-		model.addAttribute("board_no",board_no);
+		logger.info("보드컨트롤러 write  파람맵" + "null" + paramMap);
 		
+		int board_no = 0;
+		
+		if(paramMap.get("board_no") == null) {//새글 작성
+			System.out.println("하하하하 파람 널이다");
+			board_no = 0;
+			
+		}else if(paramMap.get("board_no") != null) {//글 수정
+			System.out.println("하하하하 파람 널 아니다");
+			board_no = Integer.parseInt((String) paramMap.get("board_no"));
+		}
+		
+		model.addAttribute("board_no",board_no);
 		return "board/boardWriteUpdate";
 		
 	}
@@ -189,7 +207,6 @@ public class BoardController {
 		
 		int board_pw = Integer.parseInt((String) paramMap.get("board_pw"));
 		paramMap.put("board_pw", board_pw);
-
 		
 		int returnInsert = 0;
 		returnInsert = boardService.boardInsert(paramMap);
@@ -199,6 +216,35 @@ public class BoardController {
 		logger.info("보드컨트롤러 Insert 결과확인" + "returnmap" + returnmap);
 		
 		returnmap.put("returnInsert", returnInsert);
+		
+		return returnmap;
+		
+	}
+	
+	@RequestMapping(value="/boardUpdate.do")
+	@ResponseBody
+	public Map<String, Object> boardUpdate(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		logger.info("보드컨트롤러 write  파람맵" + "boardUpdate" + paramMap);
+		
+		int board_no = Integer.parseInt((String) paramMap.get("board_no"));
+		paramMap.put("board_no", board_no);
+		
+		int board_pw = Integer.parseInt((String) paramMap.get("board_pw"));
+		paramMap.put("board_pw", board_pw);
+		
+		
+		
+		int returnUpdate = 0;
+		returnUpdate = boardService.returnUpdate(paramMap);
+		logger.info("보드컨트롤러 returnUpdate 결과확인" + "returnUpdate" + returnUpdate);
+		
+		Map<String, Object> returnmap = new HashMap<String, Object>();
+		logger.info("보드컨트롤러 Insert 결과확인" + "returnmap" + returnmap);
+		
+		returnmap.put("returnUpdate", returnUpdate);
+		returnmap.put("board_no", board_no);
 		
 		return returnmap;
 		

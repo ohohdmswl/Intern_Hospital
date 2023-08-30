@@ -150,6 +150,17 @@ body {
 </style>
 
 
+
+<script type="text/javascript">
+
+	$(document).ready(function () {
+		  $("#titleP").click(function () {
+			  $(location).attr("href", "/board/boardView.do")
+		  });
+		});
+
+</script>
+
 </head>
 
 
@@ -160,7 +171,7 @@ body {
 			<div class="hospitalImg">
 				<img src="${pageContext.request.contextPath}/images/egovframework/layout/hospitalIcon.png" style="width: 3rem; height: 3rem;">
 			</div>
-			<div><p>병원찾GO</p></div>
+			<div><p id="titleP">병원찾GO</p></div></a>
 		</div >
 		<div class="menu"><!-- menu -->
 			<ul class="menuList">

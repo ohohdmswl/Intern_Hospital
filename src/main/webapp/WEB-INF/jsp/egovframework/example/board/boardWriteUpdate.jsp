@@ -41,7 +41,9 @@
     margin-bottom: 2rem;
     
 	border: 0.35rem solid #e2e2e2; 
-	border-radius: 0.8rem;
+	border-radius: 1.4rem;
+	
+	padding: 1rem;
 	
 }
 
@@ -54,8 +56,7 @@
 
 .contTitle2 {
 	
- 	border: solid #e2e2e2;  
- 	border-width: 0.35rem 0px 0px 0px ; 
+/*  	border: solid #e2e2e2;   */
 }
 
 .contCont {
@@ -71,13 +72,14 @@
 }
 
 .contD{
-	
-/* 	background: #becef1; */
-	border-radius: 0.3rem;
+	background: #e2e2e2;
+	border-radius: 1.8rem;
 	padding: 0.3rem 0.7rem; 
 	font-weight: bold;
 	margin-right: 0.2rem;
-	
+	display: inline-block;
+	width: 6rem;
+	height: 2.5rem;
 }
 
 
@@ -188,7 +190,6 @@ tr {
 			$("#conTitle").val(data.boardSelectOne.board_title);
 			$("#conWriter").val(data.boardSelectOne.board_writer);
 			$("#conCont").val(data.boardSelectOne.board_cont);
-			$("#conCont").val(data.boardSelectOne.board_cont);
 			$("#board_no").val(data.boardSelectOne.board_no);
 			
 			
@@ -200,9 +201,55 @@ tr {
 	
 
 	
+	function fn_validation() {
+		
+		var board_title = $("#conTitle").val()
+		var board_writer = $("#conWriter").val()
+		var board_pw = $("#conPw").val()
+		var board_cont = $("#conCont").val()
+
+		
+		if (board_title.length==0){
+			alert("제목을 입력해주세요.");
+			$("#conTitle").focus();
+			return false;
+		}
+		
+		if (board_writer.length==0){
+			alert("작성자를 입력해주세요.");
+			$("#board_writer").focus();
+			return false;
+		}
+		
+		if (board_cont.length==0){
+			alert("내용을 입력해주세요.");
+			$("#board_cont").focus();
+			return false;
+		}
+		
+		var LcdChk = /^[0-9]{4}$/;
+		if(!LcdChk.test(board_pw)){
+			alert("비밀번호는 4자리 숫자만 가능합니다.");
+			$("#conPw").focus();
+			return false;
+		} 
+		
+	}
+	
+	
+	
+	
+	
 	
 	
 	function fn_boardInsert() {
+		
+		
+		if(fn_validation()==false){ //유효성 검사 실패
+			return;
+			
+		}// 유효성 검사 성공 
+		
 		
 		var pdata = { "board_title": $("#conTitle").val()
 				     ,"board_writer":  $("#conWriter").val()
@@ -226,7 +273,6 @@ tr {
 					location.href = "/board/boardView.do";
 				} else {
 					alert ("정상적으로 등록되지 않았습니다.");
-// 					location.href = "/board/boardSelectOnePage.do?board_no=" + JSON.stringify(data.board_no);
 				};
 				
 		    },
@@ -238,6 +284,12 @@ tr {
 	
 	
 	function fn_boardUpdate() {
+		
+		if(fn_validation()==false){ //유효성 검사 실패
+			return;
+			
+		}// 유효성 검사 성공 
+		
 		
 		var pdata = {
 					   "board_no" : $("#board_no").val()

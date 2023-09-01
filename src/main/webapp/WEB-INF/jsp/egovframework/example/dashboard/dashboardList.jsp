@@ -753,7 +753,7 @@ var data = [{
   category: "Marketing", 
   value1: 1200, 
   value2: 1800 
-}, { 
+}, {  
   category: "Sales", 
   value1: 850, 
   value2: 1230 

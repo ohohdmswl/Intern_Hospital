@@ -21,6 +21,8 @@
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script> -->
+<!-- <script src="//code.jquery.com/jquery-3.2.1.min.js"></script> -->
 
 <!--common.js  -->
 <script type="text/javascript" charset="utf-8" src="../js/common.js"></script>
@@ -29,6 +31,7 @@
 
 
 <style>
+
 body, ui, li {
     margin: 0;
     padding: 0;
@@ -176,7 +179,7 @@ body {
 		<div class="menu"><!-- menu -->
 			<ul class="menuList">
 				<li class="menuItem">
-					<a class="menuA" href="../dashboardList.do">대시보드1</a>
+					<a class="menuA" href="/dash/dashboardList.do">대시보드1</a>
 				</li>
 				<li class="menuItem">
 					<a class="menuA">대시보드2</a>	

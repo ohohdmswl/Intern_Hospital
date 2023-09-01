@@ -17,6 +17,7 @@ import egovframework.example.sample.service.BoardVO;
 
 
 @Controller
+@RequestMapping(value ="/dash")
 public class DashController {
 //	private static Logger Logger = LoggerFactory.getLogger(DashBoardController2.class);
 	

@@ -22,10 +22,6 @@
 <script src="https://cdn.amcharts.com/lib/5/geodata/data/countries2.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
 
-<script src="https://cdn.amcharts.com/lib/4/core.js"></script>
-<script src="https://cdn.amcharts.com/lib/4/maps.js"></script>
-<script src="https://cdn.amcharts.com/lib/4/geodata/data/countries2.js"></script>
-<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
 
 
 <!-- header -->
@@ -71,7 +67,11 @@
 
 <!-- 암차트 예시 -->
 #chartdiv {
-  width: 100%; height: 500px;
+  display : flex;
+  width: 100%; 
+/*   height: 80rem; */
+  
+  
 }
 </style>
 
@@ -83,7 +83,7 @@
 </head>
 <body>
 <div class="contain">
-	<div class="box1" style="border: 1px solid black">
+	<div class="box1 left" style="border: 1px solid black">
 		<h3>한반도 차트</h3>
 			<div>
 			<div id="chartdiv" style="width: 100%; height: 500px;"></div>
@@ -92,7 +92,7 @@
 			</p>
 			</div>
 	</div><!-- box1 -->
-	<div class="box2" style="border: 1px solid red;">
+	<div class="box2 right" style="border: 1px solid red;">
 		<div class="box2-1" style="border: 1px solid black">
 			<p>병원종류 차트</p>
 			<div id="chartHospital" style="width: 100%; height: 500px;"></div>
@@ -112,6 +112,12 @@
 <script type="text/javascript">
 
 // var user = new User("보라");
+
+
+
+
+
+
 
 
 
@@ -805,6 +811,44 @@ legend.data.setAll(chart.series.values);
 // Add cursor
 chart.set("cursor", am5xy.XYCursor.new(root, {}));
 */
+
+//right div's height 맞게  left div's height 동일하게 설정  
+$(document).ready(function(){
+    
+    $('.contain').each(function(){  //컨테인
+        
+        var highestBox = 0;
+        $('.right', this).each(function(){ //양쪽에 있는 디브 안에 있는 디브(내용물)
+        
+        alert("높이 확인" + $(this).height());
+        
+            if($(this).height() > highestBox) 
+               highestBox = $(this).height(); 
+        });  
+        
+        $('.left',this).height(highestBox);
+        $('.chartdiv',this).height(highestBox);
+        
+    
+	});    
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
 
 <!-- footer -->

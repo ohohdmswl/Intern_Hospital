@@ -251,7 +251,7 @@ polygonSeries.mapPolygons.template.states.create
 	 ("hover", {fill: am5.color(0x677935)})
 	
 	;
-
+ 
 polygonSeries.set("heatRules", [{
   target: polygonSeries.mapPolygons.template,
   dataField: "value",

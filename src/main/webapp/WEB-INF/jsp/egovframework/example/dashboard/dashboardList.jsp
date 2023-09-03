@@ -69,9 +69,17 @@
 #chartdiv {
   display : flex;
   width: 100%; 
-/*   height: 80rem; */
+  height: 80rem;
   
   
+}
+
+
+.box1{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	
 }
 </style>
 
@@ -83,10 +91,12 @@
 </head>
 <body>
 <div class="contain">
+
+	<input type="hidden" id="geoClick" value=""/>
 	<div class="box1 left" style="border: 1px solid black">
 		<h3>한반도 차트</h3>
 			<div>
-			<div id="chartdiv" style="width: 100%; height: 500px;"></div>
+			<div id="chartdiv" style="width: 100%; height: 800px;"></div>
 			<p> 
 				<span>test</span>
 			</p>
@@ -112,6 +122,57 @@
 <script type="text/javascript">
 
 // var user = new User("보라");
+
+    /** OnLoad event */
+    $(function() {
+//     	fn_chartClick(geoClick);
+    
+    
+    });
+	
+ var eClick = document.getElementById("chartdiv");
+
+ // 버튼에 클릭 이벤트 리스너를 추가
+ eClick.addEventListener("click", showAlert);
+
+ // 클릭 이벤트를 처리할 함수를 정의
+ function showAlert() {
+   alert("클릭되었습니다!");
+   
+
+   
+ }    
+    
+    
+function fn_chartClick(geoClick) {
+	
+	$.ajax({
+	    url: '/dash/dashGeoClick.do',
+	    type: 'post',
+	    data: { "geoClick": geoClick},
+	    dataType: 'json',
+	    success: function(data){ 
+	        
+	    	console.log("data 응답 데이터 확인" +  JSON.stringify(data));
+	        console.log("data.returnDel 확인" +  JSON.stringify(data.returnInsert));
+	        
+	        
+// 			if(data.returnInsert > 0){
+// 				alert("정상적으로 등록되었습니다.");
+// 				location.href = "/board/boardView.do";
+// 			} else {
+// 				alert ("정상적으로 등록되지 않았습니다.");
+// //					location.href = "/board/boardSelectOnePage.do?board_no=" + JSON.stringify(data.board_no);
+// 			};
+			
+	    },
+	    error: function(){
+	        alert("실패실패22");
+	    }
+	});
+	
+	
+}
 
 
 
@@ -143,6 +204,7 @@ var chart = root.container.children.push(am5map.MapChart.new(root, {
   layout: root.horizontalLayout
 }));
 
+//{"country_code":"KR","country_name":"Korea, Republic of"}
 am5.net.load("https://www.amcharts.com/tools/country/?v=xz6Z", chart).then(function (result) {
    var geo = am5.JSONParser.parse(result.response);
    loadGeodata(geo.country_code);
@@ -151,18 +213,44 @@ am5.net.load("https://www.amcharts.com/tools/country/?v=xz6Z", chart).then(funct
 // Create polygon series for continents
 // https://www.amcharts.com/docs/v5/charts/map-chart/map-polygon-series/
 var polygonSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
-  calculateAggregates: true,
+  calculateAggregates: true, //계산집계
   valueField: "value"
 }));
 
+
+
+
 polygonSeries.mapPolygons.template.setAll({
-  tooltipText: "{name}",
-  interactive: true
+  tooltipText: "{name}", //정보팝업창
+  interactive: true		//상호작용
+ 
+});	
+
+
+
+//지역 클릭시 해당 지역 이름값을 가져옴 - 클릭 이벤트 핸들러를 추가
+polygonSeries.mapPolygons.template.events.on("click", function(ev) {
+  // 클릭한 지역의 값을 가져옴
+  var geoVal = ev.target.dataItem.dataContext.name;
+  
+  // 클릭한 지역의 값을 alert 확인
+  alert("클릭한 지역: " + geoVal);
+  
+  //input hidden 값으로 설정(ajax_controller로 지역 값 넘기기 위해)
+  $("#geoClick").val(geoVal);
+  alert("클릭한 지역 input hidden: " + $("#geoClick").val());
+  
+  fn_chartClick($("#geoClick").val());
+  
+  
 });
 
-polygonSeries.mapPolygons.template.states.create("hover", {
-  fill: am5.color(0x677935)
-});
+
+polygonSeries.mapPolygons.template.states.create
+
+	 ("hover", {fill: am5.color(0x677935)})
+	
+	;
 
 polygonSeries.set("heatRules", [{
   target: polygonSeries.mapPolygons.template,
@@ -175,6 +263,7 @@ polygonSeries.set("heatRules", [{
 polygonSeries.mapPolygons.template.events.on("pointerover", function(ev) {
   heatLegend.showValue(ev.target.dataItem.get("value"));
 });
+
 
 function loadGeodata(country) {
 
@@ -207,6 +296,13 @@ function loadGeodata(country) {
       data.push({
         id: geodata.features[i].id,
         value: Math.round( Math.random() * 10000 )
+        
+//         alert("idididid : " + id);
+//         alert("valuevaluevaluevalue : " + value);
+        
+        
+        
+        
       });
     }
 
@@ -252,6 +348,8 @@ polygonSeries.events.on("datavalidated", function () {
   heatLegend.set("startValue", polygonSeries.getPrivate("valueLow"));
   heatLegend.set("endValue", polygonSeries.getPrivate("valueHigh"));
 });
+
+
 
 }); // end am5.ready()
 

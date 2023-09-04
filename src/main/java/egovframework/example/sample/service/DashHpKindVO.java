@@ -8,6 +8,11 @@ public class DashHpKindVO {
 	private String kind_nm; //병원 종류 이름
 	private int kind_tot; //병원 종류 개수(count)
 	
+    @Override
+    public String toString() {
+        return "DashHpKindVO [kind_cd=" + kind_cd + ", kind_nm=" + kind_nm +  ", kind_tot=" + kind_tot + "]";
+    }
+	
 	public int getKind_cd() {
 		return kind_cd;
 	}

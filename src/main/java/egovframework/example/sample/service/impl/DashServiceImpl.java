@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.example.sample.service.BoardService;
 import egovframework.example.sample.service.BoardVO;
+import egovframework.example.sample.service.DashHpKindVO;
 import egovframework.example.sample.service.DashService;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
@@ -27,11 +28,11 @@ public class DashServiceImpl extends EgovAbstractServiceImpl implements DashServ
 	@Resource(name="dashDAO")
 	private DashDAO dashDAO;
 	
-	//게시글 리스트 조회
-//	@Override
-//	public List<BoardVO> SelectBoardList(Map<String, Object> paramMap) throws Exception {
-//		return boardDAO.SelectBoardList(paramMap);
-//	}
 	
+	//클릭한 지역의 병원 종류별 개수
+	@Override
+	public List<DashHpKindVO> numHospital(Map<String, Object> paramMap) {
+		return dashDAO.numHospital(paramMap);
+	}
 
 }

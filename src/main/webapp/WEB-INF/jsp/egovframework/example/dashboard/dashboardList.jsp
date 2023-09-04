@@ -121,29 +121,14 @@
 
 <script type="text/javascript">
 
-// var user = new User("보라");
-
     /** OnLoad event */
     $(function() {
-//     	fn_chartClick(geoClick);
-    
-    
+    	//처음 페이지 로드할 때 전국 데이터 활용한 차트 보여주기
+    	fn_chartClick();
     });
-	
- var eClick = document.getElementById("chartdiv");
-
- // 버튼에 클릭 이벤트 리스너를 추가
- eClick.addEventListener("click", showAlert);
-
- // 클릭 이벤트를 처리할 함수를 정의
- function showAlert() {
-   alert("클릭되었습니다!");
-   
-
-   
- }    
     
-    
+//한반도 차트에서 지역 선택시 반응하는 Ajax
+//지역 선택시 해당지역에 맞는 병원종류(막대), 의사종류(파이) 차트 만들어짐
 function fn_chartClick(geoClick) {
 	
 	$.ajax({
@@ -153,36 +138,56 @@ function fn_chartClick(geoClick) {
 	    dataType: 'json',
 	    success: function(data){ 
 	        
-	    	console.log("data 응답 데이터 확인" +  JSON.stringify(data));
-	        console.log("data.returnDel 확인" +  JSON.stringify(data.returnInsert));
-	        
-	        
-// 			if(data.returnInsert > 0){
-// 				alert("정상적으로 등록되었습니다.");
-// 				location.href = "/board/boardView.do";
-// 			} else {
-// 				alert ("정상적으로 등록되지 않았습니다.");
-// //					location.href = "/board/boardSelectOnePage.do?board_no=" + JSON.stringify(data.board_no);
-// 			};
-			
+	    	//지역별 병원 종류 차트 루트 초기화
+	    	fn_chartRootReset('chartHospital');
+	    	
+	    	//지역별 병원 종류 개수
+// 	    	var data = fn_numHospitalJson(data.numHospitalList);
+	    	fn_createHpChart(fn_numHospitalJson(data.numHospitalList));
+	    	
+	    	
 	    },
 	    error: function(){
 	        alert("실패실패22");
 	    }
 	});
-	
-	
 }
 
+//지역별 병원 종류 개수 JSON 객체화 (var data 선언위해)
+function fn_numHospitalJson(redata) {
+	
+	//JS 배열 셍성
+	var numHospitalList = new Array();
+	
+	//for문 활용해서 Ajax 응딥데이터를 이용한 객체 만들기
+	for(var i=0; i<redata.length; i++){
+		
+		var data = {};
+		data.kind_tot = redata[i].kind_tot;
+		data.kind_nm = redata[i].kind_nm;
+
+		//for문으로 만든 객체를 배열에 담기
+		numHospitalList.push(data);
+	}
+	return numHospitalList;
+};
+
+
+//차트 리셋
+//-> 여러지역 선택시 이미 루트가 있다는 JS오류 해결하기 위해 차트 루트 리셋하는 함수 사용
+function fn_chartRootReset(divId) {
+	  am5.array.each(am5.registry.rootElements, function(root) {
+	    if (root.dom.id === divId) {
+	      root.dispose();
+	    }
+	  });
+	}
 
 
 
 
-
-
-
-
-//전국 지도 차트
+//전국 지도 차트 
+//->한반도 차트는 병원, 의사종류 차트의 지역조건이 되기 때문에 페이지 로드하자마자 실행
 //https://www.amcharts.com/demos/location-sensitive-map/
 am5.ready(function() {
 
@@ -218,15 +223,11 @@ var polygonSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
 }));
 
 
-
-
 polygonSeries.mapPolygons.template.setAll({
   tooltipText: "{name}", //정보팝업창
   interactive: true		//상호작용
  
 });	
-
-
 
 //지역 클릭시 해당 지역 이름값을 가져옴 - 클릭 이벤트 핸들러를 추가
 polygonSeries.mapPolygons.template.events.on("click", function(ev) {
@@ -235,19 +236,17 @@ polygonSeries.mapPolygons.template.events.on("click", function(ev) {
   var geoValCd = ev.target.dataItem.dataContext.id;
   
   // 클릭한 지역의 값을 alert 확인
-  alert("클릭한 지역 이름: " + geoValNm);
-  alert("클릭한 지역 코드: " + geoValCd);
-  
+//   alert("클릭한 지역 이름: " + geoValNm);
+//   alert("클릭한 지역 코드: " + geoValCd);
   
   //input hidden 값으로 설정(ajax_controller로 지역 값 넘기기 위해)
   $("#geoClick").val(geoValNm);
   alert("클릭한 지역 input hidden: " + $("#geoClick").val());
   
+  //한반도 차트 클릭시 Ajax 함수 사용할 수 있게 작성
   fn_chartClick($("#geoClick").val());
   
-  
 });
-
 
 polygonSeries.mapPolygons.template.states.create
 
@@ -422,223 +421,105 @@ series.appear(1000, 100);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //막대그래프(병원종류)
+//페이지 로드되자마자 진행되지 않고 전국 or 지역 선택시 작동할 수 있도록 함수로 감싸기
 /*https://www.amcharts.com/demos/column-with-rotated-series*/
-am5.ready(function() {
+function fn_createHpChart(redata) {
+	
+	am5.ready(function() {
+	
+	// Create root element
+	// https://www.amcharts.com/docs/v5/getting-started/#Root_element
+	var root = am5.Root.new("chartHospital");
+	
+	
+	// Set themes
+	// https://www.amcharts.com/docs/v5/concepts/themes/
+	root.setThemes([
+	  am5themes_Animated.new(root)
+	]);
+	
+	
+	// Create chart
+	// https://www.amcharts.com/docs/v5/charts/xy-chart/
+	var chart = root.container.children.push(am5xy.XYChart.new(root, {
+	  panX: true,
+	  panY: true,
+	  wheelX: "panX",
+	  wheelY: "zoomX",
+	  pinchZoomX: true
+	}));
+	
+	// Add cursor
+	// https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+	var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
+	cursor.lineY.set("visible", false);
+	
+	
+	// Create axes
+	// https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+	var xRenderer = am5xy.AxisRendererX.new(root, { minGridDistance: 30 });
+	xRenderer.labels.template.setAll({
+	  rotation: -90,
+	  centerY: am5.p50,
+	  centerX: am5.p100,
+	  paddingRight: 15
+	});
+	
+	xRenderer.grid.template.setAll({
+	  location: 1
+	})
+	
+	var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
+	  maxDeviation: 0.3,
+	  categoryField: "kind_nm",
+	  renderer: xRenderer,
+	  tooltip: am5.Tooltip.new(root, {})
+	}));
+	
+	var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+	  maxDeviation: 0.3,
+	  renderer: am5xy.AxisRendererY.new(root, {
+	    strokeOpacity: 0.1
+	  })
+	}));
+	
+	// Create series
+	// https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+	var series = chart.series.push(am5xy.ColumnSeries.new(root, {
+	  name: "Series 1",
+	  xAxis: xAxis,
+	  yAxis: yAxis,
+	  valueYField: "kind_tot",
+	  sequencedInterpolation: true,
+	  categoryXField: "kind_nm",
+	  tooltip: am5.Tooltip.new(root, {
+	    labelText: "{valueY}"
+	  })
+	}));
+	
+	series.columns.template.setAll({ cornerRadiusTL: 5, cornerRadiusTR: 5, strokeOpacity: 0 });
+	series.columns.template.adapters.add("fill", function(fill, target) {
+	  return chart.get("colors").getIndex(series.columns.indexOf(target));
+	});
+	
+	series.columns.template.adapters.add("stroke", function(stroke, target) {
+	  return chart.get("colors").getIndex(series.columns.indexOf(target));
+	});
+	
+	//JSON이 아닌 JS객체로 보여야 차트 동작
+	var data = redata;
+	
+	xAxis.data.setAll(data);
+	series.data.setAll(data);
+	
+	// Make stuff animate on load
+	// https://www.amcharts.com/docs/v5/concepts/animations/
+	series.appear(1000);
+	chart.appear(1000, 100);
+	
+	}) // end am5.ready()
+}
 
-// Create root element
-// https://www.amcharts.com/docs/v5/getting-started/#Root_element
-var root = am5.Root.new("chartHospital");
-
-
-// Set themes
-// https://www.amcharts.com/docs/v5/concepts/themes/
-root.setThemes([
-  am5themes_Animated.new(root)
-]);
-
-
-// Create chart
-// https://www.amcharts.com/docs/v5/charts/xy-chart/
-var chart = root.container.children.push(am5xy.XYChart.new(root, {
-  panX: true,
-  panY: true,
-  wheelX: "panX",
-  wheelY: "zoomX",
-  pinchZoomX: true
-}));
-
-// Add cursor
-// https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
-cursor.lineY.set("visible", false);
-
-
-// Create axes
-// https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-var xRenderer = am5xy.AxisRendererX.new(root, { minGridDistance: 30 });
-xRenderer.labels.template.setAll({
-  rotation: -90,
-  centerY: am5.p50,
-  centerX: am5.p100,
-  paddingRight: 15
-});
-
-xRenderer.grid.template.setAll({
-  location: 1
-})
-
-var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
-  maxDeviation: 0.3,
-  categoryField: "country",
-  renderer: xRenderer,
-  tooltip: am5.Tooltip.new(root, {})
-}));
-
-var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-  maxDeviation: 0.3,
-  renderer: am5xy.AxisRendererY.new(root, {
-    strokeOpacity: 0.1
-  })
-}));
-
-
-// Create series
-// https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-var series = chart.series.push(am5xy.ColumnSeries.new(root, {
-  name: "Series 1",
-  xAxis: xAxis,
-  yAxis: yAxis,
-  valueYField: "value",
-  sequencedInterpolation: true,
-  categoryXField: "country",
-  tooltip: am5.Tooltip.new(root, {
-    labelText: "{valueY}"
-  })
-}));
-
-series.columns.template.setAll({ cornerRadiusTL: 5, cornerRadiusTR: 5, strokeOpacity: 0 });
-series.columns.template.adapters.add("fill", function(fill, target) {
-  return chart.get("colors").getIndex(series.columns.indexOf(target));
-});
-
-series.columns.template.adapters.add("stroke", function(stroke, target) {
-  return chart.get("colors").getIndex(series.columns.indexOf(target));
-});
-
-
-// Set data
-var data = [{
-  country: "상급종합",
-  value: 2025
-}, {
-  country: "종합병원",
-  value: 1882
-}, {
-  country: "병원",
-  value: 1809
-}, {
-  country: "요양병원",
-  value: 1322
-}, {
-  country: "정신병원",
-  value: 1122
-}, {
-  country: "의원",
-  value: 1114
-}, {
-  country: "치과병원",
-  value: 984
-}, {
-  country: "치과의원",
-  value: 711
-}, {
-  country: "조산원",
-  value: 665
-}, {
-  country: "보건소",
-  value: 443
-}, {
-  country: "보건지소",
-  value: 441
-}, {
-  country: "보건진료소",
-  value: 441
-}, {
-  country: "보건의료원",
-  value: 441
-}, {
-  country: "한방병원",
-  value: 441
-}, {
-  country: "한의원",
-  value: 441
-}];
-
-xAxis.data.setAll(data);
-series.data.setAll(data);
-
-
-// Make stuff animate on load
-// https://www.amcharts.com/docs/v5/concepts/animations/
-series.appear(1000);
-chart.appear(1000, 100);
-
-}); // end am5.ready()
-
-
-///////////////////////////////////////////////////////////////////////////////////
- 
-/* https://www.amcharts.com/docs/v5/charts/xy-chart/#Complete_example
-// Create root and chart
-var root = am5.Root.new("chartdiv"); 
-var chart = root.container.children.push( 
-  am5xy.XYChart.new(root, {
-    panY: false,
-    layout: root.verticalLayout
-  }) 
-);
-
-// Define data
-var data = [{ 
-  category: "Research", 
-  value1: 1000, 
-  value2: 588 
-}, { 
-  category: "Marketing", 
-  value1: 1200, 
-  value2: 1800 
-}, {  
-  category: "Sales", 
-  value1: 850, 
-  value2: 1230 
-}];
-
-// Craete Y-axis
-var yAxis = chart.yAxes.push( 
-  am5xy.ValueAxis.new(root, { 
-    renderer: am5xy.AxisRendererY.new(root, {}) 
-  }) 
-);
-
-// Create X-Axis
-var xAxis = chart.xAxes.push(
-  am5xy.CategoryAxis.new(root, {
-    renderer: am5xy.AxisRendererX.new(root, {}),
-    categoryField: "category"
-  })
-);
-xAxis.data.setAll(data);
-
-// Create series
-var series1 = chart.series.push( 
-  am5xy.ColumnSeries.new(root, { 
-    name: "Series", 
-    xAxis: xAxis, 
-    yAxis: yAxis, 
-    valueYField: "value1", 
-    categoryXField: "category" 
-  }) 
-);
-series1.data.setAll(data);
-
-var series2 = chart.series.push( 
-  am5xy.ColumnSeries.new(root, { 
-    name: "Series", 
-    xAxis: xAxis, 
-    yAxis: yAxis, 
-    valueYField: "value2", 
-    categoryXField: "category" 
-  }) 
-);
-series2.data.setAll(data);
-
-// Add legend
-var legend = chart.children.push(am5.Legend.new(root, {})); 
-legend.data.setAll(chart.series.values);
-
-// Add cursor
-chart.set("cursor", am5xy.XYCursor.new(root, {}));
-*/
 
 //right div's height 맞게  left div's height 동일하게 설정  
 $(document).ready(function(){
@@ -648,16 +529,12 @@ $(document).ready(function(){
         var highestBox = 0;
         $('.right', this).each(function(){ //양쪽에 있는 디브 안에 있는 디브(내용물)
         
-        alert("높이 확인" + $(this).height());
-        
             if($(this).height() > highestBox) 
                highestBox = $(this).height(); 
         });  
         
         $('.left',this).height(highestBox);
         $('.chartdiv',this).height(highestBox);
-        
-    
 	});    
 });
 

@@ -5,11 +5,8 @@ import java.util.Map;
 
 public interface DashService {
 
+	//클릭한 지역의 병원 종류별 개수
+	public List<DashHpKindVO> numHospital(Map<String, Object> paramMap);
 
-	
-	
-	//게시글 리스트 조회
-//	public List<BoardVO> SelectBoardList(Map<String, Object> paramMap) throws Exception;
 
-	
 }

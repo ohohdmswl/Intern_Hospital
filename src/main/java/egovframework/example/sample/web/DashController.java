@@ -64,6 +64,7 @@ public class DashController {
 		//->sql에서 선택된 지역에 맞는 where 사용하기 위해 
 		int sido_cd = 0;
 		
+		//db값을 가져와 배열의 요소로 사용하는 방법 추후 생각 -> 가져와서 order by주고 배열에 하나씩 넣으면 되겠다.[나중에 해보기]
 		String[] clickGeo = {
 								 "Seoul","Busan","Incheon","Daegu","Gwangju"
 								 ,"Daejeon","Ulsan","Gyeonggi","Gangwon","North Chungcheong"
@@ -83,39 +84,30 @@ public class DashController {
 				break;
 			}
 		}
+		
+		
 		logger.info("선택한 지역 코드 변환 확인 -> " + geoClick +"의 코도 : "+ sido_cd + " => 선택지역 구분 완료");
 		
+		//int sido_cd를 인자로 넘기는 메소드 작성시 동적쿼리 오류발생
+		//->map 사용시 동적쿼리 정상적으로 이용할 수 있다기에 paramMap에 담아서 인자로 보냄
+		paramMap.put("sido_cd", sido_cd);
 		
-		
-		
-		
-		
-		
-		
-		
-		
-//		int pagenum = Integer.parseInt((String) paramMap.get("pagenum"));
-//		int pageSize = Integer.parseInt((String) paramMap.get("pageSize"));
-//		int pageindex = (pagenum - 1) * pageSize;
-//		
-//		paramMap.put("pageSize", pageSize);
-//		paramMap.put("pageindex", pageindex);
-//		
-//		List<BoardVO> list = boardService.SelectBoardList(paramMap);
-//		
-//		int totalcnt = boardService.countList(paramMap);
-//		
-//		model.addAttribute("list",list);
-//		model.addAttribute("totalcnt", totalcnt);
-		
-//		return "dashboard/dashboardList";
+		//병원 종류 차트에 사용할 데이터 뽑기
+		List<DashHpKindVO> numHospitalList = dashService.numHospital(paramMap);
 		
 		
 		
 		
 		Map<String, Object> returnmap = new HashMap<String, Object>();
+		returnmap.put("numHospitalList", numHospitalList);
 		
-		returnmap.put("paramMap", paramMap);
+		
+		String mapAsString = returnmap.toString();
+		
+		logger.info("대시 컨트롤러 병원 종류 개수 확인 : " + mapAsString);
+
+		
+		
 		
 		return returnmap;		
 	}

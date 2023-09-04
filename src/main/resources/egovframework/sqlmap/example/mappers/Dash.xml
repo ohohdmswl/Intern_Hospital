@@ -4,12 +4,18 @@
 
 <mapper namespace="egovframework.example.sample.service.impl.DashMapper">
 
-<!-- 	<select id="selectOne" resultType="String"> -->
-	<!-- 아직 쿼리 안짬 -->
-<!-- 		SELECT  count(*) -->
-<!-- 		  FROM  tb_board  -->
-<!-- 		 WHERE  board_no = #{board_no} -->
-<!-- 		   		AND board_pw = #{board_pw} -->
-<!-- 	</select> -->
+	<select id="numHospital" resultType="dashHKVO">
+		SELECT  hk.kind_cd ,COUNT(hk.kind_cd) AS kind_tot,  hk.kind_nm
+		  FROM  tb_hospital hp 
+		  JOIN  tb_hoskind hk ON hp.kind_cd = hk.kind_cd
+		  <where>
+		  		<!-- sido_cd == 0 : 전국 (default 값) -->
+		  		<if test="(sido_cd > 0)">
+		  			and hp.sido_cd = #{sido_cd}
+		  		</if>	
+		  </where>
+	  GROUP BY  hk.kind_cd 
+	  ORDER BY  hk.kind_cd
+	</select>
 	
 </mapper>

@@ -231,13 +231,16 @@ polygonSeries.mapPolygons.template.setAll({
 //지역 클릭시 해당 지역 이름값을 가져옴 - 클릭 이벤트 핸들러를 추가
 polygonSeries.mapPolygons.template.events.on("click", function(ev) {
   // 클릭한 지역의 값을 가져옴
-  var geoVal = ev.target.dataItem.dataContext.name;
+  var geoValNm = ev.target.dataItem.dataContext.name;
+  var geoValCd = ev.target.dataItem.dataContext.id;
   
   // 클릭한 지역의 값을 alert 확인
-  alert("클릭한 지역: " + geoVal);
+  alert("클릭한 지역 이름: " + geoValNm);
+  alert("클릭한 지역 코드: " + geoValCd);
+  
   
   //input hidden 값으로 설정(ajax_controller로 지역 값 넘기기 위해)
-  $("#geoClick").val(geoVal);
+  $("#geoClick").val(geoValNm);
   alert("클릭한 지역 input hidden: " + $("#geoClick").val());
   
   fn_chartClick($("#geoClick").val());
@@ -297,12 +300,6 @@ function loadGeodata(country) {
         id: geodata.features[i].id,
         value: Math.round( Math.random() * 10000 )
         
-//         alert("idididid : " + id);
-//         alert("valuevaluevaluevalue : " + value);
-        
-        
-        
-        
       });
     }
 
@@ -349,14 +346,9 @@ polygonSeries.events.on("datavalidated", function () {
   heatLegend.set("endValue", polygonSeries.getPrivate("valueHigh"));
 });
 
-
-
 }); // end am5.ready()
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 //도넛차트(의사차트)
 //https://www.amcharts.com/demos/donut-chart/
 am5.ready(function() {
@@ -427,282 +419,8 @@ series.appear(1000, 100);
 
 }); // end am5.ready()
 
-/*
-//도넛차트X(의사종류X)
-//https://www.amcharts.com/demos/animated-time-line-pie-chart/
-am5.ready(function() {
-
-// Define data for each year
-var chartData = {
-  "1995": [
-    { sector: "Agriculture", size: 6.6 },
-    { sector: "Mining and Quarrying", size: 0.6 },
-    { sector: "Manufacturing", size: 23.2 },
-    { sector: "Electricity and Water", size: 2.2 },
-    { sector: "Construction", size: 4.5 },
-    { sector: "Trade (Wholesale, Retail, Motor)", size: 14.6 },
-    { sector: "Transport and Communication", size: 9.3 },
-    { sector: "Finance, real estate and business services", size: 22.5 } ],
-  "1996": [
-    { sector: "Agriculture", size: 6.4 },
-    { sector: "Mining and Quarrying", size: 0.5 },
-    { sector: "Manufacturing", size: 22.4 },
-    { sector: "Electricity and Water", size: 2 },
-    { sector: "Construction", size: 4.2 },
-    { sector: "Trade (Wholesale, Retail, Motor)", size: 14.8 },
-    { sector: "Transport and Communication", size: 9.7 },
-    { sector: "Finance, real estate and business services", size: 22 } ],
-  "1997": [
-    { sector: "Agriculture", size: 6.1 },
-    { sector: "Mining and Quarrying", size: 0.2 },
-    { sector: "Manufacturing", size: 20.9 },
-    { sector: "Electricity and Water", size: 1.8 },
-    { sector: "Construction", size: 4.2 },
-    { sector: "Trade (Wholesale, Retail, Motor)", size: 13.7 },
-    { sector: "Transport and Communication", size: 9.4 },
-    { sector: "Finance, real estate and business services", size: 22.1 } ],
-  "1998": [
-    { sector: "Agriculture", size: 6.2 },
-    { sector: "Mining and Quarrying", size: 0.3 },
-    { sector: "Manufacturing", size: 21.4 },
-    { sector: "Electricity and Water", size: 1.9 },
-    { sector: "Construction", size: 4.2 },
-    { sector: "Trade (Wholesale, Retail, Motor)", size: 14.5 },
-    { sector: "Transport and Communication", size: 10.6 },
-    { sector: "Finance, real estate and business services", size: 23 } ],
-  "1999": [
-    { sector: "Agriculture", size: 5.7 },
-    { sector: "Mining and Quarrying", size: 0.2 },
-    { sector: "Manufacturing", size: 20 },
-    { sector: "Electricity and Water", size: 1.8 },
-    { sector: "Construction", size: 4.4 },
-    { sector: "Trade (Wholesale, Retail, Motor)", size: 15.2 },
-    { sector: "Transport and Communication", size: 10.5 },
-    { sector: "Finance, real estate and business services", size: 24.7 } ],
-  "2000": [
-    { sector: "Agriculture", size: 5.1 },
-    { sector: "Mining and Quarrying", size: 0.3 },
-    { sector: "Manufacturing", size: 20.4 },
-    { sector: "Electricity and Water", size: 1.7 },
-    { sector: "Construction", size: 4 },
-    { sector: "Trade (Wholesale, Retail, Motor)", size: 16.3 },
-    { sector: "Transport and Communication", size: 10.7 },
-    { sector: "Finance, real estate and business services", size: 24.6 } ],
-  "2001": [
-    { sector: "Agriculture", size: 5.5 },
-    { sector: "Mining and Quarrying", size: 0.2 },
-    { sector: "Manufacturing", size: 20.3 },
-    { sector: "Electricity and Water", size: 1.6 },
-    { sector: "Construction", size: 3.1 },
-    { sector: "Trade (Wholesale, Retail, Motor)", size: 16.3 },
-    { sector: "Transport and Communication", size: 10.7 },
-    { sector: "Finance, real estate and business services", size: 25.8 } ],
-  "2002": [
-    { sector: "Agriculture", size: 5.7 },
-    { sector: "Mining and Quarrying", size: 0.2 },
-    { sector: "Manufacturing", size: 20.5 },
-    { sector: "Electricity and Water", size: 1.6 },
-    { sector: "Construction", size: 3.6 },
-    { sector: "Trade (Wholesale, Retail, Motor)", size: 16.1 },
-    { sector: "Transport and Communication", size: 10.7 },
-    { sector: "Finance, real estate and business services", size: 26 } ],
-  "2003": [
-    { sector: "Agriculture", size: 4.9 },
-    { sector: "Mining and Quarrying", size: 0.2 },
-    { sector: "Manufacturing", size: 19.4 },
-    { sector: "Electricity and Water", size: 1.5 },
-    { sector: "Construction", size: 3.3 },
-    { sector: "Trade (Wholesale, Retail, Motor)", size: 16.2 },
-    { sector: "Transport and Communication", size: 11 },
-    { sector: "Finance, real estate and business services", size: 27.5 } ],
-  "2004": [
-    { sector: "Agriculture", size: 4.7 },
-    { sector: "Mining and Quarrying", size: 0.2 },
-    { sector: "Manufacturing", size: 18.4 },
-    { sector: "Electricity and Water", size: 1.4 },
-    { sector: "Construction", size: 3.3 },
-    { sector: "Trade (Wholesale, Retail, Motor)", size: 16.9 },
-    { sector: "Transport and Communication", size: 10.6 },
-    { sector: "Finance, real estate and business services", size: 28.1 } ],
-  "2005": [
-    { sector: "Agriculture", size: 4.3 },
-    { sector: "Mining and Quarrying", size: 0.2 },
-    { sector: "Manufacturing", size: 18.1 },
-    { sector: "Electricity and Water", size: 1.4 },
-    { sector: "Construction", size: 3.9 },
-    { sector: "Trade (Wholesale, Retail, Motor)", size: 15.7 },
-    { sector: "Transport and Communication", size: 10.6 },
-    { sector: "Finance, real estate and business services", size: 29.1 } ],
-  "2006": [
-    { sector: "Agriculture", size: 4 },
-    { sector: "Mining and Quarrying", size: 0.2 },
-    { sector: "Manufacturing", size: 16.5 },
-    { sector: "Electricity and Water", size: 1.3 },
-    { sector: "Construction", size: 3.7 },
-    { sector: "Trade (Wholesale, Retail, Motor)", size: 14.2 },
-    { sector: "Transport and Communication", size: 12.1 },
-    { sector: "Finance, real estate and business services", size: 29.1 } ],
-  "2007": [
-    { sector: "Agriculture", size: 4.7 },
-    { sector: "Mining and Quarrying", size: 0.2 },
-    { sector: "Manufacturing", size: 16.2 },
-    { sector: "Electricity and Water", size: 1.2 },
-    { sector: "Construction", size: 4.1 },
-    { sector: "Trade (Wholesale, Retail, Motor)", size: 15.6 },
-    { sector: "Transport and Communication", size: 11.2 },
-    { sector: "Finance, real estate and business services", size: 30.4 } ],
-  "2008": [
-    { sector: "Agriculture", size: 4.9 },
-    { sector: "Mining and Quarrying", size: 0.3 },
-    { sector: "Manufacturing", size: 17.2 },
-    { sector: "Electricity and Water", size: 1.4 },
-    { sector: "Construction", size: 5.1 },
-    { sector: "Trade (Wholesale, Retail, Motor)", size: 15.4 },
-    { sector: "Transport and Communication", size: 11.1 },
-    { sector: "Finance, real estate and business services", size: 28.4 } ],
-  "2009": [
-    { sector: "Agriculture", size: 4.7 },
-    { sector: "Mining and Quarrying", size: 0.3 },
-    { sector: "Manufacturing", size: 16.4 },
-    { sector: "Electricity and Water", size: 1.9 },
-    { sector: "Construction", size: 4.9 },
-    { sector: "Trade (Wholesale, Retail, Motor)", size: 15.5 },
-    { sector: "Transport and Communication", size: 10.9 },
-    { sector: "Finance, real estate and business services", size: 27.9 } ],
-  "2010": [
-    { sector: "Agriculture", size: 4.2 },
-    { sector: "Mining and Quarrying", size: 0.3 },
-    { sector: "Manufacturing", size: 16.2 },
-    { sector: "Electricity and Water", size: 2.2 },
-    { sector: "Construction", size: 4.3 },
-    { sector: "Trade (Wholesale, Retail, Motor)", size: 15.7 },
-    { sector: "Transport and Communication", size: 10.2 },
-    { sector: "Finance, real estate and business services", size: 28.8 } ],
-  "2011": [
-    { sector: "Agriculture", size: 4.1 },
-    { sector: "Mining and Quarrying", size: 0.3 },
-    { sector: "Manufacturing", size: 14.9 },
-    { sector: "Electricity and Water", size: 2.3 },
-    { sector: "Construction", size: 5 },
-    { sector: "Trade (Wholesale, Retail, Motor)", size: 17.3 },
-    { sector: "Transport and Communication", size: 10.2 },
-    { sector: "Finance, real estate and business services", size: 27.2 } ],
-  "2012": [
-    { sector: "Agriculture", size: 3.8 },
-    { sector: "Mining and Quarrying", size: 0.3 },
-    { sector: "Manufacturing", size: 14.9 },
-    { sector: "Electricity and Water", size: 2.6 },
-    { sector: "Construction", size: 5.1 },
-    { sector: "Trade (Wholesale, Retail, Motor)", size: 15.8 },
-    { sector: "Transport and Communication", size: 10.7 },
-    { sector: "Finance, real estate and business services", size: 28 } ],
-  "2013": [
-    { sector: "Agriculture", size: 3.7 },
-    { sector: "Mining and Quarrying", size: 0.2 },
-    { sector: "Manufacturing", size: 14.9 },
-    { sector: "Electricity and Water", size: 2.7 },
-    { sector: "Construction", size: 5.7 },
-    { sector: "Trade (Wholesale, Retail, Motor)", size: 16.5 },
-    { sector: "Transport and Communication", size: 10.5 },
-    { sector: "Finance, real estate and business services", size: 26.6 } ],
-  "2014": [
-    { sector: "Agriculture", size: 3.9 },
-    { sector: "Mining and Quarrying", size: 0.2 },
-    { sector: "Manufacturing", size: 14.5 },
-    { sector: "Electricity and Water", size: 2.7 },
-    { sector: "Construction", size: 5.6 },
-    { sector: "Trade (Wholesale, Retail, Motor)", size: 16.6 },
-    { sector: "Transport and Communication", size: 10.5 },
-    { sector: "Finance, real estate and business services", size: 26.5 } ]
-};
-
-// Create root element
-// https://www.amcharts.com/docs/v5/getting-started/#Root_element
-var root = am5.Root.new("chartDoctor");
-
-
-// Set themes
-// https://www.amcharts.com/docs/v5/concepts/themes/
-root.setThemes([
-  am5themes_Animated.new(root)
-]);
-
-
-// Create chart
-//https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/
-var chart = root.container.children.push(am5percent.PieChart.new(root, {
-  innerRadius: 100,
-  layout: root.verticalLayout
-}));
-
-
-// Create series
-// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Series
-var series = chart.series.push(am5percent.PieSeries.new(root, {
-  valueField: "size",
-  categoryField: "sector"
-}));
-
-
-// Set data
-// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Setting_data
-series.data.setAll([
-  { sector: "Agriculture", size: 6.6 },
-  { sector: "Mining and Quarrying", size: 0.6 },
-  { sector: "Manufacturing", size: 23.2 },
-  { sector: "Electricity and Water", size: 2.2 },
-  { sector: "Construction", size: 4.5 },
-  { sector: "Trade (Wholesale, Retail, Motor)", size: 14.6 },
-  { sector: "Transport and Communication", size: 9.3 },
-  { sector: "Finance, real estate and business services", size: 22.5 }
-]);
-
-
-// Play initial series animation
-// https://www.amcharts.com/docs/v5/concepts/animations/#Animation_of_series
-series.appear(1000, 100);
-
-
-// Add label
-var label = root.tooltipContainer.children.push(am5.Label.new(root, {
-  x: am5.p50,
-  y: am5.p50,
-  centerX: am5.p50,
-  centerY: am5.p50,
-  fill: am5.color(0x000000),
-  fontSize: 50
-}));
-
-
-// Animate chart data
-var currentYear = 1995;
-function getCurrentData() {
-  var data = chartData[currentYear];
-  currentYear++;
-  if (currentYear > 2014)
-    currentYear = 1995;
-  return data;
-}
-
-//년대별 변화 애니메이션(실사용X -> 추후 삭제 고려)
-function loop() {
-  label.set("text", currentYear);
-  var data = getCurrentData();
-  for(var i = 0; i < data.length; i++) {
-    series.data.setIndex(i, data[i]);
-  }
-  chart.setTimeout( loop, 4000 );
-}
-
-loop();
-
-}); // end am5.ready()
-*/
-
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
-
 //막대그래프(병원종류)
 /*https://www.amcharts.com/demos/column-with-rotated-series*/
 am5.ready(function() {
@@ -790,37 +508,49 @@ series.columns.template.adapters.add("stroke", function(stroke, target) {
 
 // Set data
 var data = [{
-  country: "USA",
+  country: "상급종합",
   value: 2025
 }, {
-  country: "China",
+  country: "종합병원",
   value: 1882
 }, {
-  country: "Japan",
+  country: "병원",
   value: 1809
 }, {
-  country: "Germany",
+  country: "요양병원",
   value: 1322
 }, {
-  country: "UK",
+  country: "정신병원",
   value: 1122
 }, {
-  country: "France",
+  country: "의원",
   value: 1114
 }, {
-  country: "India",
+  country: "치과병원",
   value: 984
 }, {
-  country: "Spain",
+  country: "치과의원",
   value: 711
 }, {
-  country: "Netherlands",
+  country: "조산원",
   value: 665
 }, {
-  country: "South Korea",
+  country: "보건소",
   value: 443
 }, {
-  country: "Canada",
+  country: "보건지소",
+  value: 441
+}, {
+  country: "보건진료소",
+  value: 441
+}, {
+  country: "보건의료원",
+  value: 441
+}, {
+  country: "한방병원",
+  value: 441
+}, {
+  country: "한의원",
   value: 441
 }];
 

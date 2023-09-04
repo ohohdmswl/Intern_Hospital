@@ -4,6 +4,12 @@
 
 <mapper namespace="egovframework.example.sample.service.impl.DashMapper">
 
-
+<!-- 	<select id="selectOne" resultType="String"> -->
+	<!-- 아직 쿼리 안짬 -->
+<!-- 		SELECT  count(*) -->
+<!-- 		  FROM  tb_board  -->
+<!-- 		 WHERE  board_no = #{board_no} -->
+<!-- 		   		AND board_pw = #{board_pw} -->
+<!-- 	</select> -->
 	
 </mapper>

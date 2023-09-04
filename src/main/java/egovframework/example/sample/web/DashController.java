@@ -18,8 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import egovframework.example.sample.service.BoardService;
 import egovframework.example.sample.service.BoardVO;
+import egovframework.example.sample.service.DashHpKindVO;
+import egovframework.example.sample.service.DashService;
 
 
 @Controller
@@ -34,8 +35,8 @@ public class DashController {
    private final String className = this.getClass().toString();
 	
 	
-//	@Resource(name="BoardService")
-//	private BoardService boardService;
+	@Resource(name="dashService")
+	private DashService dashService;
 	
 	
 	@RequestMapping(value="/dashboardList.do")
@@ -50,10 +51,48 @@ public class DashController {
 	
 	@RequestMapping(value="/dashGeoClick.do")
 	@ResponseBody
-	public Map<String, Object> dashGeoClick(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+	public Map<String, Object> dashGeoClick(DashHpKindVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 			   HttpServletResponse response) throws Exception {
 
 		logger.info("대시보드  파람맵" + "boardList" + paramMap);
+		
+		//선택된 지역 찾기
+		String geoClick =  (String) paramMap.get("geoClick");
+		
+		//sql에서 비교할 sido_cd
+		//하위 코드에서 파라미터로 받은 클릭한 지역을 해당 지역 코드로 변환하기
+		//->sql에서 선택된 지역에 맞는 where 사용하기 위해 
+		int sido_cd = 0;
+		
+		String[] clickGeo = {
+								 "Seoul","Busan","Incheon","Daegu","Gwangju"
+								 ,"Daejeon","Ulsan","Gyeonggi","Gangwon","North Chungcheong"
+								 ,"South Chungcheong","North Jeolla","South Jeolla","North Gyeongsang","South Gyeongsang"
+								 ,"Jeju","Sejong"
+								};
+			int[] sidoCd = {
+								 110000 ,210000 ,220000 ,230000 ,240000
+								,250000 ,260000 ,310000 ,320000 ,330000
+								,340000 ,350000 ,360000 ,370000 ,380000
+								,390000 ,410000
+								};
+			
+		for (int i = 0; i<clickGeo.length; i++) {
+			if(clickGeo[i].equals(geoClick)) {
+				sido_cd = sidoCd[i];
+				break;
+			}
+		}
+		logger.info("선택한 지역 코드 변환 확인 -> " + geoClick +"의 코도 : "+ sido_cd + " => 선택지역 구분 완료");
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 //		int pagenum = Integer.parseInt((String) paramMap.get("pagenum"));
 //		int pageSize = Integer.parseInt((String) paramMap.get("pageSize"));

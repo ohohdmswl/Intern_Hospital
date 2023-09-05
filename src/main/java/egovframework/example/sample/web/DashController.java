@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.example.sample.service.BoardVO;
+import egovframework.example.sample.service.DashDocKindVO;
 import egovframework.example.sample.service.DashHpKindVO;
 import egovframework.example.sample.service.DashService;
 
@@ -38,17 +39,13 @@ public class DashController {
 	@Resource(name="dashService")
 	private DashService dashService;
 	
-	
+	//대시보드 첫 화면 로드
 	@RequestMapping(value="/dashboardList.do")
 	public String helloworld() throws Exception {
-		
-		logger.info("대시보드컨트롤러 " + className + "helloworld()");
-		
-		System.out.println("하하하");
-
 		return "dashboard/dashboardList";
 	}
 	
+	//한반도 차트 선택시(전국 /지역) 차트 Ajax 실행
 	@RequestMapping(value="/dashGeoClick.do")
 	@ResponseBody
 	public Map<String, Object> dashGeoClick(DashHpKindVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
@@ -65,13 +62,13 @@ public class DashController {
 		int sido_cd = 0;
 		
 		//db값을 가져와 배열의 요소로 사용하는 방법 추후 생각 -> 가져와서 order by주고 배열에 하나씩 넣으면 되겠다.[나중에 해보기]
-		String[] clickGeo = {
+		String[] clickGeo = {//Api data에 있는 값
 								 "Seoul","Busan","Incheon","Daegu","Gwangju"
 								 ,"Daejeon","Ulsan","Gyeonggi","Gangwon","North Chungcheong"
 								 ,"South Chungcheong","North Jeolla","South Jeolla","North Gyeongsang","South Gyeongsang"
 								 ,"Jeju","Sejong"
 								};
-			int[] sidoCd = {
+			int[] sidoCd = {//DB에 있는 sido_cd
 								 110000 ,210000 ,220000 ,230000 ,240000
 								,250000 ,260000 ,310000 ,320000 ,330000
 								,340000 ,350000 ,360000 ,370000 ,380000
@@ -95,16 +92,24 @@ public class DashController {
 		//병원 종류 차트에 사용할 데이터 뽑기
 		List<DashHpKindVO> numHospitalList = dashService.numHospital(paramMap);
 		
+		//의사 종류 차트에 사용할 데이터 뽑기
+		DashDocKindVO dashDocKind = dashService.numDoctor(paramMap); 
+		
+		logger.info("병원 종류 차트에 사용할 데이터 뽑기 -> " + numHospitalList);
+		logger.info("의사 종류 차트에 사용할 데이터 뽑기 -> " + dashDocKind);
 		
 		
 		
+		
+		
+		
+		//Ajax응답데이터 map으로 전달 (차트 데이터 모두 map에 담아 전달)
 		Map<String, Object> returnmap = new HashMap<String, Object>();
 		returnmap.put("numHospitalList", numHospitalList);
+		returnmap.put("dashDocKind", dashDocKind);
 		
 		
-		String mapAsString = returnmap.toString();
 		
-		logger.info("대시 컨트롤러 병원 종류 개수 확인 : " + mapAsString);
 
 		
 		

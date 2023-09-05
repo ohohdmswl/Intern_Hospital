@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.example.sample.service.BoardService;
 import egovframework.example.sample.service.BoardVO;
+import egovframework.example.sample.service.DashDocKindVO;
 import egovframework.example.sample.service.DashHpKindVO;
 import egovframework.example.sample.service.DashService;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -35,4 +36,9 @@ public class DashServiceImpl extends EgovAbstractServiceImpl implements DashServ
 		return dashDAO.numHospital(paramMap);
 	}
 
+	//클릭한 지역의 의사 종류별 개수
+	@Override
+	public DashDocKindVO numDoctor(Map<String, Object> paramMap) {
+		return dashDAO.numDoctor(paramMap);
+	}
 }

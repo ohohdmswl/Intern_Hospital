@@ -37,33 +37,36 @@ public class BoardController {
 	@Resource(name="boardService")
 	private BoardService boardService;
 	
-	
+	//자유게시판 첫화면 로드(게시판 목록화면)
 	@RequestMapping(value="/boardView.do")
 	public String boardView(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		
-		logger.info("보드컨트롤러 " + className + paramMap);
 		return "board/boardList";
-		
 	}
 	
+	//게시판 목록화면(목록 및 검색 가능)
 	@RequestMapping(value="boardList.do")
 	public String boardList(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 			   HttpServletResponse response) throws Exception {
 
 		logger.info("보드컨트롤러  파람맵" + "boardList" + paramMap);
 		
+		//Ajax로 넘어온 파라미터 int로 캐스팅(mapper에서 사용하기 위해)
 		int pagenum = Integer.parseInt((String) paramMap.get("pagenum"));
 		int pageSize = Integer.parseInt((String) paramMap.get("pageSize"));
 		int pageindex = (pagenum - 1) * pageSize;
 		
+		//paramMap에 담아 같이 보내기
 		paramMap.put("pageSize", pageSize);
 		paramMap.put("pageindex", pageindex);
 		
+		//리스트로 게시글 목록 받아오기
 		List<BoardVO> list = boardService.SelectBoardList(paramMap);
 		
+		//총 게시글 개수 구하기
 		int totalcnt = boardService.countList(paramMap);
 		
+		//모두 넘겨서 게시글 목록 및 페이지네이션에 활용
 		model.addAttribute("list",list);
 		model.addAttribute("totalcnt", totalcnt);
 		
@@ -71,29 +74,27 @@ public class BoardController {
 		
 	}
 	
-	
+	//게시글 한 글 조회
 	@RequestMapping(value="boardSelectOne.do")
 	@ResponseBody
 	public Map<String, Object> boardSelectOne(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		
-		logger.info("보드컨트롤러 셀렉트원  파람맵" + "boardSelectOne" + paramMap);
-		
+		//파라미터에 있는 board_no룰 int 캐스팅
 		int board_no = Integer.parseInt((String) paramMap.get("board_no"));
 		
+		//캐스팅된 변수 paramMap에 담기
 		paramMap.put("board_no", board_no);
 
-		
+		//게시글 한 글 조회에 필요한 데이터를 BoardVO에 담기
 		BoardVO boardSelectOne = boardService.boardSelectOne(paramMap);
 		
+		//한 글 조회 페이지로 데이터 넘기기
 		model.addAttribute("boardSelectOne", boardSelectOne);
 		
-		
+		//Ajax 응답데이터로 넘길 Map 생성 후 해당 데이터 담기
 		Map<String, Object> returnmap = new HashMap<String, Object>();
-		
 		returnmap.put("boardSelectOne", boardSelectOne);
-		
-		logger.info("보드컨트롤러 delete 결과확인" + "returnmap" + returnmap);
 		
 		return returnmap;
 		
@@ -104,78 +105,75 @@ public class BoardController {
 	public String boardSelectOnePage(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		
-		logger.info("보드컨트롤러 셀렉트원페이지  파람맵" + "boardSelectOnePage" + paramMap);
-		
+		//파라미터에 있는 board_no int 캐스팅 후 paramMap에 담기
 		int board_no = Integer.parseInt((String) paramMap.get("board_no"));
 		paramMap.put("board_no", board_no);
 		
+		//한 글 조회시 조회수 증가
 		int returnHit = boardService.boardHitUp(paramMap);
 		BoardVO boardSelectOnePage = boardService.boardSelectOne(paramMap);
 		
+		//조회 데이터 JSP로 넘김
 		model.addAttribute("boardSelectOne", boardSelectOnePage);
 		
 		return "board/boardSelectOnePage" ;
-		
 	}
 	
-	
-	
+	//게시글 비밀번호 체크
 	@RequestMapping(value="/boardPwChk.do")
 	@ResponseBody
 	public Map<String, Object> boardPwChk(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		
-		logger.info("보드컨트롤러 deletePw  파람맵" + "boardDelPw" + paramMap);
-		
+		//파라미터 값 캐스팅해서 다시 파라미터에 담기
 		int board_no = Integer.parseInt((String) paramMap.get("board_no"));
 		paramMap.put("board_no", board_no);
 		
 		int board_pw = Integer.parseInt((String) paramMap.get("board_pw"));
 		paramMap.put("board_pw", board_pw);
 		
-		
+		//패스워드 조회 값 초기화
 		int returnPw = 0;
 		
+		//게시글 번호에 패스워드 값이 맞는지 확인 후 count 결과 조회
 		returnPw = boardService.boardPwChk(paramMap);
 		logger.info("보드컨트롤러 returnPw 결과확인" + "returnPw 값은?" + returnPw);
 		
+		//Ajax에 보낼 데이터 map(패스워드 확인 결과 값, 게시글 번호 담기)
 		Map<String, Object> returnmap = new HashMap<String, Object>();
 		
 		returnmap.put("returnPw", returnPw);
 		returnmap.put("board_no", board_no);
 		
-		logger.info("보드컨트롤러 delete 결과확인" + "returnmap" + returnmap);
-		
 		return returnmap;
-		
 	}
 	
+	//게시글 삭제
 	@RequestMapping(value="/boardDel.do")
 	@ResponseBody
 	public Map<String, Object> boardDel(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		
-		logger.info("보드컨트롤러 delete  파람맵" + "boardDel" + paramMap);
-		
+		//파라미터 값 캐스팅해서 다시 파라미터에 담기
 		int board_no = Integer.parseInt((String) paramMap.get("board_no"));
 		paramMap.put("board_no", board_no);
 		
+		//삭제 결과 값 초기화
 		int returnDel = 0;
 		
+		//삭제 쿼리 실행 후 결과 값 
 		returnDel = boardService.boardDel(paramMap);
-		logger.info("보드컨트롤러 delete 결과확인" + "returnDel" + returnDel);
 		
+		//Ajax 응답데이터로 보낼 Map 생성 후 삭제 결과 값, 게시글 번호 담아 보내기
 		Map<String, Object> returnmap = new HashMap<String, Object>();
 		
 	    returnmap.put("returnDel", returnDel);
 	    returnmap.put("board_no", board_no);
 	    
-	    logger.info("보드컨트롤러 delete 결과확인" + "returnmap" + returnmap);
-	    
 		return returnmap;
-		
 	}
 
+	//
 	@RequestMapping(value="/boardWrite.do")
 	public String boardWrite(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {

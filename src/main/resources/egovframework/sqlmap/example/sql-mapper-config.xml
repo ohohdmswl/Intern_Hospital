@@ -5,5 +5,6 @@
     <typeAliases>
 		<typeAlias alias="boardVO" type="egovframework.example.sample.service.BoardVO"/>
 		<typeAlias alias="dashHKVO" type="egovframework.example.sample.service.DashHpKindVO"/>
+		<typeAlias alias="dashDKVO" type="egovframework.example.sample.service.DashDocKindVO"/>
     </typeAliases>
 </configuration>

@@ -4,6 +4,7 @@
 
 <mapper namespace="egovframework.example.sample.service.impl.DashMapper">
 
+	<!-- (병원차트) 지역 클릭하는 Ajax 실행시 해당 지역에 대한 값 불러오기 -->
 	<select id="numHospital" resultType="dashHKVO">
 		SELECT  hk.kind_cd ,COUNT(hk.kind_cd) AS kind_tot,  hk.kind_nm
 		  FROM  tb_hospital hp 
@@ -16,6 +17,43 @@
 		  </where>
 	  GROUP BY  hk.kind_cd 
 	  ORDER BY  hk.kind_cd
+	</select>
+	
+	<!--  <if> 태그 사용 전 full sql query
+	<select id="numDoctor" resultType="dashDKVO">
+	  SELECT  
+			   sum(COALESCE(doc.doc_mg, 0) + COALESCE(doc.doc_mi, 0) + COALESCE(doc.doc_mr, 0) + COALESCE(doc.doc_mp, 0)) AS total_docM
+			   ,sum(COALESCE(doc.doc_dg, 0) + COALESCE(doc.doc_di, 0) + COALESCE(doc.doc_dr, 0) + COALESCE(doc.doc_dp, 0)) AS total_docD
+			   ,sum(COALESCE(doc.doc_hg, 0) + COALESCE(doc.doc_hi, 0) + COALESCE(doc.doc_hr, 0) + COALESCE(doc.doc_hp, 0)) AS total_docH
+			   ,sum(COALESCE(doc.doc_mw, 0)) AS total_docMW
+			   ,hp.sido_cd
+	   FROM		tb_doctor doc
+	   JOIN 	tb_hospital hp ON doc.hos_cd = hp.hos_cd
+   GROUP BY 	hp.sido_cd
+	 HAVING  	hp.sido_cd = #{sido_cd}
+	</select>
+	 -->
+	 
+	 
+	<select id="numDoctor" resultType="dashDKVO">
+	  SELECT  
+			   sum(COALESCE(doc.doc_mg, 0) + COALESCE(doc.doc_mi, 0) + COALESCE(doc.doc_mr, 0) + COALESCE(doc.doc_mp, 0)) AS total_docM
+			   ,sum(COALESCE(doc.doc_dg, 0) + COALESCE(doc.doc_di, 0) + COALESCE(doc.doc_dr, 0) + COALESCE(doc.doc_dp, 0)) AS total_docD
+			   ,sum(COALESCE(doc.doc_hg, 0) + COALESCE(doc.doc_hi, 0) + COALESCE(doc.doc_hr, 0) + COALESCE(doc.doc_hp, 0)) AS total_docH
+			   ,sum(COALESCE(doc.doc_mw, 0)) AS total_docMW
+	  			<if test="(sido_cd != 0)">
+			   ,hp.sido_cd
+			    </if>
+			   
+	   FROM		tb_doctor doc
+	   JOIN 	tb_hospital hp ON doc.hos_cd = hp.hos_cd
+	   
+				<if test="(sido_cd != 0)">   
+   GROUP BY 	hp.sido_cd
+	 HAVING  	hp.sido_cd = #{sido_cd}
+				 </if>
+	
+	
 	</select>
 	
 </mapper>

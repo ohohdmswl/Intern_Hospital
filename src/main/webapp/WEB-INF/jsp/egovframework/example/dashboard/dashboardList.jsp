@@ -81,6 +81,18 @@
 	justify-content: center;
 	
 }
+
+#geoTitle {
+	text-align: center;
+	margin-bottom: 5rem;
+	background: #e4eaf1;
+	font-size: 2rem;
+	font-weight: bold;
+	width: 22rem;
+	border-radius: 0.5rem;
+	
+	
+}
 </style>
 
 
@@ -94,22 +106,19 @@
 
 	<input type="hidden" id="geoClick" value=""/>
 	<div class="box1 left" style="border: 1px solid black">
-		<h3>한반도 차트</h3>
+		<div id="geoTitle">한반도 차트</div>
 			<div>
-			<div id="chartdiv" style="width: 100%; height: 800px;"></div>
-			<p> 
-				<span>test</span>
-			</p>
+			<div id="chartdiv" style="width: 100%; height: 700px;"></div>
 			</div>
 	</div><!-- box1 -->
 	<div class="box2 right" style="border: 1px solid red;">
 		<div class="box2-1" style="border: 1px solid black">
 			<p>병원종류 차트</p>
-			<div id="chartHospital" style="width: 100%; height: 500px;"></div>
+			<div id="chartHospital" style="width: 100%; height: 400px;"></div>
 		</div> <!-- box2-1 -->	
 		<div class="box2-2" style="border: 1px solid black">
 			<p>의사종류 차트</p>
-			<div id="chartDoctor" style="width: 100%; height: 500px;"></div>
+			<div id="chartDoctor" style="width: 100%; height: 400px;"></div>
 		</div> <!-- box2-2 -->	
 	</div><!-- box2 -->
 	
@@ -128,7 +137,7 @@
     });
     
 //한반도 차트에서 지역 선택시 반응하는 Ajax
-//지역 선택시 해당지역에 맞는 병원종류(막대), 의사종류(파이) 차트 만들어짐
+// 지역 선택시 해당지역에 맞는 병원종류(막대), 의사종류(파이) 차트 만들어짐
 function fn_chartClick(geoClick) {
 	
 	$.ajax({
@@ -138,13 +147,19 @@ function fn_chartClick(geoClick) {
 	    dataType: 'json',
 	    success: function(data){ 
 	        
-	    	//지역별 병원 종류 차트 루트 초기화
+	    	//지역별 의사, 병원 종류 차트 루트 초기화 
+	    	//(해당 함수 병원-> 의사 순으로 하면 js 오류 발생) -> (의사 -> 병원으로 실행시 정상 작동) : 이유 파악 못함
+	    	fn_chartRootReset('chartDoctor');
 	    	fn_chartRootReset('chartHospital');
+
+	    	//json 응답데이터로 차트에 사용할 데이터 지정
+	    	var values = fn_numJson(data);
+	    	var hopitalData = values[0];
+	    	var DoctorData = values[1];
 	    	
-	    	//지역별 병원 종류 개수
-// 	    	var data = fn_numHospitalJson(data.numHospitalList);
-	    	fn_createHpChart(fn_numHospitalJson(data.numHospitalList));
-	    	
+	    	//차트에 사용할 인자를 담아 차트 생성
+	    	fn_createHpChart(hopitalData);
+	    	fn_createDocChart(DoctorData);
 	    	
 	    },
 	    error: function(){
@@ -154,23 +169,49 @@ function fn_chartClick(geoClick) {
 }
 
 //지역별 병원 종류 개수 JSON 객체화 (var data 선언위해)
-function fn_numHospitalJson(redata) {
+function fn_numJson(redata) {
+	
+	//Ajax응답데이터에서 병원차트에 쓸 데이터, 의사차트에 쓸 데이터 분리	
+	var Hdata = redata.numHospitalList
+	var Ddata = redata.dashDocKind
 	
 	//JS 배열 셍성
 	var numHospitalList = new Array();
+	var dashDocKind = new Array();
 	
-	//for문 활용해서 Ajax 응딥데이터를 이용한 객체 만들기
-	for(var i=0; i<redata.length; i++){
+	//for문 활용해서 Ajax 응딥데이터를 이용한 객체 만들기(병원종류차트)
+	for(var i=0; i<Hdata.length; i++){
 		
 		var data = {};
-		data.kind_tot = redata[i].kind_tot;
-		data.kind_nm = redata[i].kind_nm;
+		data.kind_tot = Hdata[i].kind_tot;
+		data.kind_nm = Hdata[i].kind_nm;
 
 		//for문으로 만든 객체를 배열에 담기
 		numHospitalList.push(data);
 	}
-	return numHospitalList;
+	
+	//for문 활용해서 Ajax 응딥데이터를 이용한 객체 만들기(의사종류차트)
+	for (var i = 0; i < Object.keys(Ddata).length-1; i++) {
+	    var key = Object.keys(Ddata)[i];
+	    var value = Ddata[key];
+
+	    console.log("데이터 카테고리: " + key);
+	    console.log("데이터 값: " + value);
+
+	    var data = {};
+	    data.category = key;
+	    data.value = value;
+	    
+	    // for문으로 만든 객체를 배열에 담기
+	    dashDocKind.push(data);
+	}
+	
+	alert("아아 이거 좀 이상한데" + JSON.stringify(dashDocKind ));
+	return [numHospitalList, dashDocKind];
 };
+
+
+
 
 
 //차트 리셋
@@ -180,9 +221,8 @@ function fn_chartRootReset(divId) {
 	    if (root.dom.id === divId) {
 	      root.dispose();
 	    }
-	  });
-	}
-
+  });
+}
 
 
 
@@ -262,10 +302,11 @@ polygonSeries.set("heatRules", [{
   key: "fill"
 }]);
 
+/*highest, lowest 수치 삭제
 polygonSeries.mapPolygons.template.events.on("pointerover", function(ev) {
   heatLegend.showValue(ev.target.dataItem.get("value"));
 });
-
+*/
 
 function loadGeodata(country) {
 
@@ -298,7 +339,6 @@ function loadGeodata(country) {
       data.push({
         id: geodata.features[i].id,
         value: Math.round( Math.random() * 10000 )
-        
       });
     }
 
@@ -315,9 +355,10 @@ function loadGeodata(country) {
       fillOpacity: 0.2
     })
   }))
-
 }
 
+
+//Highest, Lowest 수직 바 없애기
 var heatLegend = chart.children.push(
   am5.HeatLegend.new(root, {
     orientation: "vertical",
@@ -328,6 +369,7 @@ var heatLegend = chart.children.push(
     stepCount: 5
   })
 );
+
 
 heatLegend.startLabel.setAll({
   fontSize: 12,
@@ -350,74 +392,69 @@ polygonSeries.events.on("datavalidated", function () {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //도넛차트(의사차트)
 //https://www.amcharts.com/demos/donut-chart/
-am5.ready(function() {
-
-// Create root element
-// https://www.amcharts.com/docs/v5/getting-started/#Root_element
-var root = am5.Root.new("chartDoctor");
-
-
-// Set themes
-// https://www.amcharts.com/docs/v5/concepts/themes/
-root.setThemes([
-  am5themes_Animated.new(root)
-]);
-
-
-// Create chart
-// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/
-var chart = root.container.children.push(am5percent.PieChart.new(root, {
-  layout: root.verticalLayout,
-  innerRadius: am5.percent(50)
-}));
-
-
-// Create series
-// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Series
-var series = chart.series.push(am5percent.PieSeries.new(root, {
-  valueField: "value",
-  categoryField: "category",
-  alignLabels: false
-}));
-
-series.labels.template.setAll({
-  textType: "circular",
-  centerX: 0,
-  centerY: 0
-});
-
-
-// Set data
-// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Setting_data
-series.data.setAll([
-  { value: 10, category: "One" },
-  { value: 9, category: "Two" },
-  { value: 6, category: "Three" },
-  { value: 5, category: "Four" },
-  { value: 4, category: "Five" },
-  { value: 3, category: "Six" },
-  { value: 1, category: "Seven" },
-]);
-
-
-// Create legend
-// https://www.amcharts.com/docs/v5/charts/percent-charts/legend-percent-series/
-var legend = chart.children.push(am5.Legend.new(root, {
-  centerX: am5.percent(50),
-  x: am5.percent(50),
-  marginTop: 15,
-  marginBottom: 15,
-}));
-
-legend.data.setAll(series.dataItems);
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-// Play initial series animation
-// https://www.amcharts.com/docs/v5/concepts/animations/#Animation_of_series
-series.appear(1000, 100);
-
-}); // end am5.ready()
-
+function fn_createDocChart(redata) {
+	am5.ready(function() {
+	
+	// Create root element
+	// https://www.amcharts.com/docs/v5/getting-started/#Root_element
+	var root = am5.Root.new("chartDoctor");
+	
+	
+	// Set themes
+	// https://www.amcharts.com/docs/v5/concepts/themes/
+	root.setThemes([
+	  am5themes_Animated.new(root)
+	]);
+	
+	
+	// Create chart
+	// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/
+	var chart = root.container.children.push(am5percent.PieChart.new(root, {
+	  layout: root.verticalLayout,
+	  innerRadius: am5.percent(50)
+	}));
+	
+	
+	// Create series
+	// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Series
+	var series = chart.series.push(am5percent.PieSeries.new(root, {
+	  valueField: "value",
+	  categoryField: "category",
+	  alignLabels: false
+	}));
+	
+	series.labels.template.setAll({
+	  textType: "circular",
+	  centerX: 0,
+	  centerY: 0
+	});
+	
+	
+	// Set data
+	// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Setting_data
+	var data = redata;
+	
+	series.data.setAll(data);
+	
+	
+	// Create legend
+	// https://www.amcharts.com/docs/v5/charts/percent-charts/legend-percent-series/
+	var legend = chart.children.push(am5.Legend.new(root, {
+	  centerX: am5.percent(50),
+	  x: am5.percent(50),
+	  marginTop: 15,
+	  marginBottom: 15,
+	}));
+	
+	legend.data.setAll(series.dataItems);
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	// Play initial series animation
+	// https://www.amcharts.com/docs/v5/concepts/animations/#Animation_of_series
+	series.appear(1000, 100);
+	
+	}); // end am5.ready()
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //막대그래프(병원종류)

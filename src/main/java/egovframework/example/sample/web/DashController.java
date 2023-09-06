@@ -89,6 +89,8 @@ public class DashController {
 		//->map 사용시 동적쿼리 정상적으로 이용할 수 있다기에 paramMap에 담아서 인자로 보냄
 		paramMap.put("sido_cd", sido_cd);
 		
+		//지역 이름 가져오는 메소드  + 모델로 넘기는 코드 작성 필!!!!!!!!!!!!!!!!!!!!!!!!!
+		
 		//병원 종류 차트에 사용할 데이터 뽑기
 		List<DashHpKindVO> numHospitalList = dashService.numHospital(paramMap);
 		

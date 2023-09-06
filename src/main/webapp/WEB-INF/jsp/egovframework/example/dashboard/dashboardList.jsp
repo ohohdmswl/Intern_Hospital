@@ -31,7 +31,7 @@
 
 .contain{ 
   	display: flex;
-	margin: 3rem 12% 3rem 12%;
+	margin: 1rem 12% 3rem 12%;
 	font-family: 'Orbit', sans-serif;
  	flex-direction: row;
     align-items: center;
@@ -69,7 +69,7 @@
 #chartdiv {
   display : flex;
   width: 100%; 
-  height: 80rem;
+/*   height: 10rem; */
   
   
 }
@@ -78,21 +78,51 @@
 .box1{
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+/* 	justify-content: center; */
+	
 	
 }
 
 #geoTitle {
 	text-align: center;
-	margin-bottom: 5rem;
+	margin-left:auto;
+	margin-right:auto;
+	margin-bottom: 3.5rem;
+	margin-top:3rem;
 	background: #e4eaf1;
-	font-size: 2rem;
+	font-size: 1.4rem;
 	font-weight: bold;
 	width: 22rem;
 	border-radius: 0.5rem;
-	
-	
 }
+
+#hpTitle, .docT{
+	text-align: center;
+	margin: auto;
+	margin-bottom: 2rem;
+	background: #e4eaf1;
+	font-size: 1.3rem;
+	font-weight: bold;
+	width: 24rem;
+	border-radius: 0.5rem;
+	display : flex;
+	justify-content : center;
+	align-items : center;
+	flex-direction: column;
+
+}
+
+#docTitle {
+	margin-bottom: 0.1rem;
+
+}
+
+#docTitle2{
+	margin-top: 0.1rem; 
+	margin-bottom: 0.3rem; 
+	font-weight: normal;
+}
+
 </style>
 
 
@@ -106,19 +136,24 @@
 
 	<input type="hidden" id="geoClick" value=""/>
 	<div class="box1 left" style="border: 1px solid black">
-		<div id="geoTitle">한반도 차트</div>
+		<div id="geoTitle">지역을 선택해주세요</div>
 			<div>
-			<div id="chartdiv" style="width: 100%; height: 700px;"></div>
+			<div id="chartdiv" style="width: 100%; height: 500px;"></div>
 			</div>
 	</div><!-- box1 -->
 	<div class="box2 right" style="border: 1px solid red;">
 		<div class="box2-1" style="border: 1px solid black">
-			<p>병원종류 차트</p>
-			<div id="chartHospital" style="width: 100%; height: 400px;"></div>
+			<p id="hpTitle">각 시도별 병원 종류(지역/병원종류)</p>
+			<div class="clickedGeo"></div>
+			<div id="chartHospital" style="width: 100%; height: 300px;"></div>
 		</div> <!-- box2-1 -->	
 		<div class="box2-2" style="border: 1px solid black">
-			<p>의사종류 차트</p>
-			<div id="chartDoctor" style="width: 100%; height: 400px;"></div>
+			<div class="docT">
+				<p id="docTitle">각 시도별 전문의 수(지역/전문의 종류)</p>
+				<p id="docTitle2">[의과/치과/한방/조산사]</p>
+				<div class="clickedGeo"></div>
+			</div>
+			<div id="chartDoctor" style="width: 100%; height: 300px;"></div>
 		</div> <!-- box2-2 -->	
 	</div><!-- box2 -->
 	
@@ -293,7 +328,7 @@ polygonSeries.mapPolygons.template.states.create
 	 ("hover", {fill: am5.color(0x677935)})
 	
 	;
- 
+/* 
 polygonSeries.set("heatRules", [{
   target: polygonSeries.mapPolygons.template,
   dataField: "value",
@@ -301,7 +336,7 @@ polygonSeries.set("heatRules", [{
   max: am5.color(0x25529a),
   key: "fill"
 }]);
-
+*/
 /*highest, lowest 수치 삭제
 polygonSeries.mapPolygons.template.events.on("pointerover", function(ev) {
   heatLegend.showValue(ev.target.dataItem.get("value"));
@@ -322,7 +357,7 @@ function loadGeodata(country) {
 
   // calculate which map to be used
   var currentMap = defaultMap;
-  var title = "";
+ // var title = "";
   if (am5geodata_data_countries2[country] !== undefined) {
     currentMap = am5geodata_data_countries2[country]["maps"][0];
 
@@ -349,7 +384,7 @@ function loadGeodata(country) {
   chart.seriesContainer.children.push(am5.Label.new(root, {
     x: 5,
     y: 5,
-    text: title,
+//     text: title,
     background: am5.RoundedRectangle.new(root, {
       fill: am5.color(0xffffff),
       fillOpacity: 0.2
@@ -357,7 +392,7 @@ function loadGeodata(country) {
   }))
 }
 
-
+/*
 //Highest, Lowest 수직 바 없애기
 var heatLegend = chart.children.push(
   am5.HeatLegend.new(root, {
@@ -381,12 +416,13 @@ heatLegend.endLabel.setAll({
   fill: heatLegend.get("endColor")
 });
 
+
 // change this to template when possible
 polygonSeries.events.on("datavalidated", function () {
   heatLegend.set("startValue", polygonSeries.getPrivate("valueLow"));
   heatLegend.set("endValue", polygonSeries.getPrivate("valueHigh"));
 });
-
+*/
 }); // end am5.ready()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

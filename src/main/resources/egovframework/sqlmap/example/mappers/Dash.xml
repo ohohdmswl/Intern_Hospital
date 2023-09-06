@@ -3,6 +3,14 @@
 <!-- 마이바티스 버전 -->
 
 <mapper namespace="egovframework.example.sample.service.impl.DashMapper">
+	<!-- 선택한 지역의 이름 가져오기 -->
+	<select id="clickGeoNm" resultType="dashGeoVO">
+		SELECT  sido_nm, sido_cd
+		  FROM  tb_sido
+		 WHERE  sido_cd = #{sido_cd}
+	</select>
+
+
 
 	<!-- (병원차트) 지역 클릭하는 Ajax 실행시 해당 지역에 대한 값 불러오기 -->
 	<select id="numHospital" resultType="dashHKVO">
@@ -34,7 +42,7 @@
 	</select>
 	 -->
 	 
-	 
+	<!-- (의사차트) 지역 클릭하는 Ajax 실행시 해당 지역에 대한 값 불러오기 -->
 	<select id="numDoctor" resultType="dashDKVO">
 	  SELECT  
 			   sum(COALESCE(doc.doc_mg, 0) + COALESCE(doc.doc_mi, 0) + COALESCE(doc.doc_mr, 0) + COALESCE(doc.doc_mp, 0)) AS total_docM

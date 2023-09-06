@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import egovframework.example.sample.service.BoardService;
 import egovframework.example.sample.service.BoardVO;
 import egovframework.example.sample.service.DashDocKindVO;
+import egovframework.example.sample.service.DashGeoVO;
 import egovframework.example.sample.service.DashHpKindVO;
 import egovframework.example.sample.service.DashService;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -29,6 +30,11 @@ public class DashServiceImpl extends EgovAbstractServiceImpl implements DashServ
 	@Resource(name="dashDAO")
 	private DashDAO dashDAO;
 	
+	//클릭한 지역의 이름
+	@Override
+	public DashGeoVO clickGeoNm(int sido_cd) {
+		return dashDAO.clickGeoNm(sido_cd);
+	}
 	
 	//클릭한 지역의 병원 종류별 개수
 	@Override

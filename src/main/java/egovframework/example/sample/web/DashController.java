@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.example.sample.service.BoardVO;
 import egovframework.example.sample.service.DashDocKindVO;
+import egovframework.example.sample.service.DashGeoVO;
 import egovframework.example.sample.service.DashHpKindVO;
 import egovframework.example.sample.service.DashService;
 
@@ -89,7 +90,18 @@ public class DashController {
 		//->map 사용시 동적쿼리 정상적으로 이용할 수 있다기에 paramMap에 담아서 인자로 보냄
 		paramMap.put("sido_cd", sido_cd);
 		
-		//지역 이름 가져오는 메소드  + 모델로 넘기는 코드 작성 필!!!!!!!!!!!!!!!!!!!!!!!!!
+		//시도정보 담을 VO 객체 생성해서 담기
+		DashGeoVO clickGeoNm = new DashGeoVO();
+		//if 사용해서 지역 선택 여부 확인(전국 or 지역)
+		if(sido_cd == 0) {//초기화면
+			clickGeoNm.setSido_cd(sido_cd);
+			clickGeoNm.setSido_nm("전국");
+		} else {//지역선택시
+			clickGeoNm = dashService.clickGeoNm(sido_cd);
+		}
+		logger.info("선택한 지역 확인 -> " + "시 코드 : " +  sido_cd +" vo확인 : "+ clickGeoNm + " => 선택지역 확인");
+		
+		
 		
 		//병원 종류 차트에 사용할 데이터 뽑기
 		List<DashHpKindVO> numHospitalList = dashService.numHospital(paramMap);

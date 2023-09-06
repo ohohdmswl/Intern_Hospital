@@ -153,7 +153,7 @@
 				<p id="docTitle2">[의과/치과/한방/조산사]</p>
 				<div class="clickedGeo"></div>
 			</div>
-			<div id="chartDoctor" style="width: 100%; height: 300px;"></div>
+			<div id="chartDoctor" style="width: 100%; height: 200px;"></div>
 		</div> <!-- box2-2 -->	
 	</div><!-- box2 -->
 	
@@ -425,73 +425,9 @@ polygonSeries.events.on("datavalidated", function () {
 */
 }); // end am5.ready()
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-//도넛차트(의사차트)
-//https://www.amcharts.com/demos/donut-chart/
-function fn_createDocChart(redata) {
-	am5.ready(function() {
-	
-	// Create root element
-	// https://www.amcharts.com/docs/v5/getting-started/#Root_element
-	var root = am5.Root.new("chartDoctor");
-	
-	
-	// Set themes
-	// https://www.amcharts.com/docs/v5/concepts/themes/
-	root.setThemes([
-	  am5themes_Animated.new(root)
-	]);
-	
-	
-	// Create chart
-	// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/
-	var chart = root.container.children.push(am5percent.PieChart.new(root, {
-	  layout: root.verticalLayout,
-	  innerRadius: am5.percent(50)
-	}));
-	
-	
-	// Create series
-	// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Series
-	var series = chart.series.push(am5percent.PieSeries.new(root, {
-	  valueField: "value",
-	  categoryField: "category",
-	  alignLabels: false
-	}));
-	
-	series.labels.template.setAll({
-	  textType: "circular",
-	  centerX: 0,
-	  centerY: 0
-	});
-	
-	
-	// Set data
-	// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Setting_data
-	var data = redata;
-	
-	series.data.setAll(data);
-	
-	
-	// Create legend
-	// https://www.amcharts.com/docs/v5/charts/percent-charts/legend-percent-series/
-	var legend = chart.children.push(am5.Legend.new(root, {
-	  centerX: am5.percent(50),
-	  x: am5.percent(50),
-	  marginTop: 15,
-	  marginBottom: 15,
-	}));
-	
-	legend.data.setAll(series.dataItems);
-	
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	// Play initial series animation
-	// https://www.amcharts.com/docs/v5/concepts/animations/#Animation_of_series
-	series.appear(1000, 100);
-	
-	}); // end am5.ready()
-}
+/*
 
+*/
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //막대그래프(병원종류)
 //페이지 로드되자마자 진행되지 않고 전국 or 지역 선택시 작동할 수 있도록 함수로 감싸기
@@ -593,6 +529,140 @@ function fn_createHpChart(redata) {
 	}) // end am5.ready()
 }
 
+
+
+function fn_createDocChart(redata) {
+	am5.ready(function() {
+	
+		// Create root element
+		// https://www.amcharts.com/docs/v5/getting-started/#Root_element
+		var root = am5.Root.new("chartDoctor");
+	
+	
+		// Set themes
+		// https://www.amcharts.com/docs/v5/concepts/themes/
+		root.setThemes([
+		  am5themes_Animated.new(root)
+		]);
+	
+	
+		// Create chart
+		// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/
+		var chart = root.container.children.push(am5percent.PieChart.new(root, {
+		  innerRadius: 100,
+		  layout: root.verticalLayout
+		}));
+	
+	
+		// Create series
+		// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Series
+		var series = chart.series.push(am5percent.PieSeries.new(root, {
+		  valueField: "value",
+		  categoryField: "category"
+		}));
+	
+	
+		// Set data
+		// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Setting_data
+		var data = redata;
+		series.data.setAll(data);
+	
+		// Play initial series animation
+		// https://www.amcharts.com/docs/v5/concepts/animations/#Animation_of_series
+		series.appear(1000, 100);
+	
+	
+		// Add label
+		var label = root.tooltipContainer.children.push(am5.Label.new(root, {
+		  x: am5.p70,
+		  y: am5.p70,
+		  centerX: am5.p70,
+		  centerY: am5.p70,
+		  fill: am5.color(0x000000),
+		  fontSize: 70
+		}));
+	
+
+		}) // end am5.ready()
+
+}
+/*
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//도넛차트(의사차트)
+//https://www.amcharts.com/demos/donut-chart/
+function fn_createDocChart(redata) {
+	am5.ready(function() {
+	
+	// Create root element
+	// https://www.amcharts.com/docs/v5/getting-started/#Root_element
+	var root = am5.Root.new("chartDoctor");
+	
+	
+	// Set themes
+	// https://www.amcharts.com/docs/v5/concepts/themes/
+	root.setThemes([
+	  am5themes_Animated.new(root)
+	]);
+	
+	
+	// Create chart
+	// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/
+	var chart = root.container.children.push(am5percent.PieChart.new(root, {
+	  layout: root.verticalLayout,
+	  innerRadius: am5.percent(50)
+	}));
+	
+	
+	// Create series
+	// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Series
+	var series = chart.series.push(am5percent.PieSeries.new(root, {
+	  valueField: "value",
+	  categoryField: "category",
+	  alignLabels: false
+	}));
+	
+	series.labels.template.setAll({
+	  textType: "circular",
+	  centerX: 0,
+	  centerY: 0
+	});
+	
+	
+	// Set data
+	// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Setting_data
+	var data = redata;
+	
+	series.data.setAll(data);
+	
+	// Add label
+	var label = root.tooltipContainer.children.push(am5.Label.new(root, {
+	  x: am5.p50,
+	  y: am5.p50,
+	  centerX: am5.p50,
+	  centerY: am5.p50,
+	  fill: am5.color(0x000000),
+	  fontSize: 50
+	}));
+	
+	// Create legend
+	// https://www.amcharts.com/docs/v5/charts/percent-charts/legend-percent-series/
+	var legend = chart.children.push(am5.Legend.new(root, {
+	  centerX: am5.percent(50),
+	  x: am5.percent(50),
+	  marginTop: 15,
+	  marginBottom: 15,
+	}));
+	
+	legend.data.setAll(series.dataItems);
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	// Play initial series animation
+	// https://www.amcharts.com/docs/v5/concepts/animations/#Animation_of_series
+	series.appear(1000, 100);
+	
+	}); // end am5.ready()
+}
+*/
 
 //right div's height 맞게  left div's height 동일하게 설정  
 $(document).ready(function(){

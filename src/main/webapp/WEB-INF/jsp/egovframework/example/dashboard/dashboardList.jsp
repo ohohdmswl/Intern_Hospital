@@ -44,6 +44,7 @@
 
 .contain > div {
 	width: 50%;
+	
 
 }
 
@@ -83,7 +84,7 @@
 	
 }
 
-#geoTitle {
+#geoTitle1 {
 	text-align: center;
 	margin-left:auto;
 	margin-right:auto;
@@ -92,8 +93,9 @@
 	background: #e4eaf1;
 	font-size: 1.4rem;
 	font-weight: bold;
-	width: 22rem;
+ 	width: 8rem;
 	border-radius: 0.5rem;
+	
 }
 
 #hpTitle, .docT{
@@ -103,7 +105,7 @@
 	background: #e4eaf1;
 	font-size: 1.3rem;
 	font-weight: bold;
-	width: 24rem;
+	width: 15rem;
 	border-radius: 0.5rem;
 	display : flex;
 	justify-content : center;
@@ -120,7 +122,8 @@
 #docTitle2{
 	margin-top: 0.1rem; 
 	margin-bottom: 0.3rem; 
-	font-weight: normal;
+/* 	font-weight: normal; */
+	font-size: 1rem;
 }
 
 </style>
@@ -136,20 +139,21 @@
 
 	<input type="hidden" id="geoClick" value=""/>
 	<div class="box1 left" style="border: 1px solid black">
-		<div id="geoTitle">지역을 선택해주세요</div>
+		<div id="geoTitle1" class="geoTitle"></div>
 			<div>
 			<div id="chartdiv" style="width: 100%; height: 500px;"></div>
 			</div>
 	</div><!-- box1 -->
 	<div class="box2 right" style="border: 1px solid red;">
 		<div class="box2-1" style="border: 1px solid black">
-			<p id="hpTitle">각 시도별 병원 종류(지역/병원종류)</p>
+			<p id="hpTitle">시도별 병원 종류</p>
+			
 			<div class="clickedGeo"></div>
 			<div id="chartHospital" style="width: 100%; height: 300px;"></div>
 		</div> <!-- box2-1 -->	
 		<div class="box2-2" style="border: 1px solid black">
 			<div class="docT">
-				<p id="docTitle">각 시도별 전문의 수(지역/전문의 종류)</p>
+				<p id="docTitle">시도별 의사 수</p>
 				<p id="docTitle2">[의과/치과/한방/조산사]</p>
 				<div class="clickedGeo"></div>
 			</div>
@@ -170,9 +174,17 @@
     	//처음 페이지 로드할 때 전국 데이터 활용한 차트 보여주기
     	fn_chartClick();
     });
+
+//선택한 지역 sido_nm 표기
+function fn_clickChk(redata) {
+	var clickData = redata.sido_cd;
+	alert("확인확인" + clickData);
+	document.getElementById('geoTitle1').innerHTML =  clickData;
+}    
+    
     
 //한반도 차트에서 지역 선택시 반응하는 Ajax
-// 지역 선택시 해당지역에 맞는 병원종류(막대), 의사종류(파이) 차트 만들어짐
+//-> 지역 선택시 해당지역에 맞는 병원종류(막대), 의사종류(파이) 차트 만들어짐
 function fn_chartClick(geoClick) {
 	
 	$.ajax({
@@ -182,11 +194,16 @@ function fn_chartClick(geoClick) {
 	    dataType: 'json',
 	    success: function(data){ 
 	        
+	    	console.log( JSON.stringify(data) );
+	    	
 	    	//지역별 의사, 병원 종류 차트 루트 초기화 
 	    	//(해당 함수 병원-> 의사 순으로 하면 js 오류 발생) -> (의사 -> 병원으로 실행시 정상 작동) : 이유 파악 못함
 	    	fn_chartRootReset('chartDoctor');
 	    	fn_chartRootReset('chartHospital');
 
+	    	//선택한 지역 표기(전국 or 지역)
+	    	fn_clickChk(data);
+	    	
 	    	//json 응답데이터로 차트에 사용할 데이터 지정
 	    	var values = fn_numJson(data);
 	    	var hopitalData = values[0];
@@ -233,6 +250,17 @@ function fn_numJson(redata) {
 	    console.log("데이터 카테고리: " + key);
 	    console.log("데이터 값: " + value);
 
+	    //key값 보기 쉽게 변경해서 객체에 담기
+	    if(key === 'total_docMW'){
+	    	key = '조산사';
+	    }else if(key === 'total_docM'){
+	    	key = '의과';
+	    }else if(key  === 'total_docD'){
+	    	key = '치과';
+	    }else if(key  === 'total_docH'){
+	    	key = '한방';
+	    }
+	    
 	    var data = {};
 	    data.category = key;
 	    data.value = value;
@@ -240,7 +268,6 @@ function fn_numJson(redata) {
 	    // for문으로 만든 객체를 배열에 담기
 	    dashDocKind.push(data);
 	}
-	
 	alert("아아 이거 좀 이상한데" + JSON.stringify(dashDocKind ));
 	return [numHospitalList, dashDocKind];
 };
@@ -318,8 +345,10 @@ polygonSeries.mapPolygons.template.events.on("click", function(ev) {
   $("#geoClick").val(geoValNm);
   alert("클릭한 지역 input hidden: " + $("#geoClick").val());
   
+  
   //한반도 차트 클릭시 Ajax 함수 사용할 수 있게 작성
   fn_chartClick($("#geoClick").val());
+  
   
 });
 

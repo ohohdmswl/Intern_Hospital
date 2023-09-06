@@ -102,7 +102,6 @@ public class DashController {
 		logger.info("선택한 지역 확인 -> " + "시 코드 : " +  sido_cd +" vo확인 : "+ clickGeoNm + " => 선택지역 확인");
 		
 		
-		
 		//병원 종류 차트에 사용할 데이터 뽑기
 		List<DashHpKindVO> numHospitalList = dashService.numHospital(paramMap);
 		
@@ -119,8 +118,10 @@ public class DashController {
 		
 		//Ajax응답데이터 map으로 전달 (차트 데이터 모두 map에 담아 전달)
 		Map<String, Object> returnmap = new HashMap<String, Object>();
+		
 		returnmap.put("numHospitalList", numHospitalList);
 		returnmap.put("dashDocKind", dashDocKind);
+		returnmap.put("sido_cd", clickGeoNm.getSido_nm());
 		
 		
 		

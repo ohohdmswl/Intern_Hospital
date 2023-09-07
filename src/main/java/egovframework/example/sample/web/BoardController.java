@@ -89,9 +89,6 @@ public class BoardController {
 		//게시글 한 글 조회에 필요한 데이터를 BoardVO에 담기
 		BoardVO boardSelectOne = boardService.boardSelectOne(paramMap);
 		
-		//한 글 조회 페이지로 데이터 넘기기
-		model.addAttribute("boardSelectOne", boardSelectOne);
-		
 		//Ajax 응답데이터로 넘길 Map 생성 후 해당 데이터 담기
 		Map<String, Object> returnmap = new HashMap<String, Object>();
 		returnmap.put("boardSelectOne", boardSelectOne);

@@ -31,7 +31,7 @@
 
 .contain{ 
   	display: flex;
-	margin: 1rem 12% 3rem 12%;
+	margin: 1rem 7% 3rem 7%;
 	font-family: 'Orbit', sans-serif;
  	flex-direction: row;
     align-items: center;
@@ -89,8 +89,8 @@
 	text-align: center;
 	margin-left:auto;
 	margin-right:auto;
-	margin-bottom: 3.5rem;
-	margin-top:3rem;
+	margin-bottom: 1.5rem;
+	margin-top:1rem;
 	background: #e4eaf1;
 	font-size: 1.4rem;
 	font-weight: bold;
@@ -99,20 +99,16 @@
 	
 }
 
-#hpTitle, .docT{
-	text-align: center;
-	margin: auto;
-	margin-bottom: 2rem;
+.searchT{
+ 	text-align: center;
+  	margin: 0 1rem 0.5rem 0;
+/*  	margin-bottom: 1rem;  */
 	background: #e4eaf1;
-	font-size: 1.3rem;
+	font-size: 1rem;
 	font-weight: bold;
-	width: 15rem;
+	width: 5.5rem;
 	border-radius: 0.5rem;
-	display : flex;
-	justify-content : center;
-	align-items : center;
-	flex-direction: column;
-
+/* 	padding: 10 10 10 10; */
 }
 
 #docTitle {
@@ -123,10 +119,45 @@
 #docTitle2{
 	margin-top: 0.1rem; 
 	margin-bottom: 0.3rem; 
-/* 	font-weight: normal; */
 	font-size: 1rem;
 }
 
+.search{
+ 	display : flex; 
+ 	justify-content : center; 
+ 	align-items : center; 
+	flex-direction: column; 
+}
+
+.searchSelect{
+	display : flex; 
+	border-radius: 0.5rem;
+}
+
+select, input {
+	height: 1.7rem;
+	border-radius: 0.5rem;
+}
+
+
+.Sclick{
+	width: 8rem;
+	height: 2rem;
+	text-align: center;
+	background: #e4eaf1;
+	border-radius: 3rem;
+	font-size: 1rem;
+	font-weight: bolder;
+}
+
+.searchHnm{
+	display: flex;
+	 justify-content: space-between;
+}
+
+.table tr {
+	text-align: center;
+}
 </style>
 
 
@@ -139,38 +170,68 @@
 <div class="contain">
 
 	<input type="hidden" id="geoClick" value=""/>
-<!-- 	<div class="box1 left" style="border: 1px solid black"> -->
-	<div class="box1 left">
+	<div class="box1 left" style="border: 1px solid black">
+<!-- 	<div class="box1 left"> -->
 		<div id="geoTitle1" class="geoTitle"></div>
 			<div>
 			<div id="chartdiv" style="width: 100%; height: 500px;"></div>
 			</div>
 	</div><!-- box1 -->
-<!-- 	<div class="box2 right" style="border: 1px solid red;"> -->
-	<div class="box2 right">
-<!-- 		<div class="box2-1" style="border: 1px solid black"> -->
-		<div class="box2-1" >
-			<p id="hpTitle">시도별 병원 종류</p>
+	<div class="box2 right" style="border: 1px solid red;">
+<!-- 	<div class="box2 right"> -->
+		<div class="box2-1" style="border: 1px solid black">
+<!-- 		<div class="box2-1" > -->
+				<div class="search" id="search" style="border: 1px solid gray;">
+					<div class="searchSelect" style="margin-bottom: 0.5rem;">
+						<div class="searchT" style="margin-right: 0.5rem; margin-left: 0">시/군/구</div>
+						<select id="selectsigungu" style="margin-right: 1rem;">
+							<option value="" >시/군/구</option>
+						</select>
+						<div class="searchT"style="margin-right: 0.5rem;">병원종류</div>
+						<select id="selectHkind">
+							<option value="" >병원종류</option>
+						</select>
+					</div>
+					<div class="searchSelect searchHnm" style="margin-bottom: 0.5rem;">
+					
+						<div class="searchT">병원이름</div>
+						<input type="text" id="searchText" placeholder="병원이름을 입력해주세요." style="width: 19rem;"/>
+					</div>
+					<div class="searchSelect">
+						<a href="" id="btnSearch" name="btn"><div class="Sclick" >검 색</div></a>
+					</div>
+				</div><!-- search -->
 			
 			<div class="clickedGeo"></div>
-			<div id="chartHospital" style="width: 100%; height: 300px;"></div>
 		</div> <!-- box2-1 -->	
-<!-- 		<div class="box2-2" style="border: 1px solid black"> -->
-		<div class="box2-2">
-			<div class="docT">
-				<p id="docTitle">시도별 의사 수</p>
-				<p id="docTitle2">[의과/치과/한방/조산사]</p>
-				<div class="clickedGeo"></div>
+		<div class="box2-2" style="border: 1px solid black; height: 500px;">
+<!-- 		<div class="box2-2"> -->
+			<div id="table">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th class="col-12" >병원이름</th>
+						</tr>
+					</thead>
+					<tbody id="boardListTbody"></tbody>
+				</table>
 			</div>
-			<div id="chartDoctor" style="width: 100%; height: 200px;"></div>
+
 		</div> <!-- box2-2 -->	
+		
 	</div><!-- box2 -->
+	<div class="box3 last" style="border: 1px solid blue; height: 100%;">
 	
+	</div><!-- box3 -->
 </div><!-- contain  -->
 
 <!-- 	<div class="box3"> -->
 <!-- 	</div> -->
+
 </body>
+
+
+
 
 <script type="text/javascript">
 
@@ -182,7 +243,7 @@
 
 //선택한 지역 sido_nm 표기
 function fn_clickChk(redata) {
-	var clickData = redata.sido_cd;
+	var clickData = redata.sido_nm;
 	document.getElementById('geoTitle1').innerHTML =  clickData;
 }    
     
@@ -192,36 +253,78 @@ function fn_clickChk(redata) {
 function fn_chartClick(geoClick) {
 	
 	$.ajax({
-	    url: '/dash/dashGeoClick.do',
+	    url: '/dash/dashGeoClickSelect.do',
 	    type: 'post',
 	    data: { "geoClick": geoClick},
 	    dataType: 'json',
 	    success: function(data){ 
 	        
-	    	console.log( JSON.stringify(data) );
+	    	console.log( "에이젝스 리턴 데이터 확인 : " + JSON.stringify(data) );
 	    	
-	    	//지역별 의사, 병원 종류 차트 루트 초기화 
-	    	//(해당 함수 병원-> 의사 순으로 하면 js 오류 발생) -> (의사 -> 병원으로 실행시 정상 작동) : 이유 파악 못함
-	    	fn_chartRootReset('chartDoctor');
-	    	fn_chartRootReset('chartHospital');
+	    	var sidoCd = data.clickGeoNm.sido_cd;
+// 	    	var hopitalGeoList = data.dashgeoSelectList;
+
+// 	    	console.log( "에이젝스 리턴 데이터 확인 222: " + JSON.stringify(hopitalGeoList) );
 
 	    	//선택한 지역 표기(전국 or 지역)
-	    	fn_clickChk(data);
+	    	fn_clickChk(data.clickGeoNm);
+	    	
+	    	
+	    	$("#geoClick").val(sidoCd);
+	    	alert("어디한번 확인해볼까 : " + $("#geoClick").val());
+	    	
+	    	
+	    	//지도차트 실행되면서 input hidden 값에 선택한 지역 값 입력됨
+// 	    	alert("어디한번 확인해볼까 : " + $("#geoClick").val());
+	    	
+	    	//선택한 지역의 시군구 리스트 전달
+	    	fn_hopitalGeoList(data);
 	    	
 	    	//json 응답데이터로 차트에 사용할 데이터 지정
-	    	var values = fn_numJson(data);
+	    /*	var values = fn_numJson(data);
 	    	var hopitalData = values[0];
-	    	var DoctorData = values[1];
+	    	var DoctorData = values[1];	*/
 	    	
-	    	//차트에 사용할 인자를 담아 차트 생성
-	    	fn_createHpChart(hopitalData);
-	    	fn_createDocChart(DoctorData);
-	    	
+
 	    },
 	    error: function(){
 	        alert("실패실패22");
 	    }
 	});
+}
+
+//Ajax 응답데이터로 받은 시군구 리스트를 select list로 보여주기
+function fn_hopitalGeoList(redata) {
+	alert("왜안되냐 : "+ redata); //ob
+	alert("이건되냐" + JSON.stringify(redata));
+// 	alert("이건되냐555" + redata[0].sigungu_cd);
+// 	alert("이건되냐777" + redata[0].sigungu_nm);
+	
+	var hopitalGeoList = redata.dashgeoSelectList;
+	var hopitalKindList = redata.dashHpKindVO;
+	
+	alert("이건되냐777" + hopitalGeoList[0].sigungu_nm);
+	
+	 $('#selectsigungu option').remove();
+	 $('#selectHkind option').remove();
+	
+
+	for(var i=0; i<hopitalGeoList.length; i++){
+		var sggValue = hopitalGeoList[i].sigungu_cd;
+		var sggKey = hopitalGeoList[i].sigungu_nm;
+		$("#selectsigungu").append("<option value='" + sggValue + "'>"+ sggKey +"</option>");
+	}
+	
+	for(var i=0; i<hopitalKindList.length; i++){
+		var hpkValue = hopitalKindList[i].kind_cd;
+		var hpkKey = hopitalKindList[i].kind_nm;
+		$("#selectHkind").append("<option value='" + hpkValue + "'>"+ hpkKey +"</option>");
+	}
+	
+	
+	
+	
+	
 }
 
 //지역별 병원 종류 개수 JSON 객체화 (var data 선언위해)
@@ -360,20 +463,7 @@ polygonSeries.mapPolygons.template.states.create
 	 ("hover", {fill: am5.color(0x677935)})
 	
 	;
-/* 
-polygonSeries.set("heatRules", [{
-  target: polygonSeries.mapPolygons.template,
-  dataField: "value",
-  min: am5.color(0x8ab7ff),
-  max: am5.color(0x25529a),
-  key: "fill"
-}]);
-*/
-/*highest, lowest 수치 삭제
-polygonSeries.mapPolygons.template.events.on("pointerover", function(ev) {
-  heatLegend.showValue(ev.target.dataItem.get("value"));
-});
-*/
+
 
 function loadGeodata(country) {
 
@@ -424,24 +514,6 @@ function loadGeodata(country) {
   }))
 }
 
-/*
-//Highest, Lowest 수직 바 없애기
-var heatLegend = chart.children.push(
-  am5.HeatLegend.new(root, {
-    orientation: "vertical",
-    startColor: am5.color(0x8ab7ff),
-    endColor: am5.color(0x25529a),
-    startText: "Lowest",
-    endText: "Highest",
-    stepCount: 5
-  })
-);
-
-
-heatLegend.startLabel.setAll({
-  fontSize: 12,
-  fill: heatLegend.get("startColor")
-});
 
 heatLegend.endLabel.setAll({
   fontSize: 12,
@@ -454,172 +526,10 @@ polygonSeries.events.on("datavalidated", function () {
   heatLegend.set("startValue", polygonSeries.getPrivate("valueLow"));
   heatLegend.set("endValue", polygonSeries.getPrivate("valueHigh"));
 });
-*/
+
 }); // end am5.ready()
 
-/*
 
-*/
-////////////////////////////////////////////////////////////////////////////////////////////////
-//막대그래프(병원종류)
-//페이지 로드되자마자 진행되지 않고 전국 or 지역 선택시 작동할 수 있도록 함수로 감싸기
-/*https://www.amcharts.com/demos/column-with-rotated-series*/
-function fn_createHpChart(redata) {
-	
-	am5.ready(function() {
-	
-	// Create root element
-	// https://www.amcharts.com/docs/v5/getting-started/#Root_element
-	var root = am5.Root.new("chartHospital");
-	
-	
-	// Set themes
-	// https://www.amcharts.com/docs/v5/concepts/themes/
-	root.setThemes([
-	  am5themes_Animated.new(root)
-	]);
-	
-	
-	// Create chart
-	// https://www.amcharts.com/docs/v5/charts/xy-chart/
-	var chart = root.container.children.push(am5xy.XYChart.new(root, {
-	  panX: true,
-	  panY: true,
-	  wheelX: "panX",
-	  wheelY: "zoomX",
-	  pinchZoomX: true
-	}));
-	
-	// Add cursor
-	// https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-	var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
-	cursor.lineY.set("visible", false);
-	
-	
-	// Create axes
-	// https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-	var xRenderer = am5xy.AxisRendererX.new(root, { minGridDistance: 30 });
-	xRenderer.labels.template.setAll({
-	  rotation: -90,
-	  centerY: am5.p50,
-	  centerX: am5.p100,
-	  paddingRight: 15
-	});
-	
-	xRenderer.grid.template.setAll({
-	  location: 1
-	})
-	
-	var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
-	  maxDeviation: 0.3,
-	  categoryField: "kind_nm",
-	  renderer: xRenderer,
-	  tooltip: am5.Tooltip.new(root, {})
-	}));
-	
-	var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-	  maxDeviation: 0.3,
-	  renderer: am5xy.AxisRendererY.new(root, {
-	    strokeOpacity: 0.1
-	  })
-	}));
-	
-	// Create series
-	// https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-	var series = chart.series.push(am5xy.ColumnSeries.new(root, {
-	  name: "Series 1",
-	  xAxis: xAxis,
-	  yAxis: yAxis,
-	  valueYField: "kind_tot",
-	  sequencedInterpolation: true,
-	  categoryXField: "kind_nm",
-	  tooltip: am5.Tooltip.new(root, {
-	    labelText: "{valueY}"
-	  })
-	}));
-	
-	series.columns.template.setAll({ cornerRadiusTL: 5, cornerRadiusTR: 5, strokeOpacity: 0 });
-	series.columns.template.adapters.add("fill", function(fill, target) {
-	  return chart.get("colors").getIndex(series.columns.indexOf(target));
-	});
-	
-	series.columns.template.adapters.add("stroke", function(stroke, target) {
-	  return chart.get("colors").getIndex(series.columns.indexOf(target));
-	});
-	
-	//JSON이 아닌 JS객체로 보여야 차트 동작
-	var data = redata;
-	
-	xAxis.data.setAll(data);
-	series.data.setAll(data);
-	
-	// Make stuff animate on load
-	// https://www.amcharts.com/docs/v5/concepts/animations/
-	series.appear(1000);
-	chart.appear(1000, 100);
-	
-	}) // end am5.ready()
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-//도넛차트(의사차트)
-//https://www.amcharts.com/demos/donut-chart/
-function fn_createDocChart(redata) {
-	am5.ready(function() {
-	
-		// Create root element
-		// https://www.amcharts.com/docs/v5/getting-started/#Root_element
-		var root = am5.Root.new("chartDoctor");
-	
-	
-		// Set themes
-		// https://www.amcharts.com/docs/v5/concepts/themes/
-		root.setThemes([
-		  am5themes_Animated.new(root)
-		]);
-	
-	
-		// Create chart
-		// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/
-		var chart = root.container.children.push(am5percent.PieChart.new(root, {
-		  innerRadius: 100,
-		  layout: root.verticalLayout
-		}));
-	
-	
-		// Create series
-		// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Series
-		var series = chart.series.push(am5percent.PieSeries.new(root, {
-		  valueField: "value",
-		  categoryField: "category"
-		}));
-	
-	
-		// Set data
-		// https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Setting_data
-		var data = redata;
-		series.data.setAll(data);
-	
-		// Play initial series animation
-		// https://www.amcharts.com/docs/v5/concepts/animations/#Animation_of_series
-		series.appear(1000, 100);
-	
-	
-		// Add label
-		var label = root.tooltipContainer.children.push(am5.Label.new(root, {
-		  x: am5.p70,
-		  y: am5.p70,
-		  centerX: am5.p70,
-		  centerY: am5.p70,
-		  fill: am5.color(0x000000),
-		  fontSize: 70
-		}));
-	
-
-		}) // end am5.ready()
-
-}
 
 //right div's height 맞게  left div's height 동일하게 설정  
 $(document).ready(function(){
@@ -635,8 +545,23 @@ $(document).ready(function(){
         
         $('.left',this).height(highestBox);
         $('.chartdiv',this).height(highestBox);
+        $('.last',this).height(highestBox);
+        
 	});    
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

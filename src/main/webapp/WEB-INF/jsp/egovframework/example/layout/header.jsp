@@ -185,7 +185,7 @@ body {
 					<a class="menuA" href="/dash/dashboardList.do">대시보드1</a>
 				</li>
 				<li class="menuItem">
-					<a class="menuA">대시보드2</a>	
+					<a class="menuA" href="/dash/dashboardSelect.do">대시보드2</a>	
 				</li>
 				<li class="menuItem">
 					<a class="menuA" href="/board/boardView.do">자유게시판</a>

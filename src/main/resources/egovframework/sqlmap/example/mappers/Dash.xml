@@ -60,8 +60,20 @@
    GROUP BY 	hp.sido_cd
 	 HAVING  	hp.sido_cd = #{sido_cd}
 				 </if>
+	</select>
 	
 	
+	<!-- 클릭한 지역의 하위 시/군/구 select list -->
+	<select id="dashgeoSelectList" resultType="dashGeoVO">
+		SELECT  sigungu_cd, sigungu_nm, sido_cd
+ 		  FROM  tb_sigungu sgg
+ 		 WHERE  sido_cd = #{sido_cd}
+	</select>
+	
+	<!-- 병원 종류 select list 값 조회 -->
+	<select id="dashHpSelectList" resultType="dashHKVO">
+		SELECT  kind_cd , kind_nm 
+		  FROM  tb_hoskind hk
 	</select>
 	
 </mapper>

@@ -14,6 +14,12 @@ public interface DashService {
 	//클릭한 지역의 의사 종류별 개수
 	public DashDocKindVO numDoctor(Map<String, Object> paramMap);
 
+	//클릭한 지역의 시/군/구 select list 가져오기
+	public List<DashGeoVO> dashgeoSelectList(Map<String, Object> paramMap);
+
+	//병원 종류 select list 값 조회하기
+	public List<DashHpKindVO> dashHpSelectList();
+
 
 
 }

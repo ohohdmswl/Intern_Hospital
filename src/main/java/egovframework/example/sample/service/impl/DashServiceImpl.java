@@ -47,4 +47,15 @@ public class DashServiceImpl extends EgovAbstractServiceImpl implements DashServ
 	public DashDocKindVO numDoctor(Map<String, Object> paramMap) {
 		return dashDAO.numDoctor(paramMap);
 	}
+	
+	//클릭한 지역의 시/군/구 select list 가져오기
+	@Override
+	public List<DashGeoVO> dashgeoSelectList(Map<String, Object> paramMap) {
+		return dashDAO.dashgeoSelectList(paramMap);
+	}
+	
+	@Override
+	public List<DashHpKindVO> dashHpSelectList() {
+		return dashDAO.dashHpSelectList();
+	}
 }

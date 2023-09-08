@@ -208,21 +208,23 @@ tr {
 		var board_pw = $("#conPw").val()
 		var board_cont = $("#conCont").val()
 
+		var regExp = /^\s+|\s+$/g;
 		
-		if (board_title.length==0){
-			alert("제목을 입력해주세요.");
+		if ( $("#conTitle").val().trim() == "" ){
+			alert("제목을 입력해주세요(공백불가).");
 			$("#conTitle").focus();
 			return false;
 		}
 		
-		if (board_writer.length==0){
-			alert("작성자를 입력해주세요.");
+		
+		if ($("#conWriter").val().trim() == ""){
+			alert("작성자를 입력해주세요(공백불가).");
 			$("#board_writer").focus();
 			return false;
 		}
 		
-		if (board_cont.length==0){
-			alert("내용을 입력해주세요.");
+		if ($("#conCont").val().trim() == ""){
+			alert("내용을 입력해주세요(공백불가).");
 			$("#board_cont").focus();
 			return false;
 		}

@@ -130,7 +130,7 @@ public class DashController {
 	}
 	
 	
-	//한반도 차트 선택시(전국 /지역) 차트 Ajax 실행
+	//두번째 대시보드 - 한반도 차트 선택시(전국 /지역) 차트 Ajax 실행
 	@RequestMapping(value="/dashGeoClickSelect.do")
 	@ResponseBody
 	public Map<String, Object> dashGeoClickSelect(DashHpKindVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
@@ -167,7 +167,6 @@ public class DashController {
 			}
 		}
 		
-		
 		logger.info("선택한 지역 코드 변환 확인 -> " + geoClick +"의 코도 : "+ sido_cd + " => 선택지역 구분 완료");
 		
 		//int sido_cd를 인자로 넘기는 메소드 작성시 동적쿼리 오류발생
@@ -185,20 +184,11 @@ public class DashController {
 		}
 		logger.info("선택한 지역 확인 -> " + "시 코드 : " +  sido_cd +" vo확인 : "+ clickGeoNm + " => 선택지역 확인");
 		
-		
 		//클릭한 지역 시도코드 받아서 시군구 select list 가져오기
 		List<DashGeoVO> dashgeoSelectList = dashService.dashgeoSelectList(paramMap);
 		
-		
 		//병원종류 select list 가져오기
 		List<DashHpKindVO> dashHpKindVO = dashService.dashHpSelectList();
-		
-		
-		
-		
-		logger.info("병원 종류 차트에 사용할 데이터 뽑기 -> " );
-		logger.info("의사 종류 차트에 사용할 데이터 뽑기 -> " );
-		
 		
 		//Ajax응답데이터 map으로 전달 (차트 데이터 모두 map에 담아 전달)
 		Map<String, Object> returnmap = new HashMap<String, Object>();
@@ -210,10 +200,24 @@ public class DashController {
 	}
 	
 	
+	//두번째 대시보드 - 병원 검색결과 목록 조회
+	@RequestMapping(value="/HospitalSearchList.do")
+	@ResponseBody
+	public Map<String, Object> HospitalSearchList(DashHpKindVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+			   HttpServletResponse response) throws Exception {
+
+		logger.info("두번째 대시보드  파람맵" + "HospitalSearchList" + paramMap);
 
 	
+		
+		//Ajax응답데이터 map으로 전달 (차트 데이터 모두 map에 담아 전달)
+		Map<String, Object> returnmap = new HashMap<String, Object>();
+		
+//		returnmap.put("clickGeoNm", clickGeoNm);
+		return returnmap;		
 	
 
+	}
 	
 	
 }

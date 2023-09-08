@@ -89,7 +89,7 @@
 	text-align: center;
 	margin-left:auto;
 	margin-right:auto;
-	margin-bottom: 1.5rem;
+	margin-bottom: 1rem;
 	margin-top:1rem;
 	background: #e4eaf1;
 	font-size: 1.4rem;
@@ -170,9 +170,17 @@ select, input {
 <div class="contain">
 
 	<input type="hidden" id="geoClick" value=""/>
+	<input type="hidden" id="sigungu_cd" value=""/>
+	<input type="hidden" id="kind_cd" value=""/>
+	<input type="hidden" id="hos_nm" value=""/>
 	<div class="box1 left" style="border: 1px solid black">
 <!-- 	<div class="box1 left"> -->
 		<div id="geoTitle1" class="geoTitle"></div>
+		<div>
+			<a href="/dash/dashboardSelect.do">
+				<img src="${pageContext.request.contextPath}/images/egovframework/dashboard/all.png" style="width: 3rem; height: 3rem;">
+			</a>
+		</div>
 			<div>
 			<div id="chartdiv" style="width: 100%; height: 500px;"></div>
 			</div>
@@ -198,7 +206,7 @@ select, input {
 						<input type="text" id="searchText" placeholder="병원이름을 입력해주세요." style="width: 19rem;"/>
 					</div>
 					<div class="searchSelect">
-						<a href="" id="btnSearch" name="btn"><div class="Sclick" >검 색</div></a>
+						<a href="javascript:fn_HospitalSearch()" id="btnSearch" name="btn"><div class="Sclick" >검 색</div></a>
 					</div>
 				</div><!-- search -->
 			
@@ -249,7 +257,7 @@ function fn_clickChk(redata) {
     
     
 //한반도 차트에서 지역 선택시 반응하는 Ajax
-//-> 지역 선택시 해당지역에 맞는 병원종류(막대), 의사종류(파이) 차트 만들어짐
+//-> 선택한 지역에 맞는  select (시/군/구 , 병원종류) 옵션 보이게 설정
 function fn_chartClick(geoClick) {
 	
 	$.ajax({
@@ -278,36 +286,61 @@ function fn_chartClick(geoClick) {
 // 	    	alert("어디한번 확인해볼까 : " + $("#geoClick").val());
 	    	
 	    	//선택한 지역의 시군구 리스트 전달
-	    	fn_hopitalGeoList(data);
+	    	fn_hopitalSelectList(data);
+	    },
+	    error: function(){
+	        alert("실패실패22");
+	    }
+	})
+};
+
+//검색눌렀을 때 선택 조건에 맞는 병원 검색
+function fn_HospitalSearch() {
+	
+	var pdata = {
+					sigungu_cd : $("#selectsigungu").val()
+				   ,kind_cd : $("#selectHkind").val()
+				   ,hos_nm : $("#searchText").val()
+				}
+	
+	$.ajax({
+	    url: '/dash/HospitalSearchList.do',
+	    type: 'post',
+	    data: pdata,
+	    dataType: 'json',
+	    success: function(data){ 
+	    	console.log( "에이젝스 리턴 데이터 확인 : " + JSON.stringify(data) );
 	    	
-	    	//json 응답데이터로 차트에 사용할 데이터 지정
-	    /*	var values = fn_numJson(data);
-	    	var hopitalData = values[0];
-	    	var DoctorData = values[1];	*/
+// 	    	var sidoCd = data.clickGeoNm.sido_cd;
+
+	    	//선택한 지역 표기(전국 or 지역)
+// 	    	fn_clickChk(data.clickGeoNm);
 	    	
+// 	    	$("#geoClick").val(sidoCd);
+// 	    	alert("어디한번 확인해볼까 : " + $("#geoClick").val());
+	    	
+	    	//지도차트 실행되면서 input hidden 값에 선택한 지역 값 입력됨
+// 	    	alert("어디한번 확인해볼까 : " + $("#geoClick").val());
+	    	
+	    	//선택한 지역의 시군구 리스트 전달
+// 	    	fn_hopitalSelectList(data);
 
 	    },
 	    error: function(){
 	        alert("실패실패22");
 	    }
-	});
-}
+	})
+};
 
-//Ajax 응답데이터로 받은 시군구 리스트를 select list로 보여주기
-function fn_hopitalGeoList(redata) {
-	alert("왜안되냐 : "+ redata); //ob
-	alert("이건되냐" + JSON.stringify(redata));
-// 	alert("이건되냐555" + redata[0].sigungu_cd);
-// 	alert("이건되냐777" + redata[0].sigungu_nm);
+
+//Ajax 응답데이터로 받은 시군구 리스트를 select list option으로 보여주기
+function fn_hopitalSelectList(redata) {
 	
 	var hopitalGeoList = redata.dashgeoSelectList;
 	var hopitalKindList = redata.dashHpKindVO;
 	
-	alert("이건되냐777" + hopitalGeoList[0].sigungu_nm);
-	
 	 $('#selectsigungu option').remove();
 	 $('#selectHkind option').remove();
-	
 
 	for(var i=0; i<hopitalGeoList.length; i++){
 		var sggValue = hopitalGeoList[i].sigungu_cd;
@@ -320,78 +353,7 @@ function fn_hopitalGeoList(redata) {
 		var hpkKey = hopitalKindList[i].kind_nm;
 		$("#selectHkind").append("<option value='" + hpkValue + "'>"+ hpkKey +"</option>");
 	}
-	
-	
-	
-	
-	
 }
-
-//지역별 병원 종류 개수 JSON 객체화 (var data 선언위해)
-function fn_numJson(redata) {
-	
-	//Ajax응답데이터에서 병원차트에 쓸 데이터, 의사차트에 쓸 데이터 분리	
-	var Hdata = redata.numHospitalList
-	var Ddata = redata.dashDocKind
-	
-	//JS 배열 셍성
-	var numHospitalList = new Array();
-	var dashDocKind = new Array();
-	
-	//for문 활용해서 Ajax 응딥데이터를 이용한 객체 만들기(병원종류차트)
-	for(var i=0; i<Hdata.length; i++){
-		
-		var data = {};
-		data.kind_tot = Hdata[i].kind_tot;
-		data.kind_nm = Hdata[i].kind_nm;
-
-		//for문으로 만든 객체를 배열에 담기
-		numHospitalList.push(data);
-	}
-	
-	//for문 활용해서 Ajax 응딥데이터를 이용한 객체 만들기(의사종류차트)
-	for (var i = 0; i < Object.keys(Ddata).length-1; i++) {
-	    var key = Object.keys(Ddata)[i];
-	    var value = Ddata[key];
-
-	    console.log("데이터 카테고리: " + key);
-	    console.log("데이터 값: " + value);
-
-	    //key값 보기 쉽게 변경해서 객체에 담기
-	    if(key === 'total_docMW'){
-	    	key = '조산사';
-	    }else if(key === 'total_docM'){
-	    	key = '의과';
-	    }else if(key  === 'total_docD'){
-	    	key = '치과';
-	    }else if(key  === 'total_docH'){
-	    	key = '한방';
-	    }
-	    
-	    var data = {};
-	    data.category = key;
-	    data.value = value;
-	    
-	    // for문으로 만든 객체를 배열에 담기
-	    dashDocKind.push(data);
-	}
-	return [numHospitalList, dashDocKind];
-};
-
-
-
-
-
-//차트 리셋
-//-> 여러지역 선택시 이미 루트가 있다는 JS오류 해결하기 위해 차트 루트 리셋하는 함수 사용
-function fn_chartRootReset(divId) {
-	  am5.array.each(am5.registry.rootElements, function(root) {
-	    if (root.dom.id === divId) {
-	      root.dispose();
-	    }
-  });
-}
-
 
 
 //전국 지도 차트 
@@ -443,27 +405,19 @@ polygonSeries.mapPolygons.template.events.on("click", function(ev) {
   var geoValNm = ev.target.dataItem.dataContext.name;
   var geoValCd = ev.target.dataItem.dataContext.id;
   
-  // 클릭한 지역의 값을 alert 확인
-//   alert("클릭한 지역 이름: " + geoValNm);
-//   alert("클릭한 지역 코드: " + geoValCd);
-  
   //input hidden 값으로 설정(ajax_controller로 지역 값 넘기기 위해)
   $("#geoClick").val(geoValNm);
   alert("클릭한 지역 input hidden: " + $("#geoClick").val());
   
-  
   //한반도 차트 클릭시 Ajax 함수 사용할 수 있게 작성
   fn_chartClick($("#geoClick").val());
-  
   
 });
 
 polygonSeries.mapPolygons.template.states.create
 
 	 ("hover", {fill: am5.color(0x677935)})
-	
 	;
-
 
 function loadGeodata(country) {
 
@@ -549,18 +503,6 @@ $(document).ready(function(){
         
 	});    
 });
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

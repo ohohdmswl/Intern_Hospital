@@ -51,15 +51,10 @@
 }
 
 .contCont {
-
-
 	height: auto; 
 	min-height: 27rem; 
 	width: 800px;
 	padding: 1rem 1rem;
-	
-
-
 }
 
 .contD{
@@ -68,7 +63,6 @@
 	padding: 0.3rem 0.7rem; 
 	font-weight: bold;
 	margin-right: 0.2rem;
-	
 }
 
 
@@ -81,7 +75,6 @@
 	height: 2.5rem; 
 	width: 6.5rem;
 	margin-right: 1rem;
-	
 }
 
 .contB{
@@ -89,7 +82,6 @@
 	flex-direction: row;
 	justify-content: center;
 	margin-bottom: 2rem;
-
 }
 </style>
 
@@ -98,10 +90,6 @@
 	/** OnLoad event */
 	$(function() {
 		//fn_contList();
-
-		
-		
-		
 	});
 	
 	function fn_contList() {
@@ -208,13 +196,7 @@
 
 					//에이젝스로 셀렉트원 다시 해서 - 값 채우기
 					//작성페이지넘겨서 값 el로 받고
-					//
 					location.href = "/board/boardWrite.do?board_no=" + JSON.stringify(data.board_no);
-
-					
-					
-					
-
 
 				} else {
 					alert ("비밀번호 확인 실패.");

@@ -160,7 +160,7 @@
 	
 	function fn_searchText(){
 		$('#searchText').keypress(function(event){
-		     if ( event.which == 13 ) {
+		     if ( event.which == 13 ) {//엔터쳤을 때 검색되게하는 코드
 		         $('#btnSearch').click();
 		         return false;
 		     }

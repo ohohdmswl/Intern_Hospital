@@ -85,16 +85,28 @@
 	
 }
 
+#geoTitle {
+	text-align: center;
+	background: #e4eaf1;
+	font-size: 1rem;
+	font-weight: bold;	
+	width: 3.5rem;
+	border-radius: 1rem;
+/* 	margin: auto; */
+	margin-top: 0.5rem;
+	margin-bottom: 2rem;
+}
+
 #geoTitle1 {
 	text-align: center;
 	margin-left:auto;
 	margin-right:auto;
-	margin-bottom: 3.5rem;
-	margin-top:3rem;
+	margin-bottom: 0.5rem;
+ 	margin-top:3rem; 
 	background: #e4eaf1;
 	font-size: 1.4rem;
 	font-weight: bold;
- 	width: 8rem;
+ 	width: 7rem;
 	border-radius: 0.5rem;
 	
 }
@@ -127,6 +139,8 @@
 	font-size: 1rem;
 }
 
+
+
 </style>
 
 
@@ -139,23 +153,24 @@
 <div class="contain">
 
 	<input type="hidden" id="geoClick" value=""/>
-<!-- 	<div class="box1 left" style="border: 1px solid black"> -->
 	<div class="box1 left">
 		<div id="geoTitle1" class="geoTitle"></div>
+		<div>
+			<a href="/dash/dashboardList.do">
+				<img src="${pageContext.request.contextPath}/images/egovframework/dashboard/all.png" style="width: 3rem; height: 3rem;">
+			</a>
+		</div>
 			<div>
-			<div id="chartdiv" style="width: 100%; height: 500px;"></div>
+				<div id="chartdiv" style="width: 100%; height: 500px;"></div>
 			</div>
 	</div><!-- box1 -->
-<!-- 	<div class="box2 right" style="border: 1px solid red;"> -->
 	<div class="box2 right">
-<!-- 		<div class="box2-1" style="border: 1px solid black"> -->
 		<div class="box2-1" >
 			<p id="hpTitle">시도별 병원 종류</p>
 			
 			<div class="clickedGeo"></div>
 			<div id="chartHospital" style="width: 100%; height: 300px;"></div>
 		</div> <!-- box2-1 -->	
-<!-- 		<div class="box2-2" style="border: 1px solid black"> -->
 		<div class="box2-2">
 			<div class="docT">
 				<p id="docTitle">시도별 의사 수</p>
@@ -168,8 +183,6 @@
 	
 </div><!-- contain  -->
 
-<!-- 	<div class="box3"> -->
-<!-- 	</div> -->
 </body>
 
 <script type="text/javascript">

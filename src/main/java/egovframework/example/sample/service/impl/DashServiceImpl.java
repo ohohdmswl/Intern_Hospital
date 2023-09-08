@@ -13,6 +13,7 @@ import egovframework.example.sample.service.BoardService;
 import egovframework.example.sample.service.BoardVO;
 import egovframework.example.sample.service.DashDocKindVO;
 import egovframework.example.sample.service.DashGeoVO;
+import egovframework.example.sample.service.DashHosSearchListVO;
 import egovframework.example.sample.service.DashHpKindVO;
 import egovframework.example.sample.service.DashService;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -54,8 +55,23 @@ public class DashServiceImpl extends EgovAbstractServiceImpl implements DashServ
 		return dashDAO.dashgeoSelectList(paramMap);
 	}
 	
+	//클릭한 지역의 병원 select list 가져오기
 	@Override
 	public List<DashHpKindVO> dashHpSelectList() {
 		return dashDAO.dashHpSelectList();
 	}
+	
+	//검색결과 병원 list 가져오기
+	@Override
+	public List<Map<String, String>> SelectDashList(Map<String, Object> paramMap) {
+		return dashDAO.SelectDashList(paramMap);
+	}
+	
+	//검색결과 병원 list 총 개수 가져오기
+	@Override
+	public int countDashList(Map<String, Object> paramMap) {
+		return dashDAO.countDashList(paramMap);
+	}
+	
+	
 }

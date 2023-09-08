@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import egovframework.example.sample.service.BoardVO;
 import egovframework.example.sample.service.DashDocKindVO;
 import egovframework.example.sample.service.DashGeoVO;
+import egovframework.example.sample.service.DashHosSearchListVO;
 import egovframework.example.sample.service.DashHpKindVO;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 
@@ -35,7 +36,16 @@ public class DashDAO extends EgovAbstractMapper{
 	public List<DashHpKindVO> dashHpSelectList() {
 		return selectList("dashHpSelectList");
 	}
+	//병원 검색 목록 조회
+	public List<Map<String, String>> SelectDashList(Map<String, Object> paramMap) {
+		return selectList("SelectDashList", paramMap);
+	}
+	//병원 검색 목록 총 개수 조회
+	public int countDashList(Map<String, Object> paramMap) {
+		return selectOne("countDashList", paramMap);
+	}
 
+	
 
 	
 	

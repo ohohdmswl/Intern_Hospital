@@ -20,6 +20,12 @@ public interface DashService {
 	//병원 종류 select list 값 조회하기
 	public List<DashHpKindVO> dashHpSelectList();
 
+	//병원 검색 결과 List 값 조회하기
+	public List<Map<String, String>> SelectDashList(Map<String, Object> paramMap);
+
+	//병원 검색결과 총개수 조회하기
+	public int countDashList(Map<String, Object> paramMap);
+
 
 
 }

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import egovframework.example.sample.service.BoardVO;
 import egovframework.example.sample.service.DashDocKindVO;
 import egovframework.example.sample.service.DashGeoVO;
+import egovframework.example.sample.service.DashHosSearchListVO;
 import egovframework.example.sample.service.DashHpKindVO;
 import egovframework.example.sample.service.DashService;
 
@@ -202,19 +203,36 @@ public class DashController {
 	
 	//두번째 대시보드 - 병원 검색결과 목록 조회
 	@RequestMapping(value="/HospitalSearchList.do")
-	@ResponseBody
-	public Map<String, Object> HospitalSearchList(DashHpKindVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+	public String HospitalSearchList(DashHpKindVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 			   HttpServletResponse response) throws Exception {
 
 		logger.info("두번째 대시보드  파람맵" + "HospitalSearchList" + paramMap);
 
-	
+		//Ajax로 넘어온 파라미터 int로 캐스팅(mapper에서 사용하기 위해)
+		int pagenum = Integer.parseInt((String) paramMap.get("pagenum"));
+		int pageSize = Integer.parseInt((String) paramMap.get("pageSize"));
+		int pageindex = (pagenum - 1) * pageSize;
 		
-		//Ajax응답데이터 map으로 전달 (차트 데이터 모두 map에 담아 전달)
-		Map<String, Object> returnmap = new HashMap<String, Object>();
+		int sigungu_cd = Integer.parseInt((String) paramMap.get("sigungu_cd"));
+		int kind_cd = Integer.parseInt((String) paramMap.get("kind_cd"));
+
+		//paramMap에 담아 같이 보내기
+		paramMap.put("pageSize", pageSize);
+		paramMap.put("pageindex", pageindex);
+		paramMap.put("sigungu_cd", sigungu_cd);
+		paramMap.put("kind_cd", kind_cd);
 		
-//		returnmap.put("clickGeoNm", clickGeoNm);
-		return returnmap;		
+		//리스트로 병원 검색 목록 받아오기
+		List<Map<String, String>> list = dashService.SelectDashList(paramMap);
+		
+		//총 병원 목록 개수 구하기
+		int totalcnt = dashService.countDashList(paramMap);
+		
+		//모두 넘겨서 게시글 목록 및 페이지네이션에 활용
+		model.addAttribute("list",list);
+		model.addAttribute("totalcnt", totalcnt);
+		
+		return "dashboard/dashListGrd";	
 	
 
 	}

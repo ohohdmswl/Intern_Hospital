@@ -158,6 +158,13 @@ select, input {
 .table tr {
 	text-align: center;
 }
+
+
+.paging_area {
+	text-align: center;
+	margin-bottom: 2rem;
+}
+
 </style>
 
 
@@ -221,8 +228,9 @@ select, input {
 							<th class="col-12" >병원이름</th>
 						</tr>
 					</thead>
-					<tbody id="boardListTbody"></tbody>
+					<tbody id="hpListTbody"></tbody>
 				</table>
+				<div class="paging_area"  id="hpPagination"> </div>
 			</div>
 
 		</div> <!-- box2-2 -->	
@@ -242,11 +250,15 @@ select, input {
 
 
 <script type="text/javascript">
+	//페이지네이션 설정
+	var pageSize = 10;     
+	var pageBlockSize = 5;  
 
     /** OnLoad event */
     $(function() {
     	//처음 페이지 로드할 때 전국 데이터 활용한 차트 보여주기
     	fn_chartClick();
+//     	fn_HospitalSearch();
     });
 
 //선택한 지역 sido_nm 표기
@@ -295,35 +307,44 @@ function fn_chartClick(geoClick) {
 };
 
 //검색눌렀을 때 선택 조건에 맞는 병원 검색
-function fn_HospitalSearch() {
+function fn_HospitalSearch(pagenum) {
+	
+	
+	alert("셀렉트 이러면 안되는데 : " + $("#selectsigungu").val());
+	alert("셀렉트 이러면 안되는데 : " + $("#selectHkind").val());
+	alert("셀렉트 이러면 안되는데 : " + $("#searchText").val());
+	
+	pagenum = pagenum || 1;
 	
 	var pdata = {
 					sigungu_cd : $("#selectsigungu").val()
 				   ,kind_cd : $("#selectHkind").val()
 				   ,hos_nm : $("#searchText").val()
+				   ,pageSize : pageSize
+				   ,pageBlockSize : pageBlockSize
+				   ,pagenum : pagenum
 				}
 	
 	$.ajax({
 	    url: '/dash/HospitalSearchList.do',
 	    type: 'post',
 	    data: pdata,
-	    dataType: 'json',
+	    dataType: 'text',
 	    success: function(data){ 
-	    	console.log( "에이젝스 리턴 데이터 확인 : " + JSON.stringify(data) );
-	    	
-// 	    	var sidoCd = data.clickGeoNm.sido_cd;
-
-	    	//선택한 지역 표기(전국 or 지역)
-// 	    	fn_clickChk(data.clickGeoNm);
-	    	
-// 	    	$("#geoClick").val(sidoCd);
-// 	    	alert("어디한번 확인해볼까 : " + $("#geoClick").val());
-	    	
-	    	//지도차트 실행되면서 input hidden 값에 선택한 지역 값 입력됨
-// 	    	alert("어디한번 확인해볼까 : " + $("#geoClick").val());
-	    	
-	    	//선택한 지역의 시군구 리스트 전달
-// 	    	fn_hopitalSelectList(data);
+	    	console.log( "에이젝스 리턴 데이터 확인 : " + data );
+			
+			$("#hpListTbody").empty().append(data);
+			
+			var  totalcnt = $("#totalcnt").val();
+			
+			console.log("totalcnt : " + totalcnt);
+			
+			var paginationHtml = getPaginationHtml(pagenum, totalcnt, pageSize, pageBlockSize, 'fn_boardlist');
+			console.log("paginationHtml : " + paginationHtml);
+			 
+			$("#hpPagination").empty().append( paginationHtml );
+			
+			$("#pageno").val(pagenum);
 
 	    },
 	    error: function(){

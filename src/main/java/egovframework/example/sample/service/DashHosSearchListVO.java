@@ -9,6 +9,7 @@ public class DashHosSearchListVO {
 	private String hos_tel; 	//병원전화번호
 	private String hos_url; 	//병원 url
 	private String hos_addr; 	//병원주소
+	private int hos_zip;		//병원 우편번호
 	private String hos_open; 	//병원 개원날자
 	private int hos_x;			//병원 x좌표
 	private int hos_y; 			//병원 y좌표
@@ -34,6 +35,7 @@ public class DashHosSearchListVO {
         				  +", hos_tel=" + hos_tel 
         				  +", hos_url=" + hos_url 
         				  +", hos_addr=" + hos_addr 
+        				  +", hos_zip=" + hos_zip 
         				  +", hos_open=" + hos_open 
         				  +", hos_x=" + hos_x 
         				  +", hos_y=" + hos_y 
@@ -93,6 +95,14 @@ public class DashHosSearchListVO {
 
 	public void setHos_addr(String hos_addr) {
 		this.hos_addr = hos_addr;
+	}
+
+	public int getHos_zip() {
+		return hos_zip;
+	}
+
+	public void setHos_zip(int hos_zip) {
+		this.hos_zip = hos_zip;
 	}
 
 	public String getHos_open() {
@@ -230,6 +240,7 @@ public class DashHosSearchListVO {
 	public void setDoc_tat(int doc_tat) {
 		this.doc_tat = doc_tat;
 	}
-    
+
+
     
 }

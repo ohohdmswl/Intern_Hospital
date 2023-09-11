@@ -248,7 +248,7 @@ select, input {
 				<table class="table table-hover">
 					<thead>
 						<tr>
-							<th class="col-12" >병원이름</th>
+							<th class="col-12" >병원 목록</th>
 						</tr>
 					</thead>
 					<tbody id="hpListTbody"></tbody>
@@ -391,19 +391,9 @@ function fn_dashSelectOne(data) {
 	    data: {hos_cd : data},
 	    dataType: 'json',
 	    success: function(data){ 
-	    	console.log( "에이젝스 대시 셀렉트원 리턴 데이터 확인 : " + data );
+	    	console.log( "에이젝스 대시 셀렉트원 리턴 데이터 확인 : " + JSON.stringify(data) );
 			
-			/*
-			//카카오맵 API
-			const container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
-			let options = { //지도를 생성할 때 필요한 기본 옵션
-				center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
-				level: 3 //지도의 레벨(확대, 축소 정도)
-			};
-			let map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-			*/
-			
-			
+			var data = data.DashHosSelectOne;
 			
 			var mapContainer = document.getElementById('map'), // 지도의 중심좌표
 		    mapOption = { 
@@ -419,7 +409,7 @@ function fn_dashSelectOne(data) {
 
 			
 			// 주소로 좌표를 검색합니다
-			geocoder.addressSearch('제주특별자치도 제주시 첨단로 242', function(result, status) {
+			geocoder.addressSearch(data.hos_addr, function(result, status) {
 
 			    // 정상적으로 검색이 완료됐으면 
 			     if (status === kakao.maps.services.Status.OK) {
@@ -447,36 +437,28 @@ function fn_dashSelectOne(data) {
 			     // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
 			        map.setCenter(coords);
 			
-			/*
-			// 지도에 마커를 표시합니다 
-			var marker = new kakao.maps.Marker({
-			    map: map, 
-			    position: new kakao.maps.LatLng(33.450701, 126.570667)
-			});
-			*/
-
 	
 			// 커스텀 오버레이에 표시할 컨텐츠 입니다
 			// 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
 			// 별도의 이벤트 메소드를 제공하지 않습니다 
 			var content = '<div class="wrap">' + 
-			            '    <div class="info">' + 
-			            '        <div class="title" style="background : gray;">' + 
-			            '            카카오 스페이스닷원' + 
-			            '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' + 
-			            '        </div>' + 
-			            '        <div class="body">' + 
-			            '            <div class="img">' +
-			            '                <img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/thumnail.png" width="73" height="70">' +
-			            '           </div>' + 
-			            '            <div class="desc">' + 
-			            '                <div class="ellipsis">제주특별자치도 제주시 첨단로 242</div>' + 
-			            '                <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>' + 
-			            '                <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>' + 
-			            '            </div>' + 
-			            '        </div>' + 
-			            '    </div>' +    
-			            '</div>';
+			              	'<div class="info">' + 
+			              		'<div class="title" style="background : #e4eaf1;">' + 
+			                        data.hos_nm + 
+			              			'<div class="close" onclick="closeOverlay()" title="닫기"></div>' + 
+		              			'</div>' + 
+			              	'<div class="body">' + 
+			              		'<div class="img">' +
+			              				'<img src="${pageContext.request.contextPath}/images/egovframework/layout/hospitalIcon.png" width="73" height="70">' +
+			              		'</div>' + 
+			              	'<div class="desc">' + 
+			              		'<div class="ellipsis">' +  data.hos_addr + '</div>' + 
+			            		'<div class="jibun ellipsis">(우) ' + data.hos_zip + '&nbsp;(번호) ' + data.hos_tel +  '</div>' + 
+			            		'<div><a href="' + data.hos_url + '" target="_blank" class="link">홈페이지</a></div>' + 
+		            		'</div>' + 
+			            	'</div>' + 
+			           		'</div>' +    
+			            	'</div>';
 	
 			// 마커 위에 커스텀오버레이를 표시합니다
 			// 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다

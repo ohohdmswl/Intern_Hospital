@@ -123,6 +123,7 @@
 				,hp.hos_tel 
 				,hp.hos_url 
 				,hp.hos_addr 
+				,hp.hos_zip 
 				,hp.hos_open 
 				,hp.hos_x 
 				,hp.hos_y 

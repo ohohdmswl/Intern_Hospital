@@ -44,6 +44,10 @@ public class DashDAO extends EgovAbstractMapper{
 	public int countDashList(Map<String, Object> paramMap) {
 		return selectOne("countDashList", paramMap);
 	}
+	//검색한 병원의 정보 조회
+	public DashHosSearchListVO DashHosSelectOne(Map<String, Object> paramMap) {
+		return selectOne("DashHosSelectOne", paramMap);
+	}
 
 	
 

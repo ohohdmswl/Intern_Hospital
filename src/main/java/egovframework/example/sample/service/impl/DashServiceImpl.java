@@ -73,5 +73,9 @@ public class DashServiceImpl extends EgovAbstractServiceImpl implements DashServ
 		return dashDAO.countDashList(paramMap);
 	}
 	
-	
+	//선택한 병원정보 VO에 저장
+	@Override
+	public DashHosSearchListVO DashHosSelectOne(Map<String, Object> paramMap) {
+		return dashDAO.DashHosSelectOne(paramMap);
+	}
 }

@@ -26,6 +26,9 @@ public interface DashService {
 	//병원 검색결과 총개수 조회하기
 	public int countDashList(Map<String, Object> paramMap);
 
+	//선택한 병원정보 VO에 저장
+	public DashHosSearchListVO DashHosSelectOne(Map<String, Object> paramMap);
+
 
 
 }

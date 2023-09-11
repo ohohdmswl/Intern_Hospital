@@ -78,7 +78,7 @@
 	
 	<!-- 병원 검색 목록 조회 -->
 	<select id="SelectDashList" resultType="map">
-		SELECT  hp.hos_nm
+		SELECT  hp.hos_nm, hp.hos_cd
 		  FROM  tb_hospital hp
 		  
 		  <where>
@@ -114,6 +114,35 @@
 		  			and hp.hos_nm Like CONCAT('%', #{hos_nm}, '%')
 		  		</if>
 		  </where>
+	</select>
+	
+	<!-- 병원 검색 결과 - 병원 정보 조회 -->
+	<select id="DashHosSelectOne"  resultType="dashHosSLVO">
+		SELECT   hp.hos_nm 
+				,hp.hos_cd 
+				,hp.hos_tel 
+				,hp.hos_url 
+				,hp.hos_addr 
+				,hp.hos_open 
+				,hp.hos_x 
+				,hp.hos_y 
+				,doc.doc_mg
+				,doc.doc_mi 
+				,doc.doc_mr
+				,doc.doc_mp 
+				,doc.doc_dg 
+				,doc.doc_di 
+				,doc.doc_dr 
+				,doc.doc_dp 
+				,doc.doc_hg 
+				,doc.doc_hi 
+				,doc.doc_hr 
+				,doc.doc_hp 
+				,doc.doc_mw 
+				,doc.doc_tat 
+		  FROM  tb_hospital hp
+		  JOIN  tb_doctor doc ON hp.hos_cd = doc.hos_cd 
+		 WHERE  hp.hos_cd = #{hos_cd}
 	</select>
 	
 	

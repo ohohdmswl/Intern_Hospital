@@ -49,13 +49,13 @@ body, ui, li {
 	flex-direction: column;
 }
 
-.title, .menu {
+.titleNav, .menu {
 	width: 100vw;
 /* 	font-family: 'IBM Plex Sans KR', sans-serif; */
 	font-family: 'Orbit', sans-serif;
 }
 
-.title{
+.titleNav{
 	background: #fefefe;
 	height: 4rem;
 	display: flex;
@@ -67,7 +67,7 @@ body, ui, li {
 }
 
 
-.title > div > p {
+.titleNav > div > p {
 	font-size: 2rem;
 	margin: 0 0 0.5rem 0.5rem;
 	letter-spacing:0.1rem;
@@ -173,7 +173,7 @@ body {
 <body>
 
 	<div class="nav"><!-- nav -->
-		<div class="title"><!-- title -->
+		<div class="titleNav"><!-- titleNav -->
 			<div class="hospitalImg">
 				<img src="${pageContext.request.contextPath}/images/egovframework/layout/hospitalIcon.png" style="width: 3rem; height: 3rem;">
 			</div>

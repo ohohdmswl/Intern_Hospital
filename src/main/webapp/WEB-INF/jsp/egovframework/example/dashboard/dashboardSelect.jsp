@@ -14,14 +14,15 @@
 <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/locales/de_DE.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/geodata/usaLow.js"></script>
-<!-- <script src="https://cdn.amcharts.com/lib/5/geodata/southKoreaLow.js"></script> -->
-<!-- <script src="https://cdn.amcharts.com/lib/5/geodata/germanyLow.js"></script> -->
 <script src="https://cdn.amcharts.com/lib/5/fonts/notosans-sc.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/geodata/data/countries.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/geodata/data/countries2.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
 
+<!-- 카카오맵 API -->
+<!-- services와 clusterer, drawing 라이브러리 불러오기 -->
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=76a089e067cc1b79272edcd263efb64f&libraries=services,clusterer,drawing"></script>
 
 
 <!-- header -->
@@ -165,6 +166,28 @@ select, input {
 	margin-bottom: 2rem;
 }
 
+#map {
+	width:400px; 
+	height:400px;
+	border: 3px solid orange;
+}
+
+    .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
+    .wrap * {padding: 0;margin: 0;}
+    .wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+    .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
+    .info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
+    .info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
+    .info .close:hover {cursor: pointer;}
+    .info .body {position: relative;overflow: hidden;}
+    .info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
+    .desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+    .desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
+    .info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+    .info:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+    .info .link {color: #5085BB;}
+
+
 </style>
 
 
@@ -237,6 +260,11 @@ select, input {
 		
 	</div><!-- box2 -->
 	<div class="box3 last" style="border: 1px solid blue; height: 100%;">
+		<div>
+			
+		</div>
+		
+		<div id="map"></div>
 	
 	</div><!-- box3 -->
 </div><!-- contain  -->
@@ -250,6 +278,10 @@ select, input {
 
 
 <script type="text/javascript">
+
+
+
+
 	//페이지네이션 설정
 	var pageSize = 10;     
 	var pageBlockSize = 5;  
@@ -258,7 +290,7 @@ select, input {
     $(function() {
     	//처음 페이지 로드할 때 전국 데이터 활용한 차트 보여주기
     	fn_chartClick();
-//     	fn_HospitalSearch();
+    	fn_searchText();
     });
 
 //선택한 지역 sido_nm 표기
@@ -282,20 +314,12 @@ function fn_chartClick(geoClick) {
 	    	console.log( "에이젝스 리턴 데이터 확인 : " + JSON.stringify(data) );
 	    	
 	    	var sidoCd = data.clickGeoNm.sido_cd;
-// 	    	var hopitalGeoList = data.dashgeoSelectList;
-
-// 	    	console.log( "에이젝스 리턴 데이터 확인 222: " + JSON.stringify(hopitalGeoList) );
 
 	    	//선택한 지역 표기(전국 or 지역)
 	    	fn_clickChk(data.clickGeoNm);
 	    	
 	    	
 	    	$("#geoClick").val(sidoCd);
-	    	alert("어디한번 확인해볼까 : " + $("#geoClick").val());
-	    	
-	    	
-	    	//지도차트 실행되면서 input hidden 값에 선택한 지역 값 입력됨
-// 	    	alert("어디한번 확인해볼까 : " + $("#geoClick").val());
 	    	
 	    	//선택한 지역의 시군구 리스트 전달
 	    	fn_hopitalSelectList(data);
@@ -308,11 +332,6 @@ function fn_chartClick(geoClick) {
 
 //검색눌렀을 때 선택 조건에 맞는 병원 검색
 function fn_HospitalSearch(pagenum) {
-	
-	
-	alert("셀렉트 이러면 안되는데 : " + $("#selectsigungu").val());
-	alert("셀렉트 이러면 안되는데 : " + $("#selectHkind").val());
-	alert("셀렉트 이러면 안되는데 : " + $("#searchText").val());
 	
 	pagenum = pagenum || 1;
 	
@@ -352,6 +371,138 @@ function fn_HospitalSearch(pagenum) {
 	    }
 	})
 };
+
+//아직 안됨 추후 수정필요
+function fn_searchText(){
+	$('#searchText').keypress(function(event){
+	     if ( event.which == 13 ) {//엔터쳤을 때 검색되게하는 코드
+	         $('#btnSearch').click();
+	         return false;
+	     }
+	})
+};
+
+
+function fn_dashSelectOne(data) {
+	
+	$.ajax({
+	    url: '/dash/dashGeoClickSelectOne.do',
+	    type: 'post',
+	    data: {hos_cd : data},
+	    dataType: 'json',
+	    success: function(data){ 
+	    	console.log( "에이젝스 대시 셀렉트원 리턴 데이터 확인 : " + data );
+			
+			/*
+			//카카오맵 API
+			const container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+			let options = { //지도를 생성할 때 필요한 기본 옵션
+				center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+				level: 3 //지도의 레벨(확대, 축소 정도)
+			};
+			let map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+			*/
+			
+			
+			
+			var mapContainer = document.getElementById('map'), // 지도의 중심좌표
+		    mapOption = { 
+		        center: new kakao.maps.LatLng(33.451475, 126.570528), // 지도의 중심좌표
+		        level: 3 // 지도의 확대 레벨
+		    }; 
+	
+			var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+	
+			// 주소-좌표 변환 객체를 생성합니다
+			var geocoder = new kakao.maps.services.Geocoder();
+			
+
+			
+			// 주소로 좌표를 검색합니다
+			geocoder.addressSearch('제주특별자치도 제주시 첨단로 242', function(result, status) {
+
+			    // 정상적으로 검색이 완료됐으면 
+			     if (status === kakao.maps.services.Status.OK) {
+
+			        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+			        // 결과값으로 받은 위치를 마커로 표시합니다
+			        var marker = new kakao.maps.Marker({
+			            map: map,
+			            position: coords
+			        });
+			        
+						// 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+						kakao.maps.event.addListener(marker, 'click', function() {
+						    overlay.setMap(map);
+						});
+						
+						
+						  // 커스텀 오버레이를 닫기 위해 호출되는 함수입니다 
+					      kakao.maps.event.addListener(map, "click", function () {
+					          overlay.setMap(null)
+					        })     
+			
+			
+			     // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+			        map.setCenter(coords);
+			
+			/*
+			// 지도에 마커를 표시합니다 
+			var marker = new kakao.maps.Marker({
+			    map: map, 
+			    position: new kakao.maps.LatLng(33.450701, 126.570667)
+			});
+			*/
+
+	
+			// 커스텀 오버레이에 표시할 컨텐츠 입니다
+			// 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
+			// 별도의 이벤트 메소드를 제공하지 않습니다 
+			var content = '<div class="wrap">' + 
+			            '    <div class="info">' + 
+			            '        <div class="title" style="background : gray;">' + 
+			            '            카카오 스페이스닷원' + 
+			            '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' + 
+			            '        </div>' + 
+			            '        <div class="body">' + 
+			            '            <div class="img">' +
+			            '                <img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/thumnail.png" width="73" height="70">' +
+			            '           </div>' + 
+			            '            <div class="desc">' + 
+			            '                <div class="ellipsis">제주특별자치도 제주시 첨단로 242</div>' + 
+			            '                <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>' + 
+			            '                <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>' + 
+			            '            </div>' + 
+			            '        </div>' + 
+			            '    </div>' +    
+			            '</div>';
+	
+			// 마커 위에 커스텀오버레이를 표시합니다
+			// 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
+			var overlay = new kakao.maps.CustomOverlay({
+			    content: content,
+			    map: map,
+			    position: marker.getPosition()       
+			});
+	
+	    }//if
+     })//geocoder.addressSearch
+			
+			
+
+			
+	    },
+	    error: function(){
+	        alert("실패실패22");
+	    }
+	})
+	
+}
+	
+
+
+
 
 
 //Ajax 응답데이터로 받은 시군구 리스트를 select list option으로 보여주기
@@ -428,7 +579,7 @@ polygonSeries.mapPolygons.template.events.on("click", function(ev) {
   
   //input hidden 값으로 설정(ajax_controller로 지역 값 넘기기 위해)
   $("#geoClick").val(geoValNm);
-  alert("클릭한 지역 input hidden: " + $("#geoClick").val());
+//   alert("클릭한 지역 input hidden: " + $("#geoClick").val());
   
   //한반도 차트 클릭시 Ajax 함수 사용할 수 있게 작성
   fn_chartClick($("#geoClick").val());
@@ -530,6 +681,11 @@ $(document).ready(function(){
 
 
 </script>
+
+<!-- 카카오 맵 api JS 앱키 -->
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=76a089e067cc1b79272edcd263efb64f"></script>
+
+
 
 <!-- footer -->
 <jsp:include page="/WEB-INF/jsp/egovframework/example/layout/footer.jsp"></jsp:include>

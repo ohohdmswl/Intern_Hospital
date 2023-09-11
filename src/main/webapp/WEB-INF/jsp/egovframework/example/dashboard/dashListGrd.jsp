@@ -17,7 +17,7 @@
 							<!-- Ajax 사용 -->
 <%-- 							<td style="font-weight: bold;"><a href="javascript:fn_boardSelectOne('${list.board_no}')">${list.board_title }</a></td> --%>
 							<!-- 쿼리스트링 사용 -->
-							<td style="font-weight: bold;"><a href="/board/boardSelectOnePage.do?board_no=${list.board_no }">${list.hos_nm }</a></td>
+							<td style="font-weight: bold;"><a href="javascript:fn_dashSelectOne('${list.hos_cd}')">${list.hos_nm }</a></td>
 						</tr>
 					</c:forEach>
 				</c:if>

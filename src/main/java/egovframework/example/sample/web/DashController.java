@@ -234,7 +234,30 @@ public class DashController {
 		
 		return "dashboard/dashListGrd";	
 	
+	}
+	
+	
+	//두번째 대시보드 - 한반도 차트 선택시(전국 /지역) 차트 Ajax 실행
+	@RequestMapping(value="/dashGeoClickSelectOne.do")
+	@ResponseBody
+	public Map<String, Object> dashGeoClickSelectOne(DashHpKindVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+			   HttpServletResponse response) throws Exception {
 
+		logger.info("대시보드  셀렉트원 / 카카오에 필요한 정보 파람맵" + "dashGeoClickSelectOne" + paramMap);
+		
+		int hos_cd = Integer.parseInt((String) paramMap.get("hos_cd"));
+		paramMap.put("hos_cd", hos_cd);
+		
+		//선택한 병원정보 가져오기
+		DashHosSearchListVO DashHosSelectOne = dashService.DashHosSelectOne(paramMap);
+		
+		logger.info("카카오에 필요한 정보 보낼 파람맵" + "DashHosSelectOne" + DashHosSelectOne);
+		
+		Map<String, Object> returnmap = new HashMap<String, Object>();
+		
+		returnmap.put("DashHosSelectOne", DashHosSelectOne);		
+		
+		return returnmap;		
 	}
 	
 	

@@ -88,8 +88,8 @@
 		  		<if test="(kind_cd != null) and (!kind_cd.equals(''))">
 		  			and hp.kind_cd = #{kind_cd}
 		  		</if>
-		  		<if test="(searchText != null) and (!searchText.equals(''))">
-		  			and hp.hos_nm Like CONCAT('%', #{searchText}, '%')
+		  		<if test="(hos_nm != null) and (!hos_nm.equals(''))">
+		  			and hp.hos_nm Like CONCAT('%', #{hos_nm}, '%')
 		  		</if>
 		  </where>
 		ORDER BY hp.hos_nm asc
@@ -110,8 +110,8 @@
 		  		<if test="(kind_cd != null) and (!kind_cd.equals(''))">
 		  			and hp.kind_cd = #{kind_cd}
 		  		</if>
-		  		<if test="(searchText != null) and (!searchText.equals(''))">
-		  			and hp.hos_nm Like CONCAT('%', #{searchText}, '%')
+		  		<if test="(hos_nm != null) and (!hos_nm.equals(''))">
+		  			and hp.hos_nm Like CONCAT('%', #{hos_nm}, '%')
 		  		</if>
 		  </where>
 	</select>

@@ -171,7 +171,7 @@ select, input {
 
 
 
-<title>대시보드1</title>
+<title>대시보드2</title>
 </head>
 <body>
 <div class="contain">
@@ -339,7 +339,7 @@ function fn_HospitalSearch(pagenum) {
 			
 			console.log("totalcnt : " + totalcnt);
 			
-			var paginationHtml = getPaginationHtml(pagenum, totalcnt, pageSize, pageBlockSize, 'fn_boardlist');
+			var paginationHtml = getPaginationHtml(pagenum, totalcnt, pageSize, pageBlockSize, 'fn_HospitalSearch');
 			console.log("paginationHtml : " + paginationHtml);
 			 
 			$("#hpPagination").empty().append( paginationHtml );

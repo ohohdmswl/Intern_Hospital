@@ -74,7 +74,6 @@
 /*   height: 10rem; */
 	justify-content: center;
   
-  
 }
 
 
@@ -274,7 +273,7 @@ a {
 	</div><!-- box2 -->
 	<div class="box3 last" style="border: 1px solid blue; height: 100%;">
 		<div>
-			<table class="table" id="hosInfo">
+			<table class="" id="hosInfo">
 			
 			
 			</table>
@@ -417,17 +416,26 @@ function fn_dashSelectOne(data) {
 	    	 $('#hosInfo').empty();
 	    	
 	    	var str = "";
-	    	    str += "<tr><th>병원이름</th><td>" +data.hos_nm +"</td></tr>"
-	    	    str += "<tr><th>주소</th><td>" +data.hos_addr +"</td></tr>"
-	    	    str += "<tr><th>전화번호</th><td>" +data.hos_tel +"</td></tr>"
-	    	    str += '<tr><th>URL</th><td><a href="' + data.hos_url + '" >' +  data.hos_url + '</a></td></tr>'
-	    	    str += "<tr><th>전문의</th><td>의과("+data.doc_mp +") 치과("+data.doc_dp+") 한방("+data.doc_hp+") 조산사("+data.doc_mw+")</td></tr>"
-	    	    str += "<tr><th>총의사수</th><td>" +data.doc_tat +"명</td></tr>"
+	    	    str += "<tr><th><span>병원이름</span></th><td><span>" +data.hos_nm +"</span></td></tr>"
+	    	    str += "<tr><th><span>주소</span></th><td><span>" +data.hos_addr +"</span></td></tr>"
+	    	    str += "<tr><th><span>전화번호</span></th><td><span>" +data.hos_tel +"</span></td></tr>"
+	    	    str += '<tr><th><span>URL</span></th><td><span><a href="' + data.hos_url + '" >' +  data.hos_url + '</a></span></td></tr>'
+	    	    str += "<tr><th><span>전문의</span></th><td><span>의과("+data.doc_mp +") 치과("+data.doc_dp+") 한방("+data.doc_hp+") 조산사("+data.doc_mw+")</span></td></tr>"
+	    	    str += "<tr><th><span>총의사수</span></th><td><span>" +data.doc_tat +"명</span></td></tr>"
 	    	
 	    	    $("#hosInfo").append(str);
 	    	
-	    	    $('th').css({"background": "#e4eaf1", "border-radius": "2rem"});
-	    	    $('th').css({"margin-bottom" : "2rem"});
+	    	    $('#hosInfo th > span').css({"background": "#e4eaf1"
+	    	    					   ,"border-radius": "2rem"
+	    	    					   ,"width" : "4rem"
+	    	    					   ,"height" : "auto"
+	    	    					   ,"margin-bottom": "1rem"
+	    	    					   ,"margin-right" : "0.5rem"
+	    	    					   ,"display" : "inline-block"
+	    	    					   ,"text-align": "center" });
+	    	    $('#hosInfo td > span').css({"display" : "inline-block"
+	    	    							,"margin-bottom" : "1rem"
+	    	    					        ,"text-align": "center" });
 	    	    
 	    	    
 	    	    
@@ -440,7 +448,7 @@ function fn_dashSelectOne(data) {
 			
 			var mapContainer = document.getElementById('map'), // 지도의 중심좌표
 		    mapOption = { 
-		        center: new kakao.maps.LatLng(33.451475, 126.570528), // 지도의 중심좌표
+		        center: new kakao.maps.LatLng(data.hos_y, data.hos_x), // 지도의 중심좌표
 		        level: 3 // 지도의 확대 레벨
 		    }; 
 	

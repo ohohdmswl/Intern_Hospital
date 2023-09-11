@@ -213,14 +213,18 @@ public class DashController {
 		int pageSize = Integer.parseInt((String) paramMap.get("pageSize"));
 		int pageindex = (pagenum - 1) * pageSize;
 		
+		int sido_cd = Integer.parseInt((String) paramMap.get("sido_cd"));
 		int sigungu_cd = Integer.parseInt((String) paramMap.get("sigungu_cd"));
 		int kind_cd = Integer.parseInt((String) paramMap.get("kind_cd"));
 
 		//paramMap에 담아 같이 보내기
 		paramMap.put("pageSize", pageSize);
 		paramMap.put("pageindex", pageindex);
+		paramMap.put("sido_cd", sido_cd);
 		paramMap.put("sigungu_cd", sigungu_cd);
 		paramMap.put("kind_cd", kind_cd);
+		
+		System.out.println("파람맵을 확인해보자" + paramMap);
 		
 		//리스트로 병원 검색 목록 받아오기
 		List<Map<String, String>> list = dashService.SelectDashList(paramMap);

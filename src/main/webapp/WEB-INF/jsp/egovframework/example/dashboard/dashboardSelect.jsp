@@ -167,25 +167,38 @@ select, input {
 }
 
 #map {
-	width:400px; 
-	height:400px;
+	width:450px; 
+	height:350px;
 	border: 3px solid orange;
 }
 
-    .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
-    .wrap * {padding: 0;margin: 0;}
-    .wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
-    .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
-    .info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
-    .info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
-    .info .close:hover {cursor: pointer;}
-    .info .body {position: relative;overflow: hidden;}
-    .info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
-    .desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
-    .desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
-    .info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
-    .info:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
-    .info .link {color: #5085BB;}
+<!-- 카카오맵 API CSS -->
+.wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
+.wrap * {padding: 0;margin: 0;}
+.wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+.wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
+.info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
+.info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
+.info .close:hover {cursor: pointer;}
+.info .body {position: relative;overflow: hidden;}
+.info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
+.desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+.desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
+.info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+.info:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+.info .link {color: #5085BB;}
+
+a {
+	color: black;
+}
+
+#hosInfo > th {
+
+	background: #e4eaf1;
+	border-radius: 0.5rem;
+
+}
+
 
 
 </style>
@@ -200,9 +213,9 @@ select, input {
 <div class="contain">
 
 	<input type="hidden" id="geoClick" value=""/>
-	<input type="hidden" id="sigungu_cd" value=""/>
-	<input type="hidden" id="kind_cd" value=""/>
-	<input type="hidden" id="hos_nm" value=""/>
+<!-- 	<input type="hidden" id="sigungu_cd" value=""/> -->
+<!-- 	<input type="hidden" id="kind_cd" value=""/> -->
+<!-- 	<input type="hidden" id="hos_nm" value=""/> -->
 	<div class="box1 left" style="border: 1px solid black">
 <!-- 	<div class="box1 left"> -->
 		<div id="geoTitle1" class="geoTitle"></div>
@@ -261,7 +274,10 @@ select, input {
 	</div><!-- box2 -->
 	<div class="box3 last" style="border: 1px solid blue; height: 100%;">
 		<div>
+			<table class="table" id="hosInfo">
 			
+			
+			</table>
 		</div>
 		
 		<div id="map"></div>
@@ -320,6 +336,7 @@ function fn_chartClick(geoClick) {
 	    	
 	    	
 	    	$("#geoClick").val(sidoCd);
+	    	alert("클릭한 지역을 확인하자" + $("#geoClick").val());
 	    	
 	    	//선택한 지역의 시군구 리스트 전달
 	    	fn_hopitalSelectList(data);
@@ -336,7 +353,8 @@ function fn_HospitalSearch(pagenum) {
 	pagenum = pagenum || 1;
 	
 	var pdata = {
-					sigungu_cd : $("#selectsigungu").val()
+					sido_cd : $("#geoClick").val()
+				   ,sigungu_cd : $("#selectsigungu").val()
 				   ,kind_cd : $("#selectHkind").val()
 				   ,hos_nm : $("#searchText").val()
 				   ,pageSize : pageSize
@@ -393,7 +411,32 @@ function fn_dashSelectOne(data) {
 	    success: function(data){ 
 	    	console.log( "에이젝스 대시 셀렉트원 리턴 데이터 확인 : " + JSON.stringify(data) );
 			
-			var data = data.DashHosSelectOne;
+	    	var data = data.DashHosSelectOne;
+			
+	    	//테이블 비우기
+	    	 $('#hosInfo').empty();
+	    	
+	    	var str = "";
+	    	    str += "<tr><th>병원이름</th><td>" +data.hos_nm +"</td></tr>"
+	    	    str += "<tr><th>주소</th><td>" +data.hos_addr +"</td></tr>"
+	    	    str += "<tr><th>전화번호</th><td>" +data.hos_tel +"</td></tr>"
+	    	    str += '<tr><th>URL</th><td><a href="' + data.hos_url + '" >' +  data.hos_url + '</a></td></tr>'
+	    	    str += "<tr><th>전문의</th><td>의과("+data.doc_mp +") 치과("+data.doc_dp+") 한방("+data.doc_hp+") 조산사("+data.doc_mw+")</td></tr>"
+	    	    str += "<tr><th>총의사수</th><td>" +data.doc_tat +"명</td></tr>"
+	    	
+	    	    $("#hosInfo").append(str);
+	    	
+	    	    $('th').css({"background": "#e4eaf1", "border-radius": "2rem"});
+	    	    $('th').css({"margin-bottom" : "2rem"});
+	    	    
+	    	    
+	    	    
+	    	    
+	    	    
+	    	    
+	    	    
+	    	    
+	    	
 			
 			var mapContainer = document.getElementById('map'), // 지도의 중심좌표
 		    mapOption = { 
@@ -496,6 +539,8 @@ function fn_hopitalSelectList(redata) {
 	 $('#selectsigungu option').remove();
 	 $('#selectHkind option').remove();
 
+	 $("#selectsigungu").append("<option value='0'>"+ "시/군/구" +"</option>");
+	 
 	for(var i=0; i<hopitalGeoList.length; i++){
 		var sggValue = hopitalGeoList[i].sigungu_cd;
 		var sggKey = hopitalGeoList[i].sigungu_nm;

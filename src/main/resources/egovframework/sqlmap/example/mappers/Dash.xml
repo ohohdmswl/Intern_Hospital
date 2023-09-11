@@ -82,7 +82,12 @@
 		  FROM  tb_hospital hp
 		  
 		  <where>
-		  		<if test="(sigungu_cd != null) and (!sigungu_cd.equals(''))">
+		  
+		  
+		  		<if test="(sido_cd != 0) and (sido_cd > 0)">
+		  			and hp.sido_cd = #{sido_cd}
+		  		</if>
+		  		<if test="(sigungu_cd != 0) and (sigungu_cd > 0)">
 		  			and hp.sigungu_cd = #{sigungu_cd}
 		  		</if>
 		  		<if test="(kind_cd != null) and (!kind_cd.equals(''))">
@@ -104,7 +109,10 @@
 		  FROM  tb_hospital hp
 		  
 		  <where>
-		  		<if test="(sigungu_cd != null) and (!sigungu_cd.equals(''))">
+  		  		<if test="(sido_cd != 0) and (sido_cd > 0)">
+		  			and hp.sido_cd = #{sido_cd}
+		  		</if>
+		  		<if test="(sigungu_cd != 0) and (sigungu_cd > 0)">
 		  			and hp.sigungu_cd = #{sigungu_cd}
 		  		</if>
 		  		<if test="(kind_cd != null) and (!kind_cd.equals(''))">

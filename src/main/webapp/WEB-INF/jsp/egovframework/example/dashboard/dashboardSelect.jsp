@@ -55,7 +55,8 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	width : 100%;
+/* 	width : 100%; */
+ 	margin-right: 2rem;
 }
 
 .box2-1, .box2-2{
@@ -127,6 +128,8 @@
  	justify-content : center; 
  	align-items : center; 
 	flex-direction: column; 
+	margin-bottom: 2rem;
+ 	margin-top: 1rem;
 }
 
 .searchSelect{
@@ -166,9 +169,14 @@ select, input {
 }
 
 #map {
-	width:450px; 
+	width:400px; 
 	height:350px;
-	border: 3px solid orange;
+	border: 0px solid orange;
+}
+
+#hosInfo {
+
+	
 }
 
 <!-- 카카오맵 API CSS -->
@@ -212,11 +220,7 @@ a {
 <div class="contain">
 
 	<input type="hidden" id="geoClick" value=""/>
-<!-- 	<input type="hidden" id="sigungu_cd" value=""/> -->
-<!-- 	<input type="hidden" id="kind_cd" value=""/> -->
-<!-- 	<input type="hidden" id="hos_nm" value=""/> -->
-	<div class="box1 left" style="border: 1px solid black">
-<!-- 	<div class="box1 left"> -->
+	<div class="box1 left" style="border: 0px solid black">
 		<div id="geoTitle1" class="geoTitle"></div>
 		<div>
 			<a href="/dash/dashboardSelect.do">
@@ -227,11 +231,9 @@ a {
 			<div id="chartdiv" style="width: 100%; height: 500px;"></div>
 			</div>
 	</div><!-- box1 -->
-	<div class="box2 right" style="border: 1px solid red;">
-<!-- 	<div class="box2 right"> -->
-		<div class="box2-1" style="border: 1px solid black">
-<!-- 		<div class="box2-1" > -->
-				<div class="search" id="search" style="border: 1px solid gray;">
+	<div class="box2 right" style="border: 0px solid red;">
+		<div class="box2-1" style="border: 0px solid black">
+				<div class="search" id="search" style="border: 0px solid gray;">
 					<div class="searchSelect" style="margin-bottom: 0.5rem;">
 						<div class="searchT" style="margin-right: 0.5rem; margin-left: 0">시/군/구</div>
 						<select id="selectsigungu" style="margin-right: 1rem;">
@@ -254,8 +256,7 @@ a {
 			
 			<div class="clickedGeo"></div>
 		</div> <!-- box2-1 -->	
-		<div class="box2-2" style="border: 1px solid black; height: 500px;">
-<!-- 		<div class="box2-2"> -->
+		<div class="box2-2" style="border: 0px solid black; height: 500px;">
 			<div id="table">
 				<table class="table table-hover">
 					<thead>
@@ -271,7 +272,7 @@ a {
 		</div> <!-- box2-2 -->	
 		
 	</div><!-- box2 -->
-	<div class="box3 last" style="border: 1px solid blue; height: 100%;">
+	<div class="box3 last" style="border: 0px solid blue; height: 100%;">
 		<div>
 			<table class="" id="hosInfo">
 			
@@ -284,8 +285,6 @@ a {
 	</div><!-- box3 -->
 </div><!-- contain  -->
 
-<!-- 	<div class="box3"> -->
-<!-- 	</div> -->
 
 </body>
 
@@ -416,7 +415,7 @@ function fn_dashSelectOne(data) {
 	    	 $('#hosInfo').empty();
 	    	
 	    	var str = "";
-	    	    str += "<tr><th><span>병원이름</span></th><td><span>" +data.hos_nm +"</span></td></tr>"
+	    		str += "<tr><th><span>병원이름</span></th><td><span>" + data.hos_nm + "</span></td></tr>";
 	    	    str += "<tr><th><span>주소</span></th><td><span>" +data.hos_addr +"</span></td></tr>"
 	    	    str += "<tr><th><span>전화번호</span></th><td><span>" +data.hos_tel +"</span></td></tr>"
 	    	    str += '<tr><th><span>URL</span></th><td><span><a href="' + data.hos_url + '" >' +  data.hos_url + '</a></span></td></tr>'
@@ -435,7 +434,12 @@ function fn_dashSelectOne(data) {
 	    	    					   ,"text-align": "center" });
 	    	    $('#hosInfo td > span').css({"display" : "inline-block"
 	    	    							,"margin-bottom" : "1rem"
-	    	    					        ,"text-align": "center" });
+	    	    					        ,"text-align": "center"
+	    	    					        ,"margin-left" : "auto"
+	    	    					        ,"margin-right" : "auto"
+	    	    					        ,"width" : "auto"});
+	    	    $('#hosInfo td').css({"text-align": "center"
+	    	    					        });
 	    	    
 	    	    
 	    	    

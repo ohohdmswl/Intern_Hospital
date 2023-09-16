@@ -284,6 +284,12 @@ a {
 							<th class="col-12" >병원 목록</th>
 						</tr>
 					</thead>
+					
+					<tr id="loadList">
+						<td> 시/군/구, 병원 종류를 선택해주세요!</td>
+					</tr>
+					
+					
 					<tbody id="hpListTbody"></tbody>
 				</table>
 				<div class="paging_area"  id="hpPagination"> </div>
@@ -367,6 +373,10 @@ function fn_chartClick(geoClick) {
 
 //검색눌렀을 때 선택 조건에 맞는 병원 검색
 function fn_HospitalSearch(pagenum) {
+	
+	//검색 버튼 누를 시 ,시/군/구, 병원종류 선택하세요 행 사라지고 검색 결과 테이블만 보이도록
+	$('#loadList').empty();
+	
 	
 	pagenum = pagenum || 1;
 	

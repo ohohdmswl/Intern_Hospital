@@ -182,10 +182,10 @@ body {
 		<div class="menu"><!-- menu -->
 			<ul class="menuList">
 				<li class="menuItem">
-					<a class="menuA" href="/dash/dashboardList.do">대시보드1</a>
+					<a class="menuA" href="/dash/dashboardList.do">병원현황</a>
 				</li>
 				<li class="menuItem">
-					<a class="menuA" href="/dash/dashboardSelect.do">대시보드2</a>	
+					<a class="menuA" href="/dash/dashboardSelect.do">병원검색</a>	
 				</li>
 				<li class="menuItem">
 					<a class="menuA" href="/board/boardView.do">자유게시판</a>

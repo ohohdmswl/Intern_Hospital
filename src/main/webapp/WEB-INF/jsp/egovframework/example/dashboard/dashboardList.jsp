@@ -147,7 +147,7 @@
 
 
 
-<title>대시보드1</title>
+<title>병원현황</title>
 </head>
 <body>
 <div class="contain">

@@ -103,13 +103,12 @@
 .searchT{
  	text-align: center;
   	margin: 0 1rem 0.5rem 0;
-/*  	margin-bottom: 1rem;  */
 	background: #e4eaf1;
 	font-size: 1rem;
 	font-weight: bold;
 	width: 5.5rem;
 	border-radius: 0.5rem;
-/* 	padding: 10 10 10 10; */
+
 }
 
 #docTitle {
@@ -126,21 +125,35 @@
 .search{
  	display : flex; 
  	justify-content : center; 
- 	align-items : center; 
+	align-items: center;
 	flex-direction: column; 
 	margin-bottom: 2rem;
  	margin-top: 1rem;
 }
 
 .searchSelect{
-	display : flex; 
+ 	display : flex;  
 	border-radius: 0.5rem;
+    justify-content: center;
+/*     justify-content: space-between; */
 }
 
-select, input {
+select {
 	height: 1.7rem;
 	border-radius: 0.5rem;
+	margin-bottom: 0.5rem;
+	width: 7rem;
 }
+
+input {
+
+	height: 1.7rem;
+	border-radius: 0.5rem;
+	margin-bottom: 0.5rem;
+	width : 12rem;
+
+}
+
 
 
 .Sclick{
@@ -151,11 +164,17 @@ select, input {
 	border-radius: 3rem;
 	font-size: 1rem;
 	font-weight: bolder;
+	margin: auto;
 }
 
 .searchHnm{
 	display: flex;
 	 justify-content: space-between;
+}
+
+.sbtn{
+	display: flex;
+	
 }
 
 .table tr {
@@ -172,10 +191,11 @@ select, input {
 	width:400px; 
 	height:350px;
 	border: 0px solid orange;
+	margin: auto;
 }
 
 #hosInfo {
-
+	width: 400px;
 	
 }
 
@@ -214,7 +234,7 @@ a {
 
 
 
-<title>대시보드2</title>
+<title>병원검색</title>
 </head>
 <body>
 <div class="contain">
@@ -239,7 +259,7 @@ a {
 						<select id="selectsigungu" style="margin-right: 1rem;">
 							<option value="" >시/군/구</option>
 						</select>
-						<div class="searchT"style="margin-right: 0.5rem;">병원종류</div>
+						<div class="searchT"style="margin-right: 0.5rem; margin-left: 1rem;">병원종류</div>
 						<select id="selectHkind">
 							<option value="" >병원종류</option>
 						</select>
@@ -247,9 +267,9 @@ a {
 					<div class="searchSelect searchHnm" style="margin-bottom: 0.5rem;">
 					
 						<div class="searchT">병원이름</div>
-						<input type="text" id="searchText" placeholder="병원이름을 입력해주세요." style="width: 19rem;"/>
+						<input type="text" id="searchText" placeholder="병원이름을 입력해주세요." style="width: 21rem;"/>
 					</div>
-					<div class="searchSelect">
+					<div class="searchSelect sbtn">
 						<a href="javascript:fn_HospitalSearch()" id="btnSearch" name="btn"><div class="Sclick" >검 색</div></a>
 					</div>
 				</div><!-- search -->
@@ -274,7 +294,7 @@ a {
 	</div><!-- box2 -->
 	<div class="box3 last" style="border: 0px solid blue; height: 100%;">
 		<div>
-			<table class="" id="hosInfo">
+			<table class="" id="hosInfo" style="width: 400px;">
 			
 			
 			</table>
@@ -388,15 +408,18 @@ function fn_HospitalSearch(pagenum) {
 	})
 };
 
-//아직 안됨 추후 수정필요
+//병원이름 input에서 엔터 누르면 검색 버튼 작동
 function fn_searchText(){
-	$('#searchText').keypress(function(event){
-	     if ( event.which == 13 ) {//엔터쳤을 때 검색되게하는 코드
-	         $('#btnSearch').click();
-	         return false;
-	     }
+	
+	document.getElementById("searchText").addEventListener("keyup", function(event) {
+	    if (event.key === "Enter") {
+	        document.getElementById("btnSearch").click();
+	    }
 	})
 };
+
+
+
 
 
 function fn_dashSelectOne(data) {
@@ -414,15 +437,28 @@ function fn_dashSelectOne(data) {
 	    	//테이블 비우기
 	    	 $('#hosInfo').empty();
 	    	
+    		   
+    		   
 	    	var str = "";
 	    		str += "<tr><th><span>병원이름</span></th><td><span>" + data.hos_nm + "</span></td></tr>";
 	    	    str += "<tr><th><span>주소</span></th><td><span>" +data.hos_addr +"</span></td></tr>"
 	    	    str += "<tr><th><span>전화번호</span></th><td><span>" +data.hos_tel +"</span></td></tr>"
-	    	    str += '<tr><th><span>URL</span></th><td><span><a href="' + data.hos_url + '" >' +  data.hos_url + '</a></span></td></tr>'
+	    	    
+	    	    
+    		   if(typeof data.hos_url == "undefined" || data.hos_url == null || data.hos_url == ""){
+    			   
+    		   }else{
+	    	    str += '<tr><th><span>URL</span></th><td><a href="' + data.hos_url + '" ><span id="spUrl">' +  data.hos_url + '</span></a></td></tr>'
+    		   }
+	    	    
 	    	    str += "<tr><th><span>전문의</span></th><td><span>의과("+data.doc_mp +") 치과("+data.doc_dp+") 한방("+data.doc_hp+") 조산사("+data.doc_mw+")</span></td></tr>"
 	    	    str += "<tr><th><span>총의사수</span></th><td><span>" +data.doc_tat +"명</span></td></tr>"
 	    	
 	    	    $("#hosInfo").append(str);
+	    	    
+	    	    $('#hosInfo').css({"width" : "400px"
+	    	    					
+	    	    });
 	    	
 	    	    $('#hosInfo th > span').css({"background": "#e4eaf1"
 	    	    					   ,"border-radius": "2rem"
@@ -432,12 +468,12 @@ function fn_dashSelectOne(data) {
 	    	    					   ,"margin-right" : "0.5rem"
 	    	    					   ,"display" : "inline-block"
 	    	    					   ,"text-align": "center" });
-	    	    $('#hosInfo td > span').css({"display" : "inline-block"
+	    	    $('#hosInfo td > span, #spUrl').css({"display" : "inline-block"
 	    	    							,"margin-bottom" : "1rem"
 	    	    					        ,"text-align": "center"
-	    	    					        ,"margin-left" : "auto"
-	    	    					        ,"margin-right" : "auto"
-	    	    					        ,"width" : "auto"});
+	    	    					        ,"width" : "300px"
+    	    					        	,"word-break": "break-all"
+	    	    					        });
 	    	    $('#hosInfo td').css({"text-align": "center"
 	    	    					        });
 	    	    

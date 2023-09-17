@@ -161,7 +161,7 @@ body {
 
 	$(document).ready(function () {
 		  $("#titleP").click(function () {
-			  $(location).attr("href", "/board/boardView.do")
+			  $(location).attr("href", "/dash/dashboardList.do")
 		  });
 		});
 

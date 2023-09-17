@@ -50,13 +50,10 @@
 .contTitle1 {
 	display:flex;
 	
-/* 	border: solid #becef1;  */
-/* 	border-width: 0px 0px 0.3rem 0px ; */
 }
 
 .contTitle2 {
 	
-/*  	border: solid #e2e2e2;   */
 }
 
 .contCont {
@@ -143,6 +140,7 @@ tr {
 	$(function() {
 
 		fn_writeUpdateBtn();
+		//수정시 이전 게시글 내용 조회되도록 게시글 번호 받아오는 함수
 		fn_writeOrUp();
 	});
 	
@@ -165,7 +163,8 @@ tr {
 	};
 	
 	
-	
+	//게시글 수정시 새 게시글 작성인지 수정인지 구분함수
+	//보드번호가 0이면 새 글, 0이 아니면 수정 -> 한 글 조회 해서 값 표출
 	function fn_writeOrUp() {
 		
 		var boardNO = ${board_no};
@@ -175,7 +174,7 @@ tr {
 	
 	
 	
-	
+	//게시글 한 글 조회
 	function fn_boardSelectOne() {
 		
 		var boardNO = ${board_no};
@@ -191,8 +190,6 @@ tr {
 			$("#conWriter").val(data.boardSelectOne.board_writer);
 			$("#conCont").val(data.boardSelectOne.board_cont);
 			$("#board_no").val(data.boardSelectOne.board_no);
-			
-			
 		}
 		
 		callAjax("/board/boardSelectOne.do", "post", "json", false, param, selectoncallback) ;
@@ -200,7 +197,7 @@ tr {
 	}
 	
 
-	
+	//게시글 입력 값 유효성 검사(공백 검사 및 비밀번호 숫자 4자리 검사)
 	function fn_validation() {
 		
 		var board_title = $("#conTitle").val()
@@ -208,8 +205,6 @@ tr {
 		var board_pw = $("#conPw").val()
 		var board_cont = $("#conCont").val()
 
-		var regExp = /^\s+|\s+$/g;
-		
 		if ( $("#conTitle").val().trim() == "" ){
 			alert("제목을 입력해주세요(공백불가).");
 			$("#conTitle").focus();
@@ -243,15 +238,12 @@ tr {
 	
 	
 	
-	
+	//게시글 작성
 	function fn_boardInsert() {
-		
 		
 		if(fn_validation()==false){ //유효성 검사 실패
 			return;
-			
 		}// 유효성 검사 성공 
-		
 		
 		var pdata = { "board_title": $("#conTitle").val()
 				     ,"board_writer":  $("#conWriter").val()
@@ -266,12 +258,9 @@ tr {
 		    dataType: 'json',
 		    success: function(data){ 
 		        
-		    	console.log("data 응답 데이터 확인" +  JSON.stringify(data));
-		        console.log("data.returnDel 확인" +  JSON.stringify(data.returnInsert));
-		        
-		        
 				if(data.returnInsert > 0){
 					alert("정상적으로 등록되었습니다.");
+					//게시판 첫 화면으로 이동
 					location.href = "/board/boardView.do";
 				} else {
 					alert ("정상적으로 등록되지 않았습니다.");
@@ -289,9 +278,7 @@ tr {
 		
 		if(fn_validation()==false){ //유효성 검사 실패
 			return;
-			
 		}// 유효성 검사 성공 
-		
 		
 		var pdata = {
 					   "board_no" : $("#board_no").val()
@@ -314,9 +301,8 @@ tr {
 				} else {
 					alert ("정상적으로 수정되지 않았습니다.");
 				};
+					//게시글 한 글 조회 페이지 이동
 					location.href = "/board/boardSelectOnePage.do?board_no=" + JSON.stringify(data.board_no);
-		        
-		        
 		    },
 		    error: function(){
 		        alert("실패실패");

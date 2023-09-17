@@ -74,7 +74,7 @@ public class BoardController {
 		
 	}
 	
-	//게시글 한 글 조회
+	//게시글 한 글 조회(Ajax구현)
 	@RequestMapping(value="boardSelectOne.do")
 	@ResponseBody
 	public Map<String, Object> boardSelectOne(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
@@ -98,6 +98,7 @@ public class BoardController {
 		
 	}
 	
+	//게시글 한 글 조회(Ajax X)
 	@RequestMapping(value="/boardSelectOnePage.do")
 	public String boardSelectOnePage(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -170,7 +171,7 @@ public class BoardController {
 		return returnmap;
 	}
 
-	//
+	//게시글 작성 || 수정 페이지 분기 지점
 	@RequestMapping(value="/boardWrite.do")
 	public String boardWrite(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -180,11 +181,9 @@ public class BoardController {
 		int board_no = 0;
 		
 		if(paramMap.get("board_no") == null) {//새글 작성
-			System.out.println("하하하하 파람 널이다");
 			board_no = 0;
 			
 		}else if(paramMap.get("board_no") != null) {//글 수정
-			System.out.println("하하하하 파람 널 아니다");
 			board_no = Integer.parseInt((String) paramMap.get("board_no"));
 		}
 		
@@ -193,6 +192,7 @@ public class BoardController {
 		
 	}
 	
+	//개시글 작성
 	@RequestMapping(value="/boardInsert.do")
 	@ResponseBody
 	public Map<String, Object> boardInsert(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
@@ -203,9 +203,9 @@ public class BoardController {
 		int board_pw = Integer.parseInt((String) paramMap.get("board_pw"));
 		paramMap.put("board_pw", board_pw);
 		
+		//insert결과 값 확인
 		int returnInsert = 0;
 		returnInsert = boardService.boardInsert(paramMap);
-		logger.info("보드컨트롤러 delete 결과확인" + "returnDel" + returnInsert);
 		
 		Map<String, Object> returnmap = new HashMap<String, Object>();
 		logger.info("보드컨트롤러 Insert 결과확인" + "returnmap" + returnmap);
@@ -216,6 +216,7 @@ public class BoardController {
 		
 	}
 	
+	//게시글 수정
 	@RequestMapping(value="/boardUpdate.do")
 	@ResponseBody
 	public Map<String, Object> boardUpdate(BoardVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
@@ -229,14 +230,11 @@ public class BoardController {
 		int board_pw = Integer.parseInt((String) paramMap.get("board_pw"));
 		paramMap.put("board_pw", board_pw);
 		
-		
-		
+		//update 후 결과 값 확인
 		int returnUpdate = 0;
 		returnUpdate = boardService.returnUpdate(paramMap);
-		logger.info("보드컨트롤러 returnUpdate 결과확인" + "returnUpdate" + returnUpdate);
 		
 		Map<String, Object> returnmap = new HashMap<String, Object>();
-		logger.info("보드컨트롤러 Insert 결과확인" + "returnmap" + returnmap);
 		
 		returnmap.put("returnUpdate", returnUpdate);
 		returnmap.put("board_no", board_no);
@@ -244,12 +242,5 @@ public class BoardController {
 		return returnmap;
 		
 	}
-
-	
-	
-	
-	
-	
-	
 	
 }

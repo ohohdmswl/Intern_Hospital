@@ -129,8 +129,8 @@
     	fn_searchText();
     });
 	
+    //버튼 기능 부여
     function fn_btn(){
-    	
 		$('a[name=btn]').click(function(e) {
 			e.preventDefault();
 			
@@ -144,8 +144,7 @@
 			}
 		})
 	};
-	
-	//안먹힘 ^^
+/*	
 	function fn_paginationBTN(){
 	    	
 			$('.Pnum').click(function(e) {
@@ -156,8 +155,9 @@
 		            
 		        });
 		    });
-		}
+		}*/
 	
+	//검색어 입력 후 엔터 사용시 검색 가능하게 하는 함수	
 	function fn_searchText(){
 		$('#searchText').keypress(function(event){
 		     if ( event.which == 13 ) {//엔터쳤을 때 검색되게하는 코드
@@ -167,6 +167,7 @@
 		})
 	};
     
+	//게시판 게시글 목록 및 검색 결과 목록 가져오는 함수
 	function fn_boardlist(pagenum) {
 		
 		pagenum = pagenum || 1;
@@ -174,34 +175,28 @@
 		var param = {
 			selectSearch : $("#selectSearch").val()
 		  , searchText : $("#searchText").val()
-		  , pageSize : pageSize
-		  , pageBlockSize : pageBlockSize
-		  , pagenum : pagenum
+		  , pageSize : pageSize				//한 페이지에 보일 게시글 개수
+		  , pageBlockSize : pageBlockSize	//페이지네이션 개수
+		  , pagenum : pagenum				//현재 페이지네이션 번호
 		}
 		 
 		var listcollabck = function(returnvalue) {
 			
-			console.log(returnvalue);
-			
+			//게시판 목록 테이블 tbody에 응답데이터 추가
 			$("#boardListTbody").empty().append(returnvalue);
-			
+			//게시글 총 개수
 			var  totalcnt = $("#totalcnt").val();
-			
-			console.log("totalcnt : " + totalcnt);
-			
+			//페이지네이션 함수
 			var paginationHtml = getPaginationHtml(pagenum, totalcnt, pageSize, pageBlockSize, 'fn_boardlist');
 			console.log("paginationHtml : " + paginationHtml);
-			 
+			//페이지네이션 추가
 			$("#boardPagination").empty().append( paginationHtml );
-			
-			$("#pageno").val(pagenum);
+// 			$("#pageno").val(pagenum);
 		}
-		
 		callAjax("/board/boardList.do", "post", "text", false, param, listcollabck) ;
-			
 	};
 	
-	
+	//게시글 한 글 조회(Ajax버전)
 	function fn_boardSelectOne(no) {
 		
 		var param = {

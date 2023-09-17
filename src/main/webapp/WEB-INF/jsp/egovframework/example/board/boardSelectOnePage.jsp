@@ -92,6 +92,7 @@
 		//fn_contList();
 	});
 	
+	//목록 버튼 클릭 시 게시판 목록으로 이동
 	function fn_contList() {
 		$("#contList").click(function (e) {
 			 $("#contList").attr("href", "/board/boardList.do");
@@ -99,16 +100,12 @@
 		})
 	};
 	
+	//게시글 삭제시 비밀번호 확인
 	function fn_boardDelPw(no) {
 		
 		var boardPW = prompt('삭제를 위한 게시글 비밀번호 숫자 4자리를 입력해주세요', '4자리 숫자 비밀번호를 입력해주세요');
 		var pw = Number(boardPW);
-		
-// 		alert("pw 확인" + pw);
-		
 		var dataPw = { "board_no": no, "board_pw": pw };
-		
-// 		alert("확인2" + dataPw);
 		
 		$.ajax({
 		    url: '/board/boardPwChk.do',
@@ -117,28 +114,24 @@
 		    dataType: 'json',
 		    success: function(data){ 
 		        console.log("data 응답 데이터 확인" +  JSON.stringify(data));
-		        console.log("data.returnPw 확인" +  JSON.stringify(data.returnPw));
-		        console.log("data.board_no 확인" +  JSON.stringify(data.board_no));
 		        
 				if(data.returnPw > 0){
-// 					alert("게시글 비밀번호가 맞았다!");
+					//비밀번호가 맞을 경우 삭제 함수 진행
 					fn_boardDel(data.board_no);
 				} else {
 					alert("게시글 비밀번호가 틀렸습니다");
 					location.href = "/board/boardSelectOnePage.do?board_no=" + JSON.stringify(data.board_no);
-						
 				};
 		    },
 		    error: function(){
 		        alert("실패실패");
 		    }
 		});
-		
 	}
 	
 	
 	
-	
+	//게시글 삭제
 	function fn_boardDel(no) {
 		
 		$.ajax({
@@ -148,8 +141,6 @@
 		    dataType: 'json',
 		    success: function(data){ 
 		        console.log("data 응답 데이터 확인" +  JSON.stringify(data));
-		        console.log("data.returnDel 확인" +  JSON.stringify(data.returnDel));
-		        console.log("data.board_no 확인" +  JSON.stringify(data.board_no));
 		        
 				if(data.returnDel > 0){
 					alert("정상적으로 삭제되었습니다.");
@@ -167,16 +158,12 @@
 	
 		
 		
-// 		location.href = "/board/boardInsert.do?board_no=" + JSON.stringify(data.board_no);
 
-	
+	//수정시 비밀번호 체크
 	function fn_boardUpdatePwChk(no) {
 		
 		var boardPW = prompt('수정을 위한 게시글 비밀번호 숫자 4자리를 입력해주세요', '4자리 숫자 비밀번호를 입력해주세요');
 		var pw = Number(boardPW);
-		
-// 		alert("pw 확인" + pw);
-		
 		var dataPw = { "board_no": no, "board_pw": pw };
 		
 		
@@ -186,23 +173,19 @@
 		    data:  dataPw,
 		    dataType: 'json',
 		    success: function(data){ 
-		        
 		    	console.log("data 응답 데이터 확인" +  JSON.stringify(data));
-		        
 		        
 				if(data.returnPw > 0){
 					alert("비밀번호 확인 완료.");
-					alert("응답 보드넘버 확인 : " + data.board_no);
 
 					//에이젝스로 셀렉트원 다시 해서 - 값 채우기
-					//작성페이지넘겨서 값 el로 받고
+					//작성페이지넘겨서 값 el로 받고 글 작성 페이지로 이동
 					location.href = "/board/boardWrite.do?board_no=" + JSON.stringify(data.board_no);
 
 				} else {
 					alert ("비밀번호 확인 실패.");
 					location.href = "/board/boardSelectOnePage.do?board_no=" + JSON.stringify(data.board_no);
 				};
-				
 		    },
 		    error: function(){
 		        alert("실패실패22");
@@ -210,35 +193,7 @@
 		});
 	}
 	
-	/*
-	function boardUpPage(no) {
-		
-		$.ajax({
-		    url: '/board/boardInsert.do',
-		    type: 'post',
-		    data: { "board_no": no},
-		    dataType: 'json',
-		    success: function(data){ 
-		        
-		    	console.log("data 응답 데이터 확인" +  JSON.stringify(data));
-		        console.log("data.returnDel 확인" +  JSON.stringify(data.returnInsert));
-		        
-		        
-				if(data.returnInsert > 0){
-					alert("정상적으로 등록되었습니다.");
-					location.href = "/board/boardView.do";
-				} else {
-					alert ("정상적으로 등록되지 않았습니다.");
-// 					location.href = "/board/boardSelectOnePage.do?board_no=" + JSON.stringify(data.board_no);
-				};
-				
-		    },
-		    error: function(){
-		        alert("실패실패22");
-		    }
-		});
-	}
-	*/
+
 	
 
 </script>
@@ -271,10 +226,7 @@
 				<div class="contB">
 					<a href="/board/boardView.do"><div class="contBTN contList" id="contList">목록</div></a>
 					<a href="javascript:fn_boardDelPw('${boardSelectOne.board_no}')"><div class="contBTN contDel">삭제</div></a>
-<%-- 					<a href="javascript:fn_boardUpdateNo('${boardSelectOne.board_no}')"><div class="contBTN contup">수정</div></a> --%>
-<%-- 					<a href="/board/boardInsert.do?board_no=${boardSelectOne.board_no}"><div class="contBTN contup">수정</div></a> --%>
 					<a href="javascript:fn_boardUpdatePwChk('${boardSelectOne.board_no}')"><div class="contBTN contup">수정</div></a>
-<!-- 					<div class="contBTN contup">수정</div> -->
 				</div>
 	</div><!-- container -->
 </body>			

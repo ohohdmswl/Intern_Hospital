@@ -359,15 +359,41 @@ function fn_chartClick(geoClick) {
 	
 	alert("현재 클릭한 지역을 확인하자 : " + geoClickPres + "이전에 클릭한 지역을 확인 : " + geoClickPP);
 
+	//이전 클릭한게 전국(널) 새로 클릭한게 지역일 떄 떠야하고 이전클릭도 널, 새로클릭한것도 널일때 안뜨고
+	if((geoClickPres == undefined || geoClickPres == null || geoClickPres == "") )
+// 		&& (geoClickPP == undefined || geoClickPP == null || geoClickPP == ""))
+	{// 시/도 선택 전(첫 페이지 로ㅊ드 || 전국)
+// 		$("#hpListTbody").empty();
 	
-	if(geoClickPP == undefined || geoClickPP == null || geoClickPP == ""){// 시/도 선택 전(첫 페이지 로드 || 전국)
+	}else if((geoClickPres != undefined || geoClickPres != null || geoClickPres != "")
+				&&(geoClickPP == undefined || geoClickPP == null || geoClickPP == "")){
 		
+		alert("이건맞나");
+		
+		$("#geoClickPP").val(geoClickPP);
+		
+		alert("이전에 선택한 값은 이것 : " + $("#geoClickPP").val(geoClickPP));
+		alert("지금 선택한 값은 이것 : " + $("#geoClick").val());
+		
+// 		if(geoClickPres != geoClickPP){
+			$("#hpListTbody").empty();
+// 			$(".infoHos").hide();
+			$(".hosInfo").empty();
+			
+// 			$('#hosInfo').find('tr').empty();
+			$("#map").empty();
+			$("#map").hide();
+			
+			
+			
+		 	$(".loadImgDiv").show();
+	
 	} else {// 이전에 선택한 시/도 값이 있는 상황
 		$("#geoClickPP").val(geoClickPP);
 		alert("이전에 선택한 값은 이것 : " + $("#geoClickPP").val(geoClickPP));
 		alert("지금 선택한 값은 이것 : " + $("#geoClick").val());
 		
-		if(geoClickPres != geoClickPP){
+// 		if(geoClickPres != geoClickPP){
 			$("#hpListTbody").empty();
 // 			$(".infoHos").hide();
 			$(".hosInfo").empty();
@@ -387,7 +413,7 @@ function fn_chartClick(geoClick) {
 		
 		
 		
-	}
+// 	}
 	
 	
 	$.ajax({

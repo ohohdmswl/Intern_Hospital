@@ -227,6 +227,13 @@ a {
 }
 
 
+.loadImgDiv{
+	display: flex;
+	flex-direction: column;
+    align-items: center;
+}
+
+
 
 </style>
 
@@ -240,6 +247,7 @@ a {
 <div class="contain">
 
 	<input type="hidden" id="geoClick" value=""/>
+	<input type="hidden" id="geoClickPP" value=""/>
 	<div class="box1 left" style="border: 0px solid black">
 		<div id="geoTitle1" class="geoTitle"></div>
 		<div>
@@ -286,7 +294,7 @@ a {
 					</thead>
 					
 					<tr id="loadList">
-						<td> 시/군/구, 병원 종류를 선택해주세요!</td>
+						<td> 시/군/구, 병원 종류를 선택 후 검색을 해주세요!</td>
 					</tr>
 					
 					
@@ -298,17 +306,19 @@ a {
 		</div> <!-- box2-2 -->	
 		
 	</div><!-- box2 -->
-	<div class="box3 last" style="border: 0px solid blue; height: 100%;">
-		<div>
-			<table class="" id="hosInfo" style="width: 400px;">
-			
-			
-			</table>
-		</div>
-		
-		<div id="map"></div>
 	
+	<div class="box3 last" style="border: 0px solid blue; height: 100%;">
+		<div class="loadImgDiv">
+			<img src="${pageContext.request.contextPath}/images/egovframework/layout/hospitalIcon.png" style="width: 5rem; height: 5rem; margin-bottom: 2rem; margin-top : 10rem;">
+			<p style="font-weight: bold;">병원 검색 후 병원이름을 클릭해주세요!</p>		
+		</div>
+		<div class="infoHos">
+			<table class="" id="hosInfo" style="width: 400px;">
+			</table>
+			<div id="map"></div>
+		</div>
 	</div><!-- box3 -->
+	
 </div><!-- contain  -->
 
 
@@ -344,10 +354,46 @@ function fn_clickChk(redata) {
 //-> 선택한 지역에 맞는  select (시/군/구 , 병원종류) 옵션 보이게 설정
 function fn_chartClick(geoClick) {
 	
+	var geoClickPres = $("#geoClick").val();
+	var geoClickPP = $("#geoClickPP").val();
+	
+	alert("현재 클릭한 지역을 확인하자 : " + geoClickPres + "이전에 클릭한 지역을 확인 : " + geoClickPP);
+
+	
+	if(geoClickPP == undefined || geoClickPP == null || geoClickPP == ""){// 시/도 선택 전(첫 페이지 로드 || 전국)
+		
+	} else {// 이전에 선택한 시/도 값이 있는 상황
+		$("#geoClickPP").val(geoClickPP);
+		alert("이전에 선택한 값은 이것 : " + $("#geoClickPP").val(geoClickPP));
+		alert("지금 선택한 값은 이것 : " + $("#geoClick").val());
+		
+		if(geoClickPres != geoClickPP){
+			$("#hpListTbody").empty();
+// 			$(".infoHos").hide();
+			$(".hosInfo").empty();
+			
+			$('#hosInfo').find('tr').empty();
+			$("#map").empty();
+			$("#map").hide();
+			
+			
+			
+		 	$(".loadImgDiv").show();
+		 	
+		 	var str = "";
+    		str += "<tr id='loadList'><td> 시/군/구, 병원 종류를 선택 후 검색을 해주세요!</td></tr>";
+    		$("#hpListTbody").append(str);
+		}
+		
+		
+		
+	}
+	
+	
 	$.ajax({
 	    url: '/dash/dashGeoClickSelect.do',
 	    type: 'post',
-	    data: { "geoClick": geoClick},
+	    data: { "geoClick": geoClick, "geoClickPP" : $("#geoClickPP").val()},
 	    dataType: 'json',
 	    success: function(data){ 
 	        
@@ -358,12 +404,18 @@ function fn_chartClick(geoClick) {
 	    	//선택한 지역 표기(전국 or 지역)
 	    	fn_clickChk(data.clickGeoNm);
 	    	
-	    	
+	    	//지금 선택한 시/도 저장
 	    	$("#geoClick").val(sidoCd);
 	    	alert("클릭한 지역을 확인하자" + $("#geoClick").val());
 	    	
+			//먼저 선택한 시/도 저장	    	
+	    	$("#geoClickPP").val(geoClickPres);
+	    	
+	    	
 	    	//선택한 지역의 시군구 리스트 전달
 	    	fn_hopitalSelectList(data);
+	    	
+	    	
 	    },
 	    error: function(){
 	        alert("실패실패22");
@@ -376,6 +428,7 @@ function fn_HospitalSearch(pagenum) {
 	
 	//검색 버튼 누를 시 ,시/군/구, 병원종류 선택하세요 행 사라지고 검색 결과 테이블만 보이도록
 	$('#loadList').empty();
+
 	
 	
 	pagenum = pagenum || 1;
@@ -434,6 +487,10 @@ function fn_searchText(){
 
 function fn_dashSelectOne(data) {
 	
+	//병원 목록에서 병원 선택시 병원 이름을 클릭해달라는 div hide
+	$('.loadImgDiv').hide();
+	
+	
 	$.ajax({
 	    url: '/dash/dashGeoClickSelectOne.do',
 	    type: 'post',
@@ -444,10 +501,13 @@ function fn_dashSelectOne(data) {
 			
 	    	var data = data.DashHosSelectOne;
 			
-	    	//테이블 비우기
-	    	 $('#hosInfo').empty();
 	    	
-    		   
+ 			$("#map").show();
+
+
+    		$('#hosInfo').find('tr').empty(); 
+	    	
+	    	
     		   
 	    	var str = "";
 	    		str += "<tr><th><span>병원이름</span></th><td><span>" + data.hos_nm + "</span></td></tr>";
@@ -490,20 +550,25 @@ function fn_dashSelectOne(data) {
 	    	    
 	    	    
 	    	    
+    	    
+ 
 	    	    
 	    	    
-	    	    
-	    	    
-	    	
-			
+	    
+
+	
+
 			var mapContainer = document.getElementById('map'), // 지도의 중심좌표
 		    mapOption = { 
 		        center: new kakao.maps.LatLng(data.hos_y, data.hos_x), // 지도의 중심좌표
 		        level: 3 // 지도의 확대 레벨
 		    }; 
-	
+			
 			var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 	
+
+			
+			
 			// 주소-좌표 변환 객체를 생성합니다
 			var geocoder = new kakao.maps.services.Geocoder();
 			
@@ -572,7 +637,7 @@ function fn_dashSelectOne(data) {
 	    }//if
      })//geocoder.addressSearch
 			
-			
+
 
 			
 	    },

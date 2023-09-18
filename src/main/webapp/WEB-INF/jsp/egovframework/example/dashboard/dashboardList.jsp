@@ -14,14 +14,11 @@
 <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/locales/de_DE.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/geodata/usaLow.js"></script>
-<!-- <script src="https://cdn.amcharts.com/lib/5/geodata/southKoreaLow.js"></script> -->
-<!-- <script src="https://cdn.amcharts.com/lib/5/geodata/germanyLow.js"></script> -->
 <script src="https://cdn.amcharts.com/lib/5/fonts/notosans-sc.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/geodata/data/countries.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/geodata/data/countries2.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
-
 
 
 <!-- header -->
@@ -44,10 +41,7 @@
 
 .contain > div {
 	width: 50%;
-	
-
 }
-
 
 
 .box2{
@@ -61,7 +55,6 @@
 	display: flex;
 	flex-direction: column;
 	width: 100%;	
-
 }
 
 
@@ -70,19 +63,13 @@
 #chartdiv {
 	display : flex;
 	width: 100%; 
-/*   height: 10rem; */
 	justify-content: center;
-  
-  
 }
 
 
 .box1{
 	display: flex;
 	flex-direction: column;
-/* 	justify-content: center; */
-	
-	
 }
 
 #geoTitle {
@@ -92,7 +79,6 @@
 	font-weight: bold;	
 	width: 3.5rem;
 	border-radius: 1rem;
-/* 	margin: auto; */
 	margin-top: 0.5rem;
 	margin-bottom: 2rem;
 }
@@ -108,7 +94,6 @@
 	font-weight: bold;
  	width: 7rem;
 	border-radius: 0.5rem;
-	
 }
 
 #hpTitle, .docT{
@@ -124,27 +109,19 @@
 	justify-content : center;
 	align-items : center;
 	flex-direction: column;
-
 }
 
 #docTitle {
 	margin-bottom: 0.1rem;
-
 }
 
 #docTitle2{
 	margin-top: 0.1rem; 
 	margin-bottom: 0.3rem; 
-/* 	font-weight: normal; */
 	font-size: 1rem;
 }
 
-
-
 </style>
-
-
-
 
 
 <title>병원현황</title>
@@ -156,7 +133,7 @@
 	<div class="box1 left">
 		<div id="geoTitle1" class="geoTitle"></div>
 		<div>
-			<a href="/dash/dashboardList.do">
+			<a href="javascript:fn_chartClick()">
 				<img src="${pageContext.request.contextPath}/images/egovframework/dashboard/all.png" style="width: 3rem; height: 3rem;">
 			</a>
 		</div>
@@ -187,11 +164,11 @@
 
 <script type="text/javascript">
 
-    /** OnLoad event */
-    $(function() {
-    	//처음 페이지 로드할 때 전국 데이터 활용한 차트 보여주기
-    	fn_chartClick();
-    });
+/** OnLoad event */
+$(function() {
+	//처음 페이지 로드할 때 전국 데이터 활용한 차트 보여주기
+	fn_chartClick();
+});
 
 //선택한 지역 sido_nm 표기
 function fn_clickChk(redata) {
@@ -213,8 +190,7 @@ function fn_chartClick(geoClick) {
 	        
 	    	console.log( JSON.stringify(data) );
 	    	
-	    	//지역별 의사, 병원 종류 차트 루트 초기화 
-	    	//(해당 함수 병원-> 의사 순으로 하면 js 오류 발생) -> (의사 -> 병원으로 실행시 정상 작동) : 이유 파악 못함
+	    	//지역별 의사, 병원 종류 차트 루트 초기화 (의사차트 -> 병원차트 초기화 순)
 	    	fn_chartRootReset('chartDoctor');
 	    	fn_chartRootReset('chartHospital');
 
@@ -353,18 +329,12 @@ polygonSeries.mapPolygons.template.events.on("click", function(ev) {
   var geoValNm = ev.target.dataItem.dataContext.name;
   var geoValCd = ev.target.dataItem.dataContext.id;
   
-  // 클릭한 지역의 값을 alert 확인
-//   alert("클릭한 지역 이름: " + geoValNm);
-//   alert("클릭한 지역 코드: " + geoValCd);
-  
   //input hidden 값으로 설정(ajax_controller로 지역 값 넘기기 위해)
   $("#geoClick").val(geoValNm);
-  alert("클릭한 지역 input hidden: " + $("#geoClick").val());
-  
+//   alert("클릭한 지역 input hidden: " + $("#geoClick").val());
   
   //한반도 차트 클릭시 Ajax 함수 사용할 수 있게 작성
   fn_chartClick($("#geoClick").val());
-  
   
 });
 
@@ -628,10 +598,7 @@ function fn_createDocChart(redata) {
 		  fill: am5.color(0x000000),
 		  fontSize: 70
 		}));
-	
-
-		}) // end am5.ready()
-
+	}) // end am5.ready()
 }
 
 //right div's height 맞게  left div's height 동일하게 설정  

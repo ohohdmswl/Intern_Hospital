@@ -24,7 +24,6 @@
 <!-- services와 clusterer, drawing 라이브러리 불러오기 -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=76a089e067cc1b79272edcd263efb64f&libraries=services,clusterer,drawing"></script>
 
-
 <!-- header -->
 <jsp:include page="/WEB-INF/jsp/egovframework/example/layout/header.jsp"></jsp:include>
 
@@ -45,17 +44,12 @@
 
 .contain > div {
 	width: 50%;
-	
-
 }
-
-
 
 .box2{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-/* 	width : 100%; */
  	margin-right: 2rem;
 }
 
@@ -63,27 +57,19 @@
 	display: flex;
 	flex-direction: column;
 	width: 100%;	
-
 }
-
-
 
 <!-- 암차트 예시 -->
 #chartdiv {
 	display : flex;
 	width: 100%; 
-/*   height: 10rem; */
 	justify-content: center;
-  
 }
 
 
 .box1{
 	display: flex;
 	flex-direction: column;
-/* 	justify-content: center; */
-	
-	
 }
 
 #geoTitle1 {
@@ -97,7 +83,6 @@
 	font-weight: bold;
  	width: 8rem;
 	border-radius: 0.5rem;
-	
 }
 
 .searchT{
@@ -108,12 +93,10 @@
 	font-weight: bold;
 	width: 5.5rem;
 	border-radius: 0.5rem;
-
 }
 
 #docTitle {
 	margin-bottom: 0.1rem;
-
 }
 
 #docTitle2{
@@ -135,7 +118,6 @@
  	display : flex;  
 	border-radius: 0.5rem;
     justify-content: center;
-/*     justify-content: space-between; */
 }
 
 select {
@@ -151,10 +133,7 @@ input {
 	border-radius: 0.5rem;
 	margin-bottom: 0.5rem;
 	width : 12rem;
-
 }
-
-
 
 .Sclick{
 	width: 8rem;
@@ -169,18 +148,16 @@ input {
 
 .searchHnm{
 	display: flex;
-	 justify-content: space-between;
+	justify-content: space-between;
 }
 
 .sbtn{
 	display: flex;
-	
 }
 
 .table tr {
 	text-align: center;
 }
-
 
 .paging_area {
 	text-align: center;
@@ -188,15 +165,14 @@ input {
 }
 
 #map {
-	width:400px; 
+	width:450px; 
 	height:350px;
 	border: 0px solid orange;
-	margin: auto;
+/* 	margin: auto; */
 }
 
 #hosInfo {
 	width: 400px;
-	
 }
 
 <!-- 카카오맵 API CSS -->
@@ -220,10 +196,8 @@ a {
 }
 
 #hosInfo > th {
-
 	background: #e4eaf1;
 	border-radius: 0.5rem;
-
 }
 
 
@@ -233,12 +207,7 @@ a {
     align-items: center;
 }
 
-
-
 </style>
-
-
-
 
 
 <title>병원검색</title>
@@ -251,7 +220,7 @@ a {
 	<div class="box1 left" style="border: 0px solid black">
 		<div id="geoTitle1" class="geoTitle"></div>
 		<div>
-			<a href="/dash/dashboardSelect.do">
+			<a href="javascript:fn_chartClick()">
 				<img src="${pageContext.request.contextPath}/images/egovframework/dashboard/all.png" style="width: 3rem; height: 3rem;">
 			</a>
 		</div>
@@ -293,10 +262,11 @@ a {
 						</tr>
 					</thead>
 					
+					<!-- 
 					<tr id="loadList">
 						<td> 시/군/구, 병원 종류를 선택 후 검색을 해주세요!</td>
 					</tr>
-					
+					 -->
 					
 					<tbody id="hpListTbody"></tbody>
 				</table>
@@ -321,33 +291,44 @@ a {
 	
 </div><!-- contain  -->
 
-
 </body>
-
-
 
 
 <script type="text/javascript">
 
+//페이지네이션 설정
+var pageSize = 10;     
+var pageBlockSize = 5;  
 
-
-
-	//페이지네이션 설정
-	var pageSize = 10;     
-	var pageBlockSize = 5;  
-
-    /** OnLoad event */
-    $(function() {
-    	//처음 페이지 로드할 때 전국 데이터 활용한 차트 보여주기
-    	fn_chartClick();
-    	fn_searchText();
-    });
+/** OnLoad event */
+$(function() {
+	//처음 페이지 로드할 때 전국 데이터 활용한 차트 보여주기
+	fn_chartClick();
+	//엔터로 검색키 대체
+	fn_searchText();
+});
 
 //선택한 지역 sido_nm 표기
 function fn_clickChk(redata) {
 	var clickData = redata.sido_nm;
 	document.getElementById('geoTitle1').innerHTML =  clickData;
 }    
+    
+//지도 차트 클릭시 이전 검색 목록 결과와 상세정보창 비우기, 숨기기
+function fn_chartClickPre() {
+	$("#hpListTbody").empty();
+	$("#hpPagination").empty();
+    $(".hosInfo").empty();
+    $('#hosInfo').find('tr').empty();
+    $("#map").empty();
+    $("#map").hide();
+
+    //검색 안내 tr, div 표출
+    $(".loadImgDiv").show();
+    var str = "<tr id='loadList'><td> 시/군/구, 병원 종류를 선택 후 검색을 해주세요!</td></tr>";
+    $("#hpListTbody").append(str);
+}
+    
     
     
 //한반도 차트에서 지역 선택시 반응하는 Ajax
@@ -357,65 +338,6 @@ function fn_chartClick(geoClick) {
 	var geoClickPres = $("#geoClick").val();
 	var geoClickPP = $("#geoClickPP").val();
 	
-	alert("현재 클릭한 지역을 확인하자 : " + geoClickPres + "이전에 클릭한 지역을 확인 : " + geoClickPP);
-
-	//이전 클릭한게 전국(널) 새로 클릭한게 지역일 떄 떠야하고 이전클릭도 널, 새로클릭한것도 널일때 안뜨고
-	if((geoClickPres == undefined || geoClickPres == null || geoClickPres == "") )
-// 		&& (geoClickPP == undefined || geoClickPP == null || geoClickPP == ""))
-	{// 시/도 선택 전(첫 페이지 로ㅊ드 || 전국)
-// 		$("#hpListTbody").empty();
-	
-	}else if((geoClickPres != undefined || geoClickPres != null || geoClickPres != "")
-				&&(geoClickPP == undefined || geoClickPP == null || geoClickPP == "")){
-		
-		alert("이건맞나");
-		
-		$("#geoClickPP").val(geoClickPP);
-		
-		alert("이전에 선택한 값은 이것 : " + $("#geoClickPP").val(geoClickPP));
-		alert("지금 선택한 값은 이것 : " + $("#geoClick").val());
-		
-// 		if(geoClickPres != geoClickPP){
-			$("#hpListTbody").empty();
-// 			$(".infoHos").hide();
-			$(".hosInfo").empty();
-			
-// 			$('#hosInfo').find('tr').empty();
-			$("#map").empty();
-			$("#map").hide();
-			
-			
-			
-		 	$(".loadImgDiv").show();
-	
-	} else {// 이전에 선택한 시/도 값이 있는 상황
-		$("#geoClickPP").val(geoClickPP);
-		alert("이전에 선택한 값은 이것 : " + $("#geoClickPP").val(geoClickPP));
-		alert("지금 선택한 값은 이것 : " + $("#geoClick").val());
-		
-// 		if(geoClickPres != geoClickPP){
-			$("#hpListTbody").empty();
-// 			$(".infoHos").hide();
-			$(".hosInfo").empty();
-			
-			$('#hosInfo').find('tr').empty();
-			$("#map").empty();
-			$("#map").hide();
-			
-			
-			
-		 	$(".loadImgDiv").show();
-		 	
-		 	var str = "";
-    		str += "<tr id='loadList'><td> 시/군/구, 병원 종류를 선택 후 검색을 해주세요!</td></tr>";
-    		$("#hpListTbody").append(str);
-		}
-		
-		
-		
-// 	}
-	
-	
 	$.ajax({
 	    url: '/dash/dashGeoClickSelect.do',
 	    type: 'post',
@@ -423,24 +345,25 @@ function fn_chartClick(geoClick) {
 	    dataType: 'json',
 	    success: function(data){ 
 	        
-	    	console.log( "에이젝스 리턴 데이터 확인 : " + JSON.stringify(data) );
-	    	
 	    	var sidoCd = data.clickGeoNm.sido_cd;
 
+	    	//all in 버튼(전국 선택 시) -> 이전 검색 결과 비우고, 숨기고 , 안내문 띄우기
+	    	//지도 차트를 클릭하는것이 아니기 때문에 Ajax 응답데이터로 확인
+	    	if(sidoCd == 0){
+	    		fn_chartClickPre();
+	    	}
+	    	
 	    	//선택한 지역 표기(전국 or 지역)
 	    	fn_clickChk(data.clickGeoNm);
 	    	
 	    	//지금 선택한 시/도 저장
 	    	$("#geoClick").val(sidoCd);
-	    	alert("클릭한 지역을 확인하자" + $("#geoClick").val());
 	    	
 			//먼저 선택한 시/도 저장	    	
 	    	$("#geoClickPP").val(geoClickPres);
 	    	
-	    	
 	    	//선택한 지역의 시군구 리스트 전달
 	    	fn_hopitalSelectList(data);
-	    	
 	    	
 	    },
 	    error: function(){
@@ -454,8 +377,6 @@ function fn_HospitalSearch(pagenum) {
 	
 	//검색 버튼 누를 시 ,시/군/구, 병원종류 선택하세요 행 사라지고 검색 결과 테이블만 보이도록
 	$('#loadList').empty();
-
-	
 	
 	pagenum = pagenum || 1;
 	
@@ -468,7 +389,6 @@ function fn_HospitalSearch(pagenum) {
 				   ,pageBlockSize : pageBlockSize
 				   ,pagenum : pagenum
 				}
-	
 	$.ajax({
 	    url: '/dash/HospitalSearchList.do',
 	    type: 'post',
@@ -477,19 +397,20 @@ function fn_HospitalSearch(pagenum) {
 	    success: function(data){ 
 	    	console.log( "에이젝스 리턴 데이터 확인 : " + data );
 			
+	    	//병원 목록 비우고, 응답데이터로 채우기
 			$("#hpListTbody").empty().append(data);
 			
+	    	//총 병원 개수 (페이지네이션에 필요한)
 			var  totalcnt = $("#totalcnt").val();
 			
-			console.log("totalcnt : " + totalcnt);
-			
+			//페이지네이션 생성 함수 사용
 			var paginationHtml = getPaginationHtml(pagenum, totalcnt, pageSize, pageBlockSize, 'fn_HospitalSearch');
 			console.log("paginationHtml : " + paginationHtml);
 			 
+			//페이지네이션 비우고 새로 채우기
 			$("#hpPagination").empty().append( paginationHtml );
 			
 			$("#pageno").val(pagenum);
-
 	    },
 	    error: function(){
 	        alert("실패실패22");
@@ -499,7 +420,6 @@ function fn_HospitalSearch(pagenum) {
 
 //병원이름 input에서 엔터 누르면 검색 버튼 작동
 function fn_searchText(){
-	
 	document.getElementById("searchText").addEventListener("keyup", function(event) {
 	    if (event.key === "Enter") {
 	        document.getElementById("btnSearch").click();
@@ -508,14 +428,10 @@ function fn_searchText(){
 };
 
 
-
-
-
 function fn_dashSelectOne(data) {
 	
 	//병원 목록에서 병원 선택시 병원 이름을 클릭해달라는 div hide
 	$('.loadImgDiv').hide();
-	
 	
 	$.ajax({
 	    url: '/dash/dashGeoClickSelectOne.do',
@@ -527,34 +443,29 @@ function fn_dashSelectOne(data) {
 			
 	    	var data = data.DashHosSelectOne;
 			
-	    	
+	    	//#map div show(카카오맵 생성 위해 먼저 선언되어야함)
  			$("#map").show();
-
-
+ 			//병원 상세정보에서 행을 찾아 비우기
     		$('#hosInfo').find('tr').empty(); 
 	    	
-	    	
-    		   
+	    	//병원 상세 정보 표 생성
 	    	var str = "";
 	    		str += "<tr><th><span>병원이름</span></th><td><span>" + data.hos_nm + "</span></td></tr>";
 	    	    str += "<tr><th><span>주소</span></th><td><span>" +data.hos_addr +"</span></td></tr>"
 	    	    str += "<tr><th><span>전화번호</span></th><td><span>" +data.hos_tel +"</span></td></tr>"
-	    	    
-	    	    
+	    	   //병원  url이 없을 경우 url행 보이지 않게 하기
     		   if(typeof data.hos_url == "undefined" || data.hos_url == null || data.hos_url == ""){
-    			   
     		   }else{
 	    	    str += '<tr><th><span>URL</span></th><td><a href="' + data.hos_url + '" ><span id="spUrl">' +  data.hos_url + '</span></a></td></tr>'
     		   }
-	    	    
 	    	    str += "<tr><th><span>전문의</span></th><td><span>의과("+data.doc_mp +") 치과("+data.doc_dp+") 한방("+data.doc_hp+") 조산사("+data.doc_mw+")</span></td></tr>"
 	    	    str += "<tr><th><span>총의사수</span></th><td><span>" +data.doc_tat +"명</span></td></tr>"
 	    	
+	    	    //병원 상세정보 표에 str 채우기
 	    	    $("#hosInfo").append(str);
 	    	    
-	    	    $('#hosInfo').css({"width" : "400px"
-	    	    					
-	    	    });
+	    	    //제이쿼리 CSS
+	    	    $('#hosInfo').css({"width" : "400px"});
 	    	
 	    	    $('#hosInfo th > span').css({"background": "#e4eaf1"
 	    	    					   ,"border-radius": "2rem"
@@ -564,26 +475,17 @@ function fn_dashSelectOne(data) {
 	    	    					   ,"margin-right" : "0.5rem"
 	    	    					   ,"display" : "inline-block"
 	    	    					   ,"text-align": "center" });
+	    	    
 	    	    $('#hosInfo td > span, #spUrl').css({"display" : "inline-block"
-	    	    							,"margin-bottom" : "1rem"
-	    	    					        ,"text-align": "center"
-	    	    					        ,"width" : "300px"
-    	    					        	,"word-break": "break-all"
-	    	    					        });
-	    	    $('#hosInfo td').css({"text-align": "center"
-	    	    					        });
+	    	    									,"margin-bottom" : "1rem"
+	    	    					       			,"text-align": "center"
+			    	    					        ,"width" : "300px"
+		    	    					        	,"word-break": "break-all"
+	    	    					       			 });
 	    	    
+	    	    $('#hosInfo td').css({"text-align": "center"});
 	    	    
-	    	    
-	    	    
-    	    
- 
-	    	    
-	    	    
-	    
-
-	
-
+			//카카오맵 API 사용
 			var mapContainer = document.getElementById('map'), // 지도의 중심좌표
 		    mapOption = { 
 		        center: new kakao.maps.LatLng(data.hos_y, data.hos_x), // 지도의 중심좌표
@@ -592,20 +494,12 @@ function fn_dashSelectOne(data) {
 			
 			var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 	
-
-			
-			
 			// 주소-좌표 변환 객체를 생성합니다
 			var geocoder = new kakao.maps.services.Geocoder();
-			
-
-			
 			// 주소로 좌표를 검색합니다
 			geocoder.addressSearch(data.hos_addr, function(result, status) {
-
 			    // 정상적으로 검색이 완료됐으면 
 			     if (status === kakao.maps.services.Status.OK) {
-
 			        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
 			        // 결과값으로 받은 위치를 마커로 표시합니다
@@ -618,19 +512,15 @@ function fn_dashSelectOne(data) {
 						kakao.maps.event.addListener(marker, 'click', function() {
 						    overlay.setMap(map);
 						});
-						
-						
-						  // 커스텀 오버레이를 닫기 위해 호출되는 함수입니다 
-					      kakao.maps.event.addListener(map, "click", function () {
-					          overlay.setMap(null)
-					        })     
-			
+					    // 커스텀 오버레이를 닫기 위해 호출되는 함수입니다 
+				        kakao.maps.event.addListener(map, "click", function () {
+				             overlay.setMap(null)
+				        });     
 			
 			     // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
 			        map.setCenter(coords);
-			
 	
-			// 커스텀 오버레이에 표시할 컨텐츠 입니다
+			// 커스텀 오버레이에 표시할 컨텐츠
 			// 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
 			// 별도의 이벤트 메소드를 제공하지 않습니다 
 			var content = '<div class="wrap">' + 
@@ -652,7 +542,7 @@ function fn_dashSelectOne(data) {
 			           		'</div>' +    
 			            	'</div>';
 	
-			// 마커 위에 커스텀오버레이를 표시합니다
+			// 마커 위에 커스텀오버레이를 표시
 			// 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
 			var overlay = new kakao.maps.CustomOverlay({
 			    content: content,
@@ -662,21 +552,13 @@ function fn_dashSelectOne(data) {
 	
 	    }//if
      })//geocoder.addressSearch
-			
-
-
-			
 	    },
 	    error: function(){
 	        alert("실패실패22");
 	    }
 	})
-	
 }
 	
-
-
-
 
 
 //Ajax 응답데이터로 받은 시군구 리스트를 select list option으로 보여주기
@@ -685,17 +567,20 @@ function fn_hopitalSelectList(redata) {
 	var hopitalGeoList = redata.dashgeoSelectList;
 	var hopitalKindList = redata.dashHpKindVO;
 	
+	 //시군구, 병원종류 콤보박스에서 이전 옵션 제거
 	 $('#selectsigungu option').remove();
 	 $('#selectHkind option').remove();
 
+	 //시군구 콤보박스에 기본 옵션인 시/군/구 채우기
 	 $("#selectsigungu").append("<option value='0'>"+ "시/군/구" +"</option>");
 	 
+	 //선택한 시/도에 맞는 시군구 지역명을 콤보박스에 반복문 사용하여 넣기
 	for(var i=0; i<hopitalGeoList.length; i++){
 		var sggValue = hopitalGeoList[i].sigungu_cd;
 		var sggKey = hopitalGeoList[i].sigungu_nm;
 		$("#selectsigungu").append("<option value='" + sggValue + "'>"+ sggKey +"</option>");
 	}
-	
+	//병원종류를 콤보박스에 반복문 사용하여 넣기
 	for(var i=0; i<hopitalKindList.length; i++){
 		var hpkValue = hopitalKindList[i].kind_cd;
 		var hpkKey = hopitalKindList[i].kind_nm;
@@ -740,11 +625,9 @@ var polygonSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
   valueField: "value"
 }));
 
-
 polygonSeries.mapPolygons.template.setAll({
   tooltipText: "{name}", //정보팝업창
   interactive: true		//상호작용
- 
 });	
 
 //지역 클릭시 해당 지역 이름값을 가져옴 - 클릭 이벤트 핸들러를 추가
@@ -757,15 +640,15 @@ polygonSeries.mapPolygons.template.events.on("click", function(ev) {
   $("#geoClick").val(geoValNm);
 //   alert("클릭한 지역 input hidden: " + $("#geoClick").val());
   
+  //지도차트 클릭시 이전 결과값 비우거나 숨기고 검색안내 띄우기
+  fn_chartClickPre();
+  
   //한반도 차트 클릭시 Ajax 함수 사용할 수 있게 작성
   fn_chartClick($("#geoClick").val());
-  
 });
 
 polygonSeries.mapPolygons.template.states.create
-
-	 ("hover", {fill: am5.color(0x677935)})
-	;
+	 ("hover", {fill: am5.color(0x677935)});
 
 function loadGeodata(country) {
 
@@ -816,22 +699,7 @@ function loadGeodata(country) {
   }))
 }
 
-
-heatLegend.endLabel.setAll({
-  fontSize: 12,
-  fill: heatLegend.get("endColor")
-});
-
-
-// change this to template when possible
-polygonSeries.events.on("datavalidated", function () {
-  heatLegend.set("startValue", polygonSeries.getPrivate("valueLow"));
-  heatLegend.set("endValue", polygonSeries.getPrivate("valueHigh"));
-});
-
 }); // end am5.ready()
-
-
 
 //right div's height 맞게  left div's height 동일하게 설정  
 $(document).ready(function(){
@@ -853,15 +721,10 @@ $(document).ready(function(){
 });
 
 
-
-
-
 </script>
 
 <!-- 카카오 맵 api JS 앱키 -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=76a089e067cc1b79272edcd263efb64f"></script>
-
-
 
 <!-- footer -->
 <jsp:include page="/WEB-INF/jsp/egovframework/example/layout/footer.jsp"></jsp:include>

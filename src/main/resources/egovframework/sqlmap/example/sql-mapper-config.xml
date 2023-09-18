@@ -8,6 +8,5 @@
 		<typeAlias alias="dashDKVO" type="egovframework.example.sample.service.DashDocKindVO"/>
 		<typeAlias alias="dashGeoVO" type="egovframework.example.sample.service.DashGeoVO"/>
 		<typeAlias alias="dashHosSLVO" type="egovframework.example.sample.service.DashHosSearchListVO"/>
-		
     </typeAliases>
 </configuration>

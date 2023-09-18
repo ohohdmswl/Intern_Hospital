@@ -86,7 +86,6 @@ public class DashController {
 			}
 		}
 		
-		
 		logger.info("선택한 지역 코드 변환 확인 -> " + geoClick +"의 코도 : "+ sido_cd + " => 선택지역 구분 완료");
 		
 		//int sido_cd를 인자로 넘기는 메소드 작성시 동적쿼리 오류발생
@@ -113,7 +112,6 @@ public class DashController {
 		logger.info("병원 종류 차트에 사용할 데이터 뽑기 -> " + numHospitalList);
 		logger.info("의사 종류 차트에 사용할 데이터 뽑기 -> " + dashDocKind);
 		
-		
 		//Ajax응답데이터 map으로 전달 (차트 데이터 모두 map에 담아 전달)
 		Map<String, Object> returnmap = new HashMap<String, Object>();
 		
@@ -132,6 +130,7 @@ public class DashController {
 	
 	
 	//두번째 대시보드 - 한반도 차트 선택시(전국 /지역) 차트 Ajax 실행
+	//지역 값을 가져오는 코드가 중복됨 -> 추후 공통 모듈로 만들어서 if문으로 분기할 수 있도록 하기
 	@RequestMapping(value="/dashGeoClickSelect.do")
 	@ResponseBody
 	public Map<String, Object> dashGeoClickSelect(DashHpKindVO vo, Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
@@ -224,8 +223,6 @@ public class DashController {
 		paramMap.put("sigungu_cd", sigungu_cd);
 		paramMap.put("kind_cd", kind_cd);
 		
-		System.out.println("파람맵을 확인해보자" + paramMap);
-		
 		//리스트로 병원 검색 목록 받아오기
 		List<Map<String, String>> list = dashService.SelectDashList(paramMap);
 		
@@ -254,15 +251,10 @@ public class DashController {
 		
 		//선택한 병원정보 가져오기
 		DashHosSearchListVO DashHosSelectOne = dashService.DashHosSelectOne(paramMap);
-		
 		logger.info("카카오에 필요한 정보 보낼 파람맵" + "DashHosSelectOne" + DashHosSelectOne);
 		
 		Map<String, Object> returnmap = new HashMap<String, Object>();
-		
 		returnmap.put("DashHosSelectOne", DashHosSelectOne);		
-		
 		return returnmap;		
 	}
-	
-	
 }

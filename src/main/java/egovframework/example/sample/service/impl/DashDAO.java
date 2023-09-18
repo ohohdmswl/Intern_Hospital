@@ -48,9 +48,4 @@ public class DashDAO extends EgovAbstractMapper{
 	public DashHosSearchListVO DashHosSelectOne(Map<String, Object> paramMap) {
 		return selectOne("DashHosSelectOne", paramMap);
 	}
-
-	
-
-	
-	
 }

@@ -29,6 +29,4 @@ public interface DashService {
 	//선택한 병원정보 VO에 저장
 	public DashHosSearchListVO DashHosSelectOne(Map<String, Object> paramMap);
 
-
-
 }

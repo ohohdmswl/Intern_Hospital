@@ -176,14 +176,14 @@
 		    	console.log("data 응답 데이터 확인" +  JSON.stringify(data));
 		        
 				if(data.returnPw > 0){
-					alert("비밀번호 확인 완료.");
+// 					alert("비밀번호 확인 완료.");
 
 					//에이젝스로 셀렉트원 다시 해서 - 값 채우기
 					//작성페이지넘겨서 값 el로 받고 글 작성 페이지로 이동
 					location.href = "/board/boardWrite.do?board_no=" + JSON.stringify(data.board_no);
 
 				} else {
-					alert ("비밀번호 확인 실패.");
+					alert ("게시글 비밀번호가 틀렸습니다.");
 					location.href = "/board/boardSelectOnePage.do?board_no=" + JSON.stringify(data.board_no);
 				};
 		    },

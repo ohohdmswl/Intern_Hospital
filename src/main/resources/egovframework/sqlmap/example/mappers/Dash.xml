@@ -82,8 +82,6 @@
 		  FROM  tb_hospital hp
 		  
 		  <where>
-		  
-		  
 		  		<if test="(sido_cd != 0) and (sido_cd > 0)">
 		  			and hp.sido_cd = #{sido_cd}
 		  		</if>
@@ -153,7 +151,5 @@
 		  JOIN  tb_doctor doc ON hp.hos_cd = doc.hos_cd 
 		 WHERE  hp.hos_cd = #{hos_cd}
 	</select>
-	
-	
 	
 </mapper>

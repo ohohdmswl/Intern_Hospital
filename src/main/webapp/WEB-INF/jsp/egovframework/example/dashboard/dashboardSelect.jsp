@@ -323,10 +323,13 @@ function fn_chartClickPre() {
     $("#map").empty();
     $("#map").hide();
 
+    $("#searchText").val("");
+    
     //검색 안내 tr, div 표출
     $(".loadImgDiv").show();
     var str = "<tr id='loadList'><td> 시/군/구, 병원 종류를 선택 후 검색을 해주세요!</td></tr>";
     $("#hpListTbody").append(str);
+    
 }
     
     

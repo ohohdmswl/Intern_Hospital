@@ -58,9 +58,9 @@ function getPaginationHtml(currentPage, totalCount, pageRow, blockPage, pageFunc
 		}
 		
 		if (i == currentPage) { 
-			pagingHtml += "<strong class='Pnum' style='width: 1rem; height: 1rem;'>&nbsp" +  i  + "&nbsp</strong>";
+			pagingHtml += "<strong class='Pnum'>&nbsp;" +  i  + "&nbsp;</strong>";
 		} else {
-			pagingHtml += " <a href=javascript:"+pageFunc+"(" + i + sExParam +") class='Pnum'>&nbsp" +  i  + "&nbsp</a>";
+			pagingHtml += " <a href=javascript:"+pageFunc+"(" + i + sExParam +") class='Pnum'>&nbsp;" +  i  + "&nbsp;</a>";
 		}
 	}
 
